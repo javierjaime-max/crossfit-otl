@@ -307,7 +307,7 @@ button { cursor: pointer; border: none; background: none; font-family: inherit; 
   list-style: none;
 }
 .nav-links a {
-  font-size: 0.75rem;
+  font-size: 0.9rem;
   font-weight: 500;
   letter-spacing: 2px;
   text-transform: uppercase;
@@ -596,15 +596,15 @@ button { cursor: pointer; border: none; background: none; font-family: inherit; 
   line-height: 1.7;
 }
 .container {
-  max-width: 1200px;
+  max-width: min(1440px, 92vw);
   margin: 0 auto;
 }
 
 /* ========== PROGRAMS ========== */
 .programs-grid {
   display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 1.5rem;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1rem;
   margin-top: 4rem;
 }
 .program-card {
@@ -1232,7 +1232,7 @@ button { cursor: pointer; border: none; background: none; font-family: inherit; 
 
 /* ========== RESPONSIVE ========== */
 @media (max-width: 1024px) {
-  .programs-grid { grid-template-columns: 1fr 1fr; }
+  .programs-grid { grid-template-columns: repeat(2, 1fr); }
   
   .about-split { grid-template-columns: 1fr; }
   .about-image { height: 400px; }
@@ -1359,7 +1359,8 @@ button { cursor: pointer; border: none; background: none; font-family: inherit; 
     <p class="section-label reveal">What We Offer</p>
     <h2 class="section-title reveal">FIND YOUR<br>PROGRAM</h2>
     <p class="section-subtitle reveal">Every program. Every level. One community that has your back.</p>
-    <div class="programs-grid">
+  </div>
+  <div class="programs-grid" style="padding: 0 2rem; margin-top: 4rem; max-width: 100%;">
       <a href="#contact" class="program-card reveal reveal-delay-1">
         <div class="program-card-img" style="background-image: url('photos/A7402946.JPG');"></div>
         <div class="program-card-overlay"></div>
@@ -1401,7 +1402,6 @@ button { cursor: pointer; border: none; background: none; font-family: inherit; 
         </div>
       </a>
     </div>
-  </div>
 </section>
 
 <!-- ========== HORIZONTAL PHOTO STRIP ========== -->
