@@ -1201,8 +1201,8 @@ button { cursor: pointer; border: none; background: none; font-family: inherit; 
 /* Reveal animation classes */
 .reveal {
   opacity: 0;
-  transform: translateY(40px);
-  transition: opacity 0.8s var(--ease-out), transform 0.8s var(--ease-out);
+  transform: translateY(20px);
+  transition: opacity 0.6s var(--ease-out), transform 0.6s var(--ease-out);
 }
 .reveal.visible {
   opacity: 1;
@@ -1264,7 +1264,7 @@ button { cursor: pointer; border: none; background: none; font-family: inherit; 
   .nav-links a { font-size: 1.25rem; letter-spacing: 4px; color: var(--white); }
   .nav-toggle { display: flex; }
   .hero-title { letter-spacing: 2px; }
-  .section { padding: 5rem 1.5rem; }
+  .section { padding: 3rem 1.5rem; }
   .steps-grid { grid-template-columns: 1fr; gap: 2rem; }
   .step-number { font-size: 4rem; }
   .photo-strip-item { width: 320px; height: 260px; }
@@ -1274,7 +1274,7 @@ button { cursor: pointer; border: none; background: none; font-family: inherit; 
   .proof-divider { display: none; }
   .proof-item { font-size: 0.7rem; letter-spacing: 3px; }
   .dropin-price { font-size: 3.5rem; }
-  .testimonial { padding: 6rem 1.5rem; }
+  .testimonial { padding: 4rem 1.5rem; }
   .testimonial::before { font-size: 12rem; top: 2rem; }
 }
 @media (max-width: 560px) {
@@ -1752,10 +1752,16 @@ const revealObserver = new IntersectionObserver((entries) => {
     }
   });
 }, {
-  threshold: 0.1,
-  rootMargin: '0px 0px -60px 0px'
+  threshold: 0,
+  rootMargin: '0px 0px 0px 0px'
 });
 revealElements.forEach(el => revealObserver.observe(el));
+// Fallback: force-show any reveals that didn't fire after 1.5s
+setTimeout(() => {
+  document.querySelectorAll('.reveal, .reveal-left, .reveal-right').forEach(el => {
+    el.classList.add('visible');
+  });
+}, 1500);
 
 // ---- Testimonials ----
 const testimonials = [
