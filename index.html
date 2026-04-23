@@ -256,9 +256,10 @@
 
 /* ========== RESET ========== */
 *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
-html { scroll-behavior: smooth; font-size: 16px; -webkit-font-smoothing: antialiased; }
-@media (min-width: 1400px) { html { font-size: 18px; } }
-@media (min-width: 1800px) { html { font-size: 20px; } }
+html { scroll-behavior: smooth; font-size: 18px; -webkit-font-smoothing: antialiased; }
+@media (min-width: 1400px) { html { font-size: 20px; } }
+@media (min-width: 1800px) { html { font-size: 22px; } }
+@media (max-width: 768px) { html { font-size: 15px; } }
 body {
   background: var(--bg-primary);
   color: var(--text-primary);
