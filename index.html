@@ -256,10 +256,10 @@
 
 /* ========== RESET ========== */
 *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
-html { scroll-behavior: smooth; font-size: 22px; -webkit-font-smoothing: antialiased; }
-@media (min-width: 1400px) { html { font-size: 24px; } }
-@media (min-width: 1800px) { html { font-size: 26px; } }
-@media (max-width: 768px) { html { font-size: 18px; } }
+html { scroll-behavior: smooth; font-size: 17px; -webkit-font-smoothing: antialiased; }
+@media (min-width: 1400px) { html { font-size: 18px; } }
+@media (min-width: 1800px) { html { font-size: 19px; } }
+@media (max-width: 768px) { html { font-size: 16px; } }
 body {
   background: var(--bg-primary);
   color: var(--text-primary);
@@ -1233,33 +1233,6 @@ button { cursor: pointer; border: none; background: none; font-family: inherit; 
 
 /* ========== RESPONSIVE ========== */
 
-/* Desktop upscale — text sized proportional to full-bleed image cards */
-@media (min-width: 1024px) {
-  .program-card-tag { font-size: 0.9rem; letter-spacing: 5px; margin-bottom: 1rem; }
-  .program-card-title { font-size: 4.5rem; letter-spacing: 3px; margin-bottom: 1.25rem; }
-  .program-card-desc { font-size: 1.2rem; line-height: 1.7; max-width: 620px; }
-  .program-card-arrow { font-size: 0.95rem; margin-top: 1.5rem; letter-spacing: 3px; }
-  .program-card-content { padding: 3rem; }
-  .step-title { font-size: 2.75rem; }
-  .step-desc { font-size: 1.2rem; }
-  .step-number { font-size: 8rem; }
-  .section-subtitle { font-size: 1.4rem; }
-  .section-label { font-size: 0.9rem; letter-spacing: 5px; }
-  .location-detail-label { font-size: 0.8rem; letter-spacing: 5px; }
-  .location-detail-value { font-size: 1.2rem; }
-  .proof-item { font-size: 0.95rem; letter-spacing: 5px; }
-  .nav-links a { font-size: 1rem; }
-}
-
-/* XL desktop — even bigger for ultra-wide */
-@media (min-width: 1600px) {
-  .program-card-title { font-size: 5.5rem; }
-  .program-card-desc { font-size: 1.35rem; max-width: 720px; }
-  .program-card-content { padding: 4rem; }
-  .step-title { font-size: 3.25rem; }
-  .step-desc { font-size: 1.3rem; }
-  .section-subtitle { font-size: 1.55rem; }
-}
 
 @media (max-width: 1024px) {
 
