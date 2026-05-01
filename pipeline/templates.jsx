@@ -1350,7 +1350,7 @@ function CompareSlide({ campaign, photoLeft, photoRight, labelLeft, labelRight, 
 
 // ─────────────────────────────────────────────────────────────
 // 13. CAROUSEL CTA SLIDE — always the last slide in a carousel
-//     ALWAYS has a photo. FOLLOW FOR MORE + Save It. One action.
+//     ALWAYS has a photo. FOLLOW FOR MORE + one CTA action.
 //     Templated — same structure every carousel.
 // ─────────────────────────────────────────────────────────────
 
@@ -1420,16 +1420,8 @@ function CarouselCTA({ campaign, photo, headline, subhead, variant = "a", size =
         {/* Divider */}
         <div style={{ width: "100%", height: 1, background: "rgba(255,255,255,0.15)" }}></div>
 
-        {/* Save It + CTA action row */}
-        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-          <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
-            <span style={{
-              display: "inline-flex", padding: "10px 18px",
-              border: `1.5px solid rgba(255,255,255,0.5)`,
-              fontFamily: "Inter, Helvetica, sans-serif", fontWeight: 700,
-              fontSize: fsSave, letterSpacing: 3, textTransform: "uppercase", color: "#fff"
-            }}>☆ SAVE IT</span>
-          </div>
+        {/* CTA action */}
+        <div style={{ display: "flex", justifyContent: "center", alignItems: "center" }}>
           <div style={{
             display: "inline-flex", padding: "10px 18px",
             background: accentColor,
