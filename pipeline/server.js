@@ -10,10 +10,28 @@ import { spawn } from 'child_process';
 import Anthropic from '@anthropic-ai/sdk';
 import { postToInstagram } from './post_to_instagram.js';
 import { buildPhotoUrl, configureCloudinary } from './photo-library.js';
+import { createClient } from '@supabase/supabase-js';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const PORT = 3001;
 const NODE = process.execPath;
+
+// ── Ship registry ─────────────────────────────────────────────
+const LOS_OUTPUT = '/Users/javierjaimemini/Library/CloudStorage/OneDrive-OnTheLineFitness/L·OS/los-library/04_content_matrix/pipeline/output';
+const SHIPS = {
+  otl: {
+    label: 'CrossFit OTL', handle: '@crossfitotl', color: '#003566', accent: '#3a7ab8',
+    outputDir: resolve(__dirname, 'output'), staticPrefix: 'output',
+  },
+  los: {
+    label: 'Lifestyle OS', handle: '@life_styleos', color: '#0071E3', accent: '#5AC8FA',
+    outputDir: LOS_OUTPUT, staticPrefix: 'los-output',
+  },
+};
+const LOS_SUB_COLORS = {
+  recovery:'#007AFF', metabolic:'#FF9500', physical:'#FF3B30', cognitive:'#AF52DE',
+  time:'#5AC8FA', financial:'#34C759', bonds:'#FF2D55', relational:'#FF2D55', strategic:'#5856D6',
+};
 
 const MIME = {
   '.html': 'text/html', '.css': 'text/css', '.js': 'text/javascript',
@@ -34,6 +52,11 @@ function loadDotenv() {
 const dotenvVars = loadDotenv();
 const anthropic  = new Anthropic({ apiKey: dotenvVars.ANTHROPIC_API_KEY || process.env.ANTHROPIC_API_KEY });
 configureCloudinary(dotenvVars);
+
+// ── Supabase client (atlas project — otl_post_queue) ─────────
+const SUPABASE_URL = dotenvVars.SUPABASE_URL || '';
+const SUPABASE_KEY = dotenvVars.SUPABASE_ANON_KEY || '';
+const supabase = SUPABASE_URL && SUPABASE_KEY ? createClient(SUPABASE_URL, SUPABASE_KEY) : null;
 
 // ── Slide helpers ─────────────────────────────────────────────
 function resolvePhoto(photo) {
@@ -126,8 +149,8 @@ function readMeta(postDir) {
 function writeMeta(postDir, data) {
   writeFileSync(join(postDir, 'meta.json'), JSON.stringify(data, null, 2), 'utf8');
 }
-function postDir(date, slug) {
-  return resolve(__dirname, 'output', date, slug);
+function postDir(date, slug, ship = 'otl') {
+  return resolve((SHIPS[ship] || SHIPS.otl).outputDir, date, slug);
 }
 function esc(s) {
   return String(s)
@@ -138,8 +161,10 @@ function esc(s) {
 // ── Collect posts ─────────────────────────────────────────────
 const STATUS_RANK = { approved: 0, rendered: 1, staged: 2, posted: 3 };
 
-function collectPosts() {
-  const outDir = resolve(__dirname, 'output');
+function collectPosts(ship = 'otl') {
+  const shipCfg = SHIPS[ship] || SHIPS.otl;
+  const outDir = shipCfg.outputDir;
+  const staticPrefix = shipCfg.staticPrefix;
   const posts = [];
   if (!existsSync(outDir)) return posts;
 
@@ -204,6 +229,7 @@ function collectPosts() {
         slideEffects,
         effectiveStatus,
         generatedAt: meta.generated ? new Date(meta.generated).getTime() : 0,
+        ship, staticPrefix,
       });
     }
   }
@@ -228,7 +254,8 @@ function statusBadge(meta) {
 }
 
 // ── Queue HTML ────────────────────────────────────────────────
-function buildQueueHtml(posts) {
+function buildQueueHtml(posts, ship = 'otl') {
+  const shipCfg = SHIPS[ship] || SHIPS.otl;
   const total    = posts.length;
   const posted   = posts.filter(p => p.meta.status === 'posted').length;
   const approved = posts.filter(p => p.meta.status === 'approved').length;
@@ -236,17 +263,35 @@ function buildQueueHtml(posts) {
   const staged   = posts.filter(p => !p.hasRendered).length;
 
   const cards = posts.map(p => {
-    const { date, slug, meta, caption, hasRendered, slideCount, hasPreview, photos, slideTemplates = [], slideOverlayOpacities = [], slideEffects = [] } = p;
+    const { date, slug, meta, caption, hasRendered, slideCount, hasPreview, photos, slideTemplates = [], slideOverlayOpacities = [], slideEffects = [], ship: pShip = 'otl', staticPrefix: pPrefix = 'output' } = p;
+    const isLOS = pShip === 'los';
 
-    const trackBadge = meta.track === 'educational'
-      ? `<span class="badge edu">EDUCATIONAL</span>`
-      : `<span class="badge camp">CAMPAIGN</span>`;
+    // Track / format badge
+    let trackBadge;
+    if (isLOS) {
+      const fmt = meta.format || 'depth';
+      const sub = (meta.subsystem || '').toLowerCase();
+      const subColor = LOS_SUB_COLORS[sub] || '#5AC8FA';
+      const fmtLabels = { short: 'SHORT', depth: 'DEPTH', gap: 'GAP' };
+      trackBadge = `<span class="badge los-fmt" style="background:${subColor}18;color:${subColor};border:1px solid ${subColor}40">${fmtLabels[fmt] || fmt.toUpperCase()}</span><span class="badge los-sub" style="background:${subColor}12;color:${subColor}bb">${sub.toUpperCase()}</span>`;
+    } else {
+      trackBadge = meta.track === 'educational'
+        ? `<span class="badge edu">EDUCATIONAL</span>`
+        : `<span class="badge camp">CAMPAIGN</span>`;
+    }
 
-    const topicLine = meta.topic
-      ? `<div class="topic">${esc(meta.topic.title)}${meta.topic.lens
-          ? ` <em>· ${esc(meta.topic.lens.split('—')[0].trim())}</em>`
-          : ''}</div>`
-      : '';
+    // Topic / hook line
+    let topicLine = '';
+    if (isLOS) {
+      const hookSnippet = (meta.hook || '').slice(0, 110);
+      topicLine = hookSnippet ? `<div class="topic los-hook">${esc(hookSnippet)}${(meta.hook || '').length > 110 ? '...' : ''}</div>` : '';
+    } else {
+      topicLine = meta.topic
+        ? `<div class="topic">${esc(meta.topic.title)}${meta.topic.lens
+            ? ` <em>· ${esc(meta.topic.lens.split('—')[0].trim())}</em>`
+            : ''}</div>`
+        : '';
+    }
 
     const captionHtml = caption
       ? `<p class="cap">${esc(caption.slice(0, 140))}${caption.length > 140 ? '…' : ''}</p>`
@@ -255,14 +300,14 @@ function buildQueueHtml(posts) {
     // Build slide URLs array for inline navigation
     const slideUrls = hasRendered
       ? Array.from({ length: slideCount }, (_, i) =>
-          `/output/${date}/${slug}/slide_${i + 1}.png`)
+          `/${pPrefix}/${date}/${slug}/slide_${i + 1}.png`)
       : [];
     const slideUrlsJson      = JSON.stringify(slideUrls);
     const slideTemplatesJson = JSON.stringify(slideTemplates);
 
     const thumb = hasRendered
       ? `<img class="thumb" id="thumb-${date}-${slug}"
-            src="/output/${date}/${slug}/slide_1.png" loading="lazy">`
+            src="/${pPrefix}/${date}/${slug}/slide_1.png" loading="lazy">`
       : `<div class="thumb no-thumb">PREVIEW ONLY</div>`;
 
     const photoOpts = photos.map(f =>
@@ -282,8 +327,8 @@ function buildQueueHtml(posts) {
     const isApproved = meta.status === 'approved';
 
     return `
-<div class="card ${meta.track === 'educational' ? 'is-edu' : 'is-camp'} ${isPosted ? 'is-posted' : ''}"
-     data-date="${date}" data-slug="${slug}">
+<div class="card ${isLOS ? 'is-los' : meta.track === 'educational' ? 'is-edu' : 'is-camp'} ${isPosted ? 'is-posted' : ''}"
+     data-date="${date}" data-slug="${slug}" data-ship="${pShip}">
 
   <div class="card-img" data-slides='${slideUrlsJson}' data-templates='${slideTemplatesJson}' data-idx="0"
        data-date="${date}" data-slug="${slug}">
@@ -410,18 +455,24 @@ function buildQueueHtml(posts) {
     </div>
 
     <div class="card-actions">
-      ${!isPosted && !isApproved ? `
-        <button class="btn-action" onclick="runJob('render','${date}','${slug}',this)">Render</button>
-        <button class="btn-action" onclick="runJob('regenerate','${date}','${slug}',this)">Regenerate</button>
-        ${hasRendered ? `<button class="btn-action btn-approve" onclick="markStatus('${date}','${slug}','approved',this)">Approve ✓</button>` : ''}
-      ` : ''}
-      ${isApproved ? `
-        <button class="btn-action" onclick="runJob('regenerate','${date}','${slug}',this)">Regenerate</button>
-        <button class="btn-action btn-post-ig" id="igpost-${date}-${slug}"
-          onclick="postToIG('${date}','${slug}',this)">▶ Post to Instagram</button>
-        <button class="btn-action btn-post" onclick="markStatus('${date}','${slug}','posted',this)">Mark Posted</button>
-      ` : ''}
-      ${hasPreview ? `<a class="btn-preview" href="/output/${date}/${slug}/preview.html" target="_blank">Preview →</a>` : ''}
+      ${isLOS ? `
+        ${!isPosted && !isApproved && hasRendered ? `<button class="btn-action btn-approve" onclick="markStatus('${date}','${slug}','approved',this)">Approve ✓</button>` : ''}
+        ${isApproved ? `<button class="btn-action btn-post" onclick="markStatus('${date}','${slug}','posted',this)">Mark Posted</button>` : ''}
+      ` : `
+        ${!isPosted && !isApproved ? `
+          <button class="btn-action" onclick="runJob('render','${date}','${slug}',this)">Render</button>
+          <button class="btn-action" onclick="runJob('regenerate','${date}','${slug}',this)">Regenerate</button>
+          ${hasRendered ? `<button class="btn-action btn-approve" onclick="openQueueModal('${date}','${slug}')">Queue →</button>` : ''}
+        ` : ''}
+        ${isApproved ? `
+          ${meta.scheduledAt ? `<div class="scheduled-label">📅 ${new Date(meta.scheduledAt).toLocaleString('en-US',{month:'short',day:'numeric',hour:'numeric',minute:'2-digit',timeZone:'America/Chicago'})}</div>` : ''}
+          <button class="btn-action" onclick="runJob('regenerate','${date}','${slug}',this)">Regenerate</button>
+          <button class="btn-action btn-post-ig" id="igpost-${date}-${slug}"
+            onclick="postToIG('${date}','${slug}',this)">▶ Post Now</button>
+          <button class="btn-action btn-post" onclick="markStatus('${date}','${slug}','posted',this)">Mark Posted</button>
+        ` : ''}
+      `}
+      ${hasPreview ? `<a class="btn-preview" href="/${pPrefix}/${date}/${slug}/preview.html" target="_blank">Preview →</a>` : ''}
     </div>
 
     <div class="job-status" id="job-${date}-${slug}"></div>
@@ -435,7 +486,7 @@ function buildQueueHtml(posts) {
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>OTL Post Queue</title>
+<title>${shipCfg.label} Post Queue</title>
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
 body{background:#0a0a0a;color:#ddd;font-family:-apple-system,BlinkMacSystemFont,sans-serif;min-height:100vh}
@@ -459,6 +510,13 @@ main{padding:24px 28px;max-width:1400px;margin:0 auto}
 .card:hover{border-color:#2a2a2a}
 .is-edu{border-left:3px solid #003566}
 .is-camp{border-left:3px solid #5a1010}
+.is-los{border-left:3px solid #0071E3}
+.los-hook{font-size:11px;color:#5AC8FA88;line-height:1.4;font-style:italic}
+.ship-selector{display:flex;gap:4px;border:1px solid #252525;border-radius:5px;overflow:hidden;margin-right:8px}
+.ship-btn{padding:5px 12px;font-size:10px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;border:none;background:#161616;color:#555;cursor:pointer;transition:.15s}
+.ship-btn:hover{color:#aaa}
+.ship-btn.active-otl{background:#003566;color:#fff}
+.ship-btn.active-los{background:#0071E3;color:#fff}
 .is-posted{opacity:.55}
 .is-posted .card-img{filter:grayscale(.4)}
 
@@ -581,6 +639,22 @@ main{padding:24px 28px;max-width:1400px;margin:0 auto}
 .btn-action:disabled{opacity:.4;cursor:default}
 .btn-approve{border-color:#1a4a1a;color:#3d883d}
 .btn-approve:hover{background:#0d1a0d;color:#5daa5d}
+.scheduled-label{font-size:10px;color:#3d883d;letter-spacing:.04em;padding:3px 0;width:100%}
+
+/* Queue modal */
+.qmodal-backdrop{display:none;position:fixed;inset:0;background:rgba(0,0,0,.75);z-index:999;align-items:center;justify-content:center}
+.qmodal-backdrop.open{display:flex}
+.qmodal{background:#161616;border:1px solid #2a2a2a;border-radius:10px;padding:28px;width:360px;max-width:95vw}
+.qmodal h3{font-size:13px;font-weight:700;color:#fff;letter-spacing:.06em;text-transform:uppercase;margin-bottom:18px}
+.qmodal label{font-size:10px;color:#666;letter-spacing:.07em;text-transform:uppercase;display:block;margin-bottom:6px}
+.qmodal input[type=datetime-local]{width:100%;background:#0a0a0a;border:1px solid #2a2a2a;color:#ddd;border-radius:5px;padding:8px 10px;font-size:13px;color-scheme:dark}
+.qmodal-actions{display:flex;gap:8px;margin-top:20px}
+.qmodal-submit{flex:1;background:#003566;border:none;color:#fff;font-size:11px;font-weight:700;letter-spacing:.07em;text-transform:uppercase;padding:9px;border-radius:5px;cursor:pointer;transition:.15s}
+.qmodal-submit:hover{background:#0055a0}
+.qmodal-submit:disabled{opacity:.5;cursor:default}
+.qmodal-cancel{background:none;border:1px solid #2a2a2a;color:#555;font-size:11px;letter-spacing:.07em;text-transform:uppercase;padding:9px 14px;border-radius:5px;cursor:pointer;transition:.15s}
+.qmodal-cancel:hover{border-color:#444;color:#aaa}
+.qmodal-status{font-size:11px;color:#3a7ab8;min-height:16px;margin-top:10px;text-align:center}
 .btn-post{border-color:#003566;color:#3a7ab8}
 .btn-post:hover{background:#001428;color:#5599cc}
 .btn-post-ig{background:#003566;border-color:#0055a0;color:#fff;font-weight:700}
@@ -602,7 +676,11 @@ footer{text-align:center;padding:40px;color:#1e1e1e;font-size:10px}
 <body>
 
 <header>
-  <div class="logo"><span>@crossfitotl</span> Post Queue</div>
+  <div class="ship-selector">
+    <button class="ship-btn ${ship === 'otl' ? 'active-otl' : ''}" onclick="location.href='/?ship=otl'">OTL</button>
+    <button class="ship-btn ${ship === 'los' ? 'active-los' : ''}" onclick="location.href='/?ship=los'">LOS</button>
+  </div>
+  <div class="logo"><span>${shipCfg.handle}</span> Post Queue</div>
   <div class="stats">
     <div class="stat"><div class="sn">${total}</div><div class="sl">Total</div></div>
     <div class="stat"><div class="sn" style="color:#777733">${staged}</div><div class="sl">Staged</div></div>
@@ -1295,7 +1373,70 @@ async function postToIG(date, slug, btn) {
     }
   }, 1500);
 }
+
+// ── Queue modal ───────────────────────────────────────────────
+let _qDate = null, _qSlug = null;
+
+function openQueueModal(date, slug) {
+  _qDate = date; _qSlug = slug;
+  // Default to tomorrow 9am CST
+  const now = new Date();
+  now.setDate(now.getDate() + 1);
+  now.setHours(9, 0, 0, 0);
+  // Format for datetime-local input (local time)
+  const pad = n => String(n).padStart(2,'0');
+  const local = \`\${now.getFullYear()}-\${pad(now.getMonth()+1)}-\${pad(now.getDate())}T\${pad(now.getHours())}:\${pad(now.getMinutes())}\`;
+  document.getElementById('qmodal-dt').value = local;
+  document.getElementById('qmodal-status').textContent = '';
+  document.getElementById('qmodal-backdrop').classList.add('open');
+}
+
+function closeQueueModal() {
+  document.getElementById('qmodal-backdrop').classList.remove('open');
+  _qDate = null; _qSlug = null;
+}
+
+async function submitQueueModal() {
+  const dtVal = document.getElementById('qmodal-dt').value;
+  if (!dtVal) return;
+  const scheduledAt = new Date(dtVal).toISOString();
+  const btn = document.getElementById('qmodal-submit');
+  const statusEl = document.getElementById('qmodal-status');
+  btn.disabled = true;
+  statusEl.textContent = 'Uploading slides…';
+  statusEl.style.color = '#3a7ab8';
+  try {
+    const res = await fetch('/api/approve-post', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ date: _qDate, slug: _qSlug, scheduledAt }),
+    });
+    const data = await res.json();
+    if (!data.ok) throw new Error(data.error || 'Failed');
+    statusEl.style.color = '#3d883d';
+    statusEl.textContent = '✓ Queued!';
+    setTimeout(() => { closeQueueModal(); location.reload(); }, 1200);
+  } catch (e) {
+    statusEl.style.color = '#883333';
+    statusEl.textContent = '✗ ' + e.message;
+    btn.disabled = false;
+  }
+}
 </script>
+
+<!-- Queue schedule modal -->
+<div class="qmodal-backdrop" id="qmodal-backdrop" onclick="if(event.target===this)closeQueueModal()">
+  <div class="qmodal">
+    <h3>Schedule Post</h3>
+    <label>Post date &amp; time (your local time)</label>
+    <input type="datetime-local" id="qmodal-dt">
+    <div class="qmodal-status" id="qmodal-status"></div>
+    <div class="qmodal-actions">
+      <button class="qmodal-cancel" onclick="closeQueueModal()">Cancel</button>
+      <button class="qmodal-submit" id="qmodal-submit" onclick="submitQueueModal()">Queue it →</button>
+    </div>
+  </div>
+</div>
 </body>
 </html>`;
 }
@@ -1333,6 +1474,8 @@ const server = http.createServer(async (req, res) => {
   // ── Static files ────────────────────────────────────────────
   if (path.startsWith('/output/'))
     return serveStatic(res, resolve(__dirname, path.slice(1)));
+  if (path.startsWith('/los-output/'))
+    return serveStatic(res, resolve(SHIPS.los.outputDir, path.slice('/los-output/'.length)));
   if (path.startsWith('/assets/'))
     return serveStatic(res, resolve(__dirname, path.slice(1)));
 
@@ -1867,10 +2010,61 @@ Return ONLY the replacement slide as valid JSON. No markdown. No explanation. No
     return jsonResp(res, { jobId });
   }
 
+  // ── Approve & queue post in Supabase ─────────────────────────
+  if (path === '/api/approve-post' && method === 'POST') {
+    const body = await readBody(req);
+    const { date, slug, scheduledAt } = body;
+    if (!date || !slug || !scheduledAt)
+      return jsonResp(res, { error: 'Missing date, slug, or scheduledAt' }, 400);
+    if (!supabase)
+      return jsonResp(res, { error: 'Supabase not configured — add SUPABASE_URL + SUPABASE_ANON_KEY to pipeline/.env' }, 500);
+
+    const dir  = postDir(date, slug);
+    const meta = readMeta(dir);
+
+    // Collect rendered slide paths
+    let slideCount = 0;
+    while (existsSync(join(dir, `slide_${slideCount + 1}.png`))) slideCount++;
+    if (!slideCount) return jsonResp(res, { error: 'No rendered slides — click Render first' }, 400);
+
+    let caption = '';
+    try { caption = readFileSync(join(dir, 'caption.txt'), 'utf8').trim(); } catch {}
+    if (!caption) return jsonResp(res, { error: 'No caption.txt — add a caption first' }, 400);
+
+    // Upload slide PNGs to Cloudinary (otl_ig_queue/ folder)
+    const { v2: cld } = await import('cloudinary');
+    const timestamp = Date.now();
+    const cloudinaryUrls = [];
+    for (let i = 0; i < slideCount; i++) {
+      const slidePath = join(dir, `slide_${i + 1}.png`);
+      const publicId  = `otl_ig_queue/${date}_${slug}_slide_${i + 1}_${timestamp}`;
+      const result = await cld.uploader.upload(slidePath, {
+        public_id: publicId, overwrite: true, resource_type: 'image',
+      });
+      cloudinaryUrls.push(result.secure_url);
+    }
+
+    // Insert into Supabase queue
+    const { data: row, error: dbErr } = await supabase
+      .from('otl_post_queue')
+      .insert({ slug, date, cloudinary_urls: cloudinaryUrls, caption, scheduled_at: scheduledAt })
+      .select('id')
+      .single();
+
+    if (dbErr) return jsonResp(res, { error: `Supabase error: ${dbErr.message}` }, 500);
+
+    // Mark post as approved in local meta
+    writeMeta(dir, { ...meta, status: 'approved', scheduledAt, queueId: row.id, queuedAt: new Date().toISOString() });
+
+    return jsonResp(res, { ok: true, queueId: row.id, scheduledAt, cloudinaryUrls });
+  }
+
   // ── Queue page ───────────────────────────────────────────────
   if (path === '/' || path === '/queue') {
-    const posts = collectPosts();
-    const html  = buildQueueHtml(posts);
+    const ship = url.searchParams.get('ship') || 'otl';
+    const validShip = SHIPS[ship] ? ship : 'otl';
+    const posts = collectPosts(validShip);
+    const html  = buildQueueHtml(posts, validShip);
     res.writeHead(200, { 'Content-Type': 'text/html' });
     res.end(html);
     return;

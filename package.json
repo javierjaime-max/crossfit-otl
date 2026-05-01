@@ -1,0 +1,8 @@
+{
+  "name": "crossfit-otl",
+  "version": "1.0.0",
+  "dependencies": {
+    "@supabase/supabase-js": "^2.105.1",
+    "@vercel/node": "^5.0.0"
+  }
+}

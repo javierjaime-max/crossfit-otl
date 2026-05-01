@@ -1,0 +1,18 @@
+{
+  "name": "crossfit-otl-pipeline",
+  "version": "1.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "node server.js",
+    "generate": "node generate.js",
+    "educate": "node generate.js --track educational --preview",
+    "queue": "node queue.js && open output/queue.html"
+  },
+  "dependencies": {
+    "@anthropic-ai/sdk": "^0.39.0",
+    "@supabase/supabase-js": "^2.105.1",
+    "cloudinary": "^2.10.0",
+    "dotenv": "^16.0.0",
+    "puppeteer": "^22.0.0"
+  }
+}
