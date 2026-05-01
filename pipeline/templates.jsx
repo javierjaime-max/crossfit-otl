@@ -235,12 +235,17 @@ function BoldStatement({ campaign, photo, headline, subhead, variant = "a", size
   const pal = worldPalette(world, overlayOpacity);
 
   const statement = headline || campaign.statement;
-  const charCount = (statement || '').length;
+  // Use the LONGEST single line to determine font size.
+  // Inter Bold 800 uppercase chars average ~65% of em width.
+  // At 4:5 (content width 936px), a 18-char line needs ≤85px to fit.
+  const lines = (statement || '').split('\n');
+  const maxLineChars = Math.max(...lines.map(l => l.length));
   const fsBase = size === "9:16" ? 140 : size === "4:5" ? 124 : 104;
-  const fsAuto = charCount > 60 ? Math.round(fsBase * 0.58)
-               : charCount > 40 ? Math.round(fsBase * 0.72)
-               : charCount > 25 ? Math.round(fsBase * 0.86)
-               : fsBase;
+  const fsAuto = maxLineChars > 20 ? Math.round(fsBase * 0.58)   // ≤72px @ 4:5 — long lines
+               : maxLineChars > 14 ? Math.round(fsBase * 0.68)   // ≤84px @ 4:5 — medium lines
+               : maxLineChars > 9  ? Math.round(fsBase * 0.82)   // ≤102px @ 4:5 — short lines
+               : maxLineChars > 5  ? Math.round(fsBase * 0.92)   // ≤114px @ 4:5 — very short
+               : fsBase;                                           // full size — 1–5 char punches
   const fsHeadline = fsAuto * headlineFontScale;
   const fsSub = (size === "9:16" ? 32 : size === "4:5" ? 28 : 24) * subheadFontScale;
 
@@ -263,7 +268,7 @@ function BoldStatement({ campaign, photo, headline, subhead, variant = "a", size
         <div style={{ marginBottom: 12 }}>
           <OTLLockup variant={pal.lockup} size={size === "9:16" ? 36 : 28} />
         </div>
-        <h1 className="tpl-headline-clean" style={{ fontSize: fsHeadline, maxWidth: "100%", color: pal.headline }}>
+        <h1 className="tpl-headline-clean" style={{ fontSize: fsHeadline, maxWidth: "100%", color: pal.headline, wordBreak: "break-word", overflowWrap: "break-word" }}>
           {statement.split("\n").map((l, i) =>
             <React.Fragment key={i}>{i > 0 && <br />}{l}</React.Fragment>
           )}
