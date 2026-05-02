@@ -262,8 +262,8 @@ function statusBadge(meta) {
   const s = meta.status || 'staged';
   if (s === 'posted')   return `<span class="badge posted">POSTED ✓</span>`;
   if (s === 'approved') return `<span class="badge approved">APPROVED ✓</span>`;
-  if (s === 'rendered') return `<span class="badge rendered">RENDERED</span>`;
-  return `<span class="badge staged">STAGED</span>`;
+  if (s === 'rendered') return `<span class="badge rendered">READY</span>`;
+  return `<span class="badge staged">DRAFT</span>`;
 }
 
 // ── Queue HTML ────────────────────────────────────────────────
@@ -453,19 +453,8 @@ function buildQueueHtml(posts, ship = 'otl') {
         onblur="saveNotes('${date}','${slug}',this.value)">${esc(notes)}</textarea>
     </div>
 
-    <!-- Per-slide photo picker (OTL only) -->
-    <div class="section-toggle ${isLOS ? 'sbar-hidden' : ''}" onclick="toggleSection(this,'photos-${date}-${slug}')">
-      Slide photo +</div>
-    <div class="section photo-grid ${isLOS ? 'sbar-hidden' : ''}" id="photos-${date}-${slug}" style="${isLOS ? 'display:none' : 'display:none'}">
-      <div class="photo-opts" id="photo-opts-${date}-${slug}">${photoOpts.replace(/onclick="setPhoto\(/g, `onclick="setSlidePhoto(`)}</div>
-      <div class="upload-row">
-        <label class="upload-btn">
-          + Add photo
-          <input type="file" accept="image/*" style="display:none"
-            onchange="uploadPhoto('${date}','${slug}',this)">
-        </label>
-      </div>
-    </div>
+    <!-- Per-slide photo picker (OTL only) — opens full-screen modal -->
+    ${!isLOS ? `<button class="pick-photo-btn" onclick="openPhotoPicker('${date}','${slug}')">📷 Change Photo</button>` : ''}
 
     <div class="card-actions">
       ${isLOS ? `
@@ -685,6 +674,44 @@ main{padding:24px 28px;max-width:1400px;margin:0 auto}
 .card-date{font-size:9px;color:#2a2a2a;margin-top:2px}
 
 footer{text-align:center;padding:40px;color:#1e1e1e;font-size:10px}
+
+/* Change Photo button */
+.pick-photo-btn{width:100%;margin-top:4px;background:#111;border:1px dashed #2a2a2a;color:#556;padding:6px 10px;border-radius:4px;font-size:10px;letter-spacing:.07em;text-transform:uppercase;cursor:pointer;transition:.15s;text-align:left}
+.pick-photo-btn:hover{border-color:#003566;color:#3a7ab8;background:#0d1a2e}
+
+/* Photo picker modal */
+.photo-modal{display:none;position:fixed;inset:0;background:rgba(0,0,0,.88);z-index:1000;align-items:flex-start;justify-content:center;padding-top:40px;overflow-y:auto}
+.photo-modal.open{display:flex}
+.photo-modal-inner{background:#161616;border:1px solid #252525;border-radius:12px;width:min(960px,96vw);padding:24px;position:relative;flex-shrink:0}
+.photo-modal-header{display:flex;align-items:center;gap:12px;margin-bottom:16px}
+.photo-modal-header h3{font-size:13px;font-weight:700;color:#fff;letter-spacing:.06em;text-transform:uppercase;flex:1;margin:0}
+.photo-search{flex:1;max-width:300px;background:#0a0a0a;border:1px solid #2a2a2a;border-radius:5px;color:#ddd;font-size:12px;padding:7px 10px;font-family:inherit}
+.photo-search:focus{outline:none;border-color:#003566}
+.photo-modal-close{background:none;border:1px solid #2a2a2a;color:#666;width:28px;height:28px;border-radius:50%;font-size:14px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:.15s;flex-shrink:0}
+.photo-modal-close:hover{border-color:#666;color:#fff}
+.photo-modal-tags{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:14px}
+.photo-tag-btn{padding:3px 9px;background:#111;border:1px solid #252525;color:#555;border-radius:20px;font-size:10px;font-weight:600;letter-spacing:.05em;text-transform:uppercase;cursor:pointer;transition:.15s}
+.photo-tag-btn:hover,.photo-tag-btn.active{background:#003566;border-color:#003566;color:#fff}
+.photo-grid-modal{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:10px;margin-top:4px}
+.photo-grid-modal img{width:100%;aspect-ratio:1;object-fit:cover;border-radius:6px;cursor:pointer;border:3px solid transparent;transition:.15s;display:block}
+.photo-grid-modal img:hover{border-color:#555;transform:scale(1.02)}
+.photo-grid-modal img.selected{border-color:#e63946}
+.photo-modal-footer{display:flex;align-items:center;gap:12px;margin-top:16px;padding-top:14px;border-top:1px solid #1e1e1e}
+.photo-load-more{background:#161616;border:1px solid #252525;color:#666;padding:7px 16px;border-radius:4px;font-size:10px;text-transform:uppercase;letter-spacing:.07em;cursor:pointer;transition:.15s}
+.photo-load-more:hover{background:#222;color:#aaa;border-color:#444}
+.photo-modal-status{font-size:11px;color:#555;flex:1}
+.photo-upload-label{background:none;border:1px dashed #333;color:#556;padding:7px 14px;border-radius:4px;font-size:10px;letter-spacing:.07em;text-transform:uppercase;cursor:pointer;transition:.15s;white-space:nowrap}
+.photo-upload-label:hover{border-color:#003566;color:#3a7ab8}
+
+/* Upload tag picker */
+.upload-tags{display:flex;flex-direction:column;gap:10px;margin-top:14px;padding-top:14px;border-top:1px solid #1e1e1e}
+.upload-tag-group label:first-child{font-size:9px;font-weight:700;color:#555;letter-spacing:.09em;text-transform:uppercase;display:block;margin-bottom:6px}
+.upload-tag-chips{display:flex;flex-wrap:wrap;gap:5px}
+.upload-tag-chips label{display:flex;align-items:center;gap:4px;font-size:10px;color:#777;cursor:pointer;padding:3px 8px;border:1px solid #252525;border-radius:14px;transition:.15s}
+.upload-tag-chips label:hover{border-color:#444;color:#ccc}
+.upload-tag-chips input[type=checkbox]{accent-color:#003566;cursor:pointer}
+.upload-tag-chips input[type=checkbox]:checked + span{color:#fff}
+.upload-quality-select{background:#0d0d0d;border:1px solid #252525;border-radius:4px;color:#ccc;font-size:11px;padding:5px 8px;width:auto}
 </style>
 </head>
 <body>
@@ -698,8 +725,8 @@ footer{text-align:center;padding:40px;color:#1e1e1e;font-size:10px}
   <div class="logo"><span>${shipCfg.handle}</span> Post Queue</div>
   <div class="stats">
     <div class="stat"><div class="sn">${total}</div><div class="sl">Total</div></div>
-    <div class="stat"><div class="sn" style="color:#777733">${staged}</div><div class="sl">Staged</div></div>
-    <div class="stat"><div class="sn" style="color:#3d883d">${rendered}</div><div class="sl">Rendered</div></div>
+    <div class="stat"><div class="sn" style="color:#777733">${staged}</div><div class="sl">Draft</div></div>
+    <div class="stat"><div class="sn" style="color:#3d883d">${rendered}</div><div class="sl">Ready</div></div>
     <div class="stat"><div class="sn" style="color:#5599bb">${approved}</div><div class="sl">Approved</div></div>
     <div class="stat"><div class="sn" style="color:#2277aa">${posted}</div><div class="sl">Posted</div></div>
   </div>
@@ -713,8 +740,8 @@ footer{text-align:center;padding:40px;color:#1e1e1e;font-size:10px}
       <button class="fb" onclick="filter('edu',this)">Educational</button>
       <button class="fb" onclick="filter('camp',this)">Campaign</button>
     `}
-    <button class="fb" onclick="filter('staged',this)">Staged</button>
-    <button class="fb" onclick="filter('rendered',this)">Rendered</button>
+    <button class="fb" title="Generated but not yet rendered to images" onclick="filter('staged',this)">Draft</button>
+    <button class="fb" title="Images rendered — ready to review &amp; approve" onclick="filter('rendered',this)">Ready</button>
     <button class="fb" onclick="filter('approved',this)">Approved</button>
     <button class="fb" onclick="filter('posted',this)">Posted</button>
     ${ship === 'otl' ? `
@@ -1399,6 +1426,174 @@ async function postToIG(date, slug, btn) {
   }, 1500);
 }
 
+// ── Photo picker modal ────────────────────────────────────────
+let _pickerDate = null, _pickerSlug = null;
+let _pickerTag  = '';
+let _pickerOffset = 0;
+let _pickerTotal  = 0;
+let _searchTimer  = null;
+let _pendingUploadFile = null;
+
+function openPhotoPicker(date, slug) {
+  _pickerDate   = date;
+  _pickerSlug   = slug;
+  _pickerTag    = '';
+  _pickerOffset = 0;
+  _pickerTotal  = 0;
+  document.getElementById('photo-modal').classList.add('open');
+  document.getElementById('photo-search').value = '';
+  document.getElementById('modal-upload-tags').style.display = 'none';
+  _pendingUploadFile = null;
+  // Reset tag filter buttons
+  document.querySelectorAll('.photo-tag-btn').forEach(b => b.classList.remove('active'));
+  document.querySelector('.photo-tag-btn[data-tag=""]').classList.add('active');
+  loadPhotos(true);
+}
+
+function closePhotoPicker() {
+  document.getElementById('photo-modal').classList.remove('open');
+  _pickerDate = null; _pickerSlug = null;
+}
+
+function setPhotoTag(btn) {
+  document.querySelectorAll('.photo-tag-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  _pickerTag = btn.dataset.tag;
+  _pickerOffset = 0;
+  loadPhotos(true);
+}
+
+function debounceLoadPhotos() {
+  clearTimeout(_searchTimer);
+  _searchTimer = setTimeout(() => { _pickerOffset = 0; loadPhotos(true); }, 400);
+}
+
+async function loadPhotos(reset = false) {
+  if (reset) _pickerOffset = 0;
+  const grid   = document.getElementById('photo-grid-modal');
+  const status = document.getElementById('photo-modal-status');
+  const moreBtn = document.getElementById('photo-load-more');
+  const q = document.getElementById('photo-search').value.trim() || _pickerTag;
+
+  if (reset) {
+    grid.innerHTML = '<div style="color:#333;font-size:12px;padding:20px 0">Loading…</div>';
+    moreBtn.style.display = 'none';
+  }
+
+  status.textContent = 'Loading…';
+  try {
+    const res  = await fetch(\`/api/photos?q=\${encodeURIComponent(q)}&limit=60&skip=\${_pickerOffset}\`);
+    const data = await res.json();
+    _pickerTotal = data.total || 0;
+
+    if (reset) grid.innerHTML = '';
+    if (!data.photos?.length && _pickerOffset === 0) {
+      grid.innerHTML = '<div style="color:#333;font-size:12px;padding:20px 0">No photos found — try a different tag or upload a new one.</div>';
+      status.textContent = '0 photos';
+      moreBtn.style.display = 'none';
+      return;
+    }
+
+    data.photos.forEach(p => {
+      const img = document.createElement('img');
+      img.src   = p.thumb;
+      img.title = (p.tags || []).join(', ') || p.publicId;
+      img.loading = 'lazy';
+      img.onclick = () => pickPhoto(p.raw, img);
+      grid.appendChild(img);
+    });
+
+    _pickerOffset += data.photos.length;
+    const showing = _pickerOffset;
+    status.textContent = \`Showing \${showing} of \${_pickerTotal}\`;
+    moreBtn.style.display = _pickerOffset < _pickerTotal ? '' : 'none';
+  } catch (e) {
+    status.textContent = '✗ ' + e.message;
+  }
+}
+
+function loadMorePhotos() { loadPhotos(false); }
+
+async function pickPhoto(rawUrl, imgEl) {
+  if (!_pickerDate || !_pickerSlug) return;
+  // Mark selected
+  document.querySelectorAll('#photo-grid-modal img').forEach(i => i.classList.remove('selected'));
+  imgEl.classList.add('selected');
+  // Apply to current slide
+  await setSlidePhoto(_pickerDate, _pickerSlug, rawUrl, null);
+  document.getElementById('photo-modal-status').textContent = '✓ Photo set for slide ' + (getSlideIdx(_pickerDate, _pickerSlug) + 1);
+  // Close after brief confirmation
+  setTimeout(closePhotoPicker, 600);
+}
+
+// Upload from modal
+function uploadPhotoModal(input) {
+  const file = input.files[0];
+  if (!file) return;
+  _pendingUploadFile = file;
+  document.getElementById('modal-upload-tags').style.display = '';
+  document.getElementById('modal-upload-submit').textContent = 'Upload ' + file.name;
+  input.value = '';
+}
+
+function cancelUploadModal() {
+  _pendingUploadFile = null;
+  document.getElementById('modal-upload-tags').style.display = 'none';
+}
+
+async function submitUploadModal() {
+  if (!_pendingUploadFile) return;
+  const file = _pendingUploadFile;
+  const btn  = document.getElementById('modal-upload-submit');
+  const status = document.getElementById('photo-modal-status');
+
+  const quality = document.getElementById('modal-upload-quality').value;
+  const checks  = [...document.querySelectorAll('#modal-upload-tags .upload-tag-chips input:checked')].map(i => i.value);
+  const tags    = [quality, ...checks];
+
+  btn.textContent = 'Uploading…';
+  btn.disabled = true;
+  status.textContent = 'Uploading to Cloudinary…';
+
+  const reader = new FileReader();
+  reader.onload = async (e) => {
+    const base64 = e.target.result.split(',')[1];
+    try {
+      const res  = await fetch('/api/upload', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ filename: file.name, data: base64, tags }),
+      });
+      const json = await res.json();
+      btn.textContent = 'Upload →';
+      btn.disabled = false;
+      if (!json.ok) { status.textContent = '✗ Upload failed: ' + json.error; return; }
+
+      const photoUrl = json.cloudinaryUrl || json.path;
+      status.textContent = json.cloudinaryUrl ? '✓ Uploaded — effects available' : '✓ Uploaded (local only)';
+      document.getElementById('modal-upload-tags').style.display = 'none';
+      _pendingUploadFile = null;
+
+      // Add to grid and auto-select
+      const thumb = json.cloudinaryUrl
+        ? json.cloudinaryUrl.replace('/upload/', '/upload/c_fill,w_200,h_200/')
+        : '/assets/photos/' + json.filename;
+      const grid = document.getElementById('photo-grid-modal');
+      const img  = document.createElement('img');
+      img.src    = thumb;
+      img.title  = json.filename + ' ✓ Cloudinary';
+      img.onclick = () => pickPhoto(photoUrl, img);
+      grid.prepend(img);
+      pickPhoto(photoUrl, img);
+    } catch (err) {
+      btn.textContent = 'Upload →';
+      btn.disabled = false;
+      status.textContent = '✗ ' + err.message;
+    }
+  };
+  reader.readAsDataURL(file);
+}
+
 // ── Queue modal ───────────────────────────────────────────────
 let _qDate = null, _qSlug = null;
 
@@ -1462,6 +1657,80 @@ async function submitQueueModal() {
     </div>
   </div>
 </div>
+
+<!-- Photo picker modal (single shared instance) -->
+<div class="photo-modal" id="photo-modal" onclick="if(event.target===this)closePhotoPicker()">
+  <div class="photo-modal-inner">
+    <div class="photo-modal-header">
+      <h3>📷 Choose Photo</h3>
+      <input class="photo-search" id="photo-search" type="text"
+        placeholder="Search by tag (barbell, group, coach…)"
+        oninput="debounceLoadPhotos()">
+      <button class="photo-modal-close" onclick="closePhotoPicker()">✕</button>
+    </div>
+    <div class="photo-modal-tags" id="photo-tag-filters">
+      <button class="photo-tag-btn active" data-tag="" onclick="setPhotoTag(this)">All</button>
+      <button class="photo-tag-btn" data-tag="intensity" onclick="setPhotoTag(this)">Intensity</button>
+      <button class="photo-tag-btn" data-tag="group" onclick="setPhotoTag(this)">Group</button>
+      <button class="photo-tag-btn" data-tag="community" onclick="setPhotoTag(this)">Community</button>
+      <button class="photo-tag-btn" data-tag="coach" onclick="setPhotoTag(this)">Coach</button>
+      <button class="photo-tag-btn" data-tag="barbell" onclick="setPhotoTag(this)">Barbell</button>
+      <button class="photo-tag-btn" data-tag="pull-ups" onclick="setPhotoTag(this)">Pull-ups</button>
+      <button class="photo-tag-btn" data-tag="kettlebell" onclick="setPhotoTag(this)">Kettlebell</button>
+      <button class="photo-tag-btn" data-tag="rowing" onclick="setPhotoTag(this)">Rowing</button>
+      <button class="photo-tag-btn" data-tag="running" onclick="setPhotoTag(this)">Running</button>
+      <button class="photo-tag-btn" data-tag="murph" onclick="setPhotoTag(this)">Murph</button>
+      <button class="photo-tag-btn" data-tag="kids-class" onclick="setPhotoTag(this)">Kids</button>
+    </div>
+    <div class="photo-grid-modal" id="photo-grid-modal">
+      <div style="color:#333;font-size:12px;padding:20px 0">Loading photos…</div>
+    </div>
+    <div class="photo-modal-footer">
+      <button class="photo-load-more" id="photo-load-more" onclick="loadMorePhotos()" style="display:none">Load more</button>
+      <div class="photo-modal-status" id="photo-modal-status"></div>
+      <label class="photo-upload-label">
+        + Upload photo
+        <input type="file" accept="image/*" style="display:none" onchange="uploadPhotoModal(this)">
+      </label>
+    </div>
+    <!-- Upload tag picker — shown after file is selected -->
+    <div class="upload-tags" id="modal-upload-tags" style="display:none">
+      <div class="upload-tag-group">
+        <label>Quality</label>
+        <select class="upload-quality-select" id="modal-upload-quality">
+          <option value="quality:3">3 — OK</option>
+          <option value="quality:4" selected>4 — Good</option>
+          <option value="quality:5">5 — Hero shot</option>
+        </select>
+      </div>
+      <div class="upload-tag-group">
+        <label>Theme</label>
+        <div class="upload-tag-chips">
+          <label><input type="checkbox" value="group"><span> Group</span></label>
+          <label><input type="checkbox" value="community"><span> Community</span></label>
+          <label><input type="checkbox" value="coach"><span> Coach</span></label>
+          <label><input type="checkbox" value="intensity"><span> Intensity</span></label>
+          <label><input type="checkbox" value="kids-class"><span> Kids</span></label>
+          <label><input type="checkbox" value="murph"><span> Murph</span></label>
+        </div>
+      </div>
+      <div class="upload-tag-group">
+        <label>Movement</label>
+        <div class="upload-tag-chips">
+          <label><input type="checkbox" value="barbell"><span> Barbell</span></label>
+          <label><input type="checkbox" value="pull-ups"><span> Pull-ups</span></label>
+          <label><input type="checkbox" value="kettlebell"><span> Kettlebell</span></label>
+          <label><input type="checkbox" value="rowing"><span> Rowing</span></label>
+          <label><input type="checkbox" value="running"><span> Running</span></label>
+        </div>
+      </div>
+      <div style="display:flex;gap:8px;margin-top:6px">
+        <button class="photo-load-more" id="modal-upload-submit" onclick="submitUploadModal()">Upload →</button>
+        <button class="photo-load-more" onclick="cancelUploadModal()">Cancel</button>
+      </div>
+    </div>
+  </div>
+</div>
 </body>
 </html>`;
 }
@@ -1512,6 +1781,41 @@ const server = http.createServer(async (req, res) => {
     return jsonResp(res, job);
   }
 
+  // ── Cloudinary photo library browser ────────────────────────
+  if (path.startsWith('/api/photos') && method === 'GET') {
+    try {
+      const { v2: cld } = await import('cloudinary');
+      const q      = url.searchParams.get('q')     || '';
+      const limit  = Math.min(parseInt(url.searchParams.get('limit') || '60', 10), 100);
+      const skip   = parseInt(url.searchParams.get('skip') || '0', 10);
+
+      const expression = q
+        ? `folder:crossfit-otl/library AND tags:${q}`
+        : 'folder:crossfit-otl/library';
+
+      const result = await cld.search
+        .expression(expression)
+        .sort_by('uploaded_at', 'desc')
+        .max_results(limit)
+        .with_field('tags')
+        .execute();
+
+      const resources = result.resources || [];
+      return jsonResp(res, {
+        photos: resources.map(r => ({
+          raw:      r.secure_url,
+          publicId: r.public_id,
+          tags:     r.tags || [],
+          thumb:    r.secure_url.replace('/upload/', '/upload/c_fill,w_220,h_220/'),
+        })),
+        total:   result.total_count || resources.length,
+        showing: resources.length,
+      });
+    } catch (e) {
+      return jsonResp(res, { error: e.message, photos: [], total: 0 }, 500);
+    }
+  }
+
   // ── Actions ──────────────────────────────────────────────────
   if (path === '/api/action' && method === 'POST') {
     const body = await readBody(req);
@@ -1542,7 +1846,7 @@ const server = http.createServer(async (req, res) => {
     }
 
     if (action === 'photo') {
-      writeMeta(dir, { ...meta, photoOverride: photo || null });
+      writeMeta(dir, { ...meta, photoOverride: photo || null, photoRaw: photo || null });
       rebuildPreview(dir);
       return jsonResp(res, { ok: true });
     }
@@ -1600,8 +1904,11 @@ const server = http.createServer(async (req, res) => {
       const updated = { ...existing };
       if (photo === null) {
         delete updated.photo;
+        delete updated.photoRaw;
       } else if (photo !== undefined) {
         updated.photo = photo; // '' = text-only, string = path
+        if (photo) updated.photoRaw = photo; // save raw URL so effects can chain correctly
+        else delete updated.photoRaw;
       }
       if (template === null) {
         delete updated.template;
@@ -1886,7 +2193,7 @@ Return ONLY the replacement slide as valid JSON. No markdown. No explanation. No
           {
             folder: 'crossfit-otl/library',
             public_id: safe.replace(/\.[^.]+$/, ''),
-            tags: ['uploaded', 'quality:3', ...tags],
+            tags: ['uploaded', ...(tags.length ? tags : ['quality:3'])],
             overwrite: false,
           },
           (err, result) => err ? reject(err) : resolve(result)
@@ -1953,16 +2260,22 @@ Return ONLY the replacement slide as valid JSON. No markdown. No explanation. No
     const slide = base?.[slideIdx];
     if (!slide) return jsonResp(res, { error: 'Slide not found' }, 400);
 
-    const rawUrl = slide.photoRaw || slide.photo;
+    // Resolve the current photo: prefer the raw URL saved when user last picked a photo
+    // via the picker (stored in slideOverrides[i].photoRaw), then fall back to base slide data.
+    const overrides = meta.slideOverrides || {};
+    const key = String(slideIdx);
+    const slotOverrides = overrides[key] || {};
+    const rawUrl = slotOverrides.photoRaw   // saved when user picked a new photo
+                || slotOverrides.photo      // fallback: the current override photo
+                || slide.photoRaw           // original raw URL from generation
+                || slide.photo;             // last resort
     const slot   = slide.photoSlot || (
       (slide.template === 'HookSlide' || slide.template === 'CarouselCTA') ? 'hook' : 'value'
     );
     const newPhotoUrl = buildPhotoUrl(rawUrl, slot, effect);
 
-    // Save effect + new photo url as slide override
-    const overrides = meta.slideOverrides || {};
-    const key = String(slideIdx);
-    overrides[key] = { ...(overrides[key] || {}), photo: newPhotoUrl, photoEffect: effect };
+    // Save effect + new photo url as slide override (preserve photoRaw so future effect changes still work)
+    overrides[key] = { ...slotOverrides, photo: newPhotoUrl, photoEffect: effect };
     writeMeta(dir, { ...meta, slideOverrides: overrides });
     rebuildPreview(dir);
     return jsonResp(res, { ok: true, photo: newPhotoUrl, effect });
