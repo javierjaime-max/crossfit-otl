@@ -3,7 +3,7 @@
 // Reads brain from disk, calls Claude, renders with Puppeteer.
 // Usage: node generate.js --campaign crossfit-is-the-cure --slug citc_apr28 --date 2026-04-28
 
-import { readFileSync, writeFileSync, mkdirSync, existsSync } from 'fs';
+import { readFileSync, writeFileSync, mkdirSync, existsSync, readdirSync } from 'fs';
 import { resolve, dirname } from 'path';
 import { fileURLToPath } from 'url';
 import dotenv from 'dotenv';
@@ -27,6 +27,57 @@ const getEnv  = k => envVars[k] || process.env[k];
 configureCloudinary(envVars);
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
+
+// ── Accent color system ───────────────────────────────────────
+// 6 rotating slots — visual variety across posts.
+// OTL brand anchors: Navy #003566, Mid Blue #004a8f, Light Blue #7eb8ff.
+// Broader palette intentional — posts can use any color, but brand anchors must be known.
+const ACCENT_SLOTS = [
+  { accent: "#7eb8ff", bg: "#0a0a0a",  label: "OTL Blue"   },  // 0 — default
+  { accent: "#003566", bg: "#0d1a2e",  label: "Navy Night"  },  // 1
+  { accent: "#F5C518", bg: "#0a0a0a",  label: "Gold"        },  // 2
+  { accent: "#10B981", bg: "#061a0f",  label: "Emerald"     },  // 3
+  { accent: "#ffffff", bg: "#0a0a0a",  label: "White"       },  // 4
+  { accent: "#E8C49A", bg: "#1a1008",  label: "Sand"        },  // 5
+];
+
+// Pick the least-recently-used accent slot by scanning recent output dirs.
+function pickAccentSlot() {
+  const outputDir = resolve(__dirname, 'output');
+  if (!existsSync(outputDir)) return 0;
+  // Collect accentSlot from all recent meta.json files (last 30 posts)
+  const slotCounts = new Array(ACCENT_SLOTS.length).fill(0);
+  const lastUsed   = new Array(ACCENT_SLOTS.length).fill(0); // timestamp
+  try {
+    const dateDirs = readdirSync(outputDir).sort().reverse().slice(0, 14); // last 2 weeks
+    for (const dd of dateDirs) {
+      const slugDirs = readdirSync(resolve(outputDir, dd)).catch?.(() => []) || [];
+      const sdArr = typeof slugDirs === 'object' && !Array.isArray(slugDirs) ? [] : (Array.isArray(slugDirs) ? slugDirs : []);
+      let sdList;
+      try { sdList = readdirSync(resolve(outputDir, dd)); } catch { continue; }
+      for (const sd of sdList) {
+        const mp = resolve(outputDir, dd, sd, 'meta.json');
+        if (!existsSync(mp)) continue;
+        try {
+          const m = JSON.parse(readFileSync(mp, 'utf8'));
+          if (m.accentSlot != null && m.accentSlot >= 0 && m.accentSlot < ACCENT_SLOTS.length) {
+            slotCounts[m.accentSlot]++;
+            const t = m.generated ? new Date(m.generated).getTime() : 0;
+            if (t > lastUsed[m.accentSlot]) lastUsed[m.accentSlot] = t;
+          }
+        } catch {}
+      }
+    }
+  } catch {}
+  // Pick slot used least; break ties by picking the one used least recently
+  let minCount = Infinity, pick = 0;
+  for (let i = 0; i < ACCENT_SLOTS.length; i++) {
+    if (slotCounts[i] < minCount || (slotCounts[i] === minCount && lastUsed[i] < lastUsed[pick])) {
+      minCount = slotCounts[i]; pick = i;
+    }
+  }
+  return pick;
+}
 
 // ── CLI args ──────────────────────────────────────────────────
 const args = process.argv.slice(2);
@@ -234,7 +285,7 @@ CAROUSEL ASOP — FOLLOW THESE RULES:
 
    LAYOUT OPTIONS:
    - "headline": big centered statement. Fields: headline (use \\n for second line in accent), nugget (save-worthy one-liner ≤10 words)
-   - "stat": massive number dominates frame. Fields: stat (the number — "85%", "3X", "21 DAYS"), statLabel (small label above — "OF MEMBERS", "FASTER RECOVERY"), body (2-3 sentences)
+   - "stat": massive number dominates frame. Fields: stat (the number — "85%", "3X", "21 DAYS"), statLabel (small label above — "OF MEMBERS", "FASTER RECOVERY"), body (MAX 2 SHORT sentences — 20 words total max. The number does the heavy lifting.)
    - "list": numbered breakdown. Fields: headline (list title ALL CAPS), listItems [{text: "ITEM NAME", body: "one sentence"}] (2–4 items)
    - "quote": italic pull quote. Fields: quote (full quote text), attribution (name/source)
 
@@ -639,6 +690,16 @@ async function main() {
     }
   }
 
+  // Assign accent slot — round-robin, least-recently-used
+  const accentSlot = pickAccentSlot();
+  const accentColor = ACCENT_SLOTS[accentSlot].accent;
+  process.stdout.write(`  Accent: slot ${accentSlot} (${ACCENT_SLOTS[accentSlot].label} ${accentColor})\n`);
+
+  // Stamp accent onto every slide so templates pick it up
+  for (const slide of post.slides) {
+    if (!slide.accent) slide.accent = accentColor;
+  }
+
   // Save slides.json for later rerender/photo-swap use
   writeFileSync(resolve(postDir, 'slides.json'), JSON.stringify(post.slides, null, 2), 'utf8');
   writeFileSync(resolve(postDir, 'caption.txt'), post.caption, 'utf8');
@@ -656,6 +717,8 @@ async function main() {
     topic: topic ? { id: topic.id, title: topic.title, lens: post.lens } : null,
     format: single ? 'single' : 'carousel',
     status: existingMeta.status || 'staged',
+    accentSlot,
+    accentColor,
     generated: new Date().toISOString(),
   }, null, 2), 'utf8');
 

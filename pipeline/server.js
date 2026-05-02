@@ -91,6 +91,7 @@ function buildResolvedSlides(postDir) {
   const meta = readMeta(postDir);
   const overrides = meta.slideOverrides || {};
   const globalPhoto = meta.photoOverride ? resolvePhoto(meta.photoOverride) : null;
+  const globalAccent = meta.accentColor || null;
 
   return base.map((slide, i) => {
     const ov = overrides[String(i)] || {};
@@ -103,6 +104,9 @@ function buildResolvedSlides(postDir) {
     } else {
       merged.photo = resolvePhoto(merged.photo);
     }
+    // Global accent (from meta.json) always wins over per-slide baked value
+    // This lets the panel's accent swatch switcher apply on re-render
+    if (globalAccent) merged.accent = globalAccent;
     return merged;
   });
 }
@@ -203,10 +207,11 @@ function collectPosts(ship = 'otl') {
       let slideCount = 0;
       while (existsSync(join(pp, `slide_${slideCount + 1}.png`))) slideCount++;
 
-      // Slide templates + overlay opacities + effects for per-slide controls
+      // Slide templates + overlay opacities + effects + texts for per-slide controls
       let slideTemplates = [];
       let slideOverlayOpacities = [];
       let slideEffects = [];
+      let slideTexts = [];  // [{headline, subhead}, ...]
       try {
         const base = JSON.parse(readFileSync(join(pp, 'slides.json'), 'utf8'));
         const ov = (readMeta(pp).slideOverrides) || {};
@@ -216,6 +221,10 @@ function collectPosts(ship = 'otl') {
           return ovVal != null ? ovVal : null;
         });
         slideEffects = base.map((s, i) => ov[String(i)]?.photoEffect || s.photoEffect || 'none');
+        slideTexts   = base.map((s, i) => ({
+          headline: ov[String(i)]?.headline ?? s.headline ?? '',
+          subhead:  ov[String(i)]?.subhead  ?? s.subhead  ?? s.body ?? '',
+        }));
       } catch {}
 
       // Available photos for picker
@@ -240,6 +249,7 @@ function collectPosts(ship = 'otl') {
         slideTemplates,
         slideOverlayOpacities,
         slideEffects,
+        slideTexts,
         effectiveStatus,
         generatedAt: meta.generated ? new Date(meta.generated).getTime() : 0,
         ship, staticPrefix,
@@ -266,17 +276,28 @@ function statusBadge(meta) {
   return `<span class="badge staged">DRAFT</span>`;
 }
 
+// ── Accent slots (mirrored from generate.js / templates.jsx) ──
+const ACCENT_SLOTS_SERVER = [
+  { accent: '#7eb8ff', bg: '#0a0a0a', label: 'OTL Blue'   },
+  { accent: '#003566', bg: '#0d1a2e', label: 'Navy Night'  },
+  { accent: '#F5C518', bg: '#0a0a0a', label: 'Gold'        },
+  { accent: '#10B981', bg: '#061a0f', label: 'Emerald'     },
+  { accent: '#ffffff', bg: '#0a0a0a', label: 'White'       },
+  { accent: '#E8C49A', bg: '#1a1008', label: 'Sand'        },
+];
+
 // ── Queue HTML ────────────────────────────────────────────────
 function buildQueueHtml(posts, ship = 'otl') {
-  const shipCfg = SHIPS[ship] || SHIPS.otl;
+  const shipCfg  = SHIPS[ship] || SHIPS.otl;
   const total    = posts.length;
   const posted   = posts.filter(p => p.meta.status === 'posted').length;
   const approved = posts.filter(p => p.meta.status === 'approved').length;
   const rendered = posts.filter(p => p.hasRendered && !['posted','approved'].includes(p.meta.status)).length;
   const staged   = posts.filter(p => !p.hasRendered).length;
+  const accentSlotsJson = JSON.stringify(ACCENT_SLOTS_SERVER);
 
   const cards = posts.map(p => {
-    const { date, slug, meta, caption, hasRendered, slideCount, hasPreview, photos, slideTemplates = [], slideOverlayOpacities = [], slideEffects = [], ship: pShip = 'otl', staticPrefix: pPrefix = 'output' } = p;
+    const { date, slug, meta, caption, hasRendered, slideCount, hasPreview, photos, slideTemplates = [], slideOverlayOpacities = [], slideEffects = [], slideTexts = [], ship: pShip = 'otl', staticPrefix: pPrefix = 'output' } = p;
     const isLOS = pShip === 'los';
 
     // Track / format badge
@@ -341,10 +362,14 @@ function buildQueueHtml(posts, ship = 'otl') {
 
     return `
 <div class="card ${isLOS ? 'is-los' : meta.track === 'educational' ? 'is-edu' : 'is-camp'} ${isPosted ? 'is-posted' : ''}"
-     data-date="${date}" data-slug="${slug}" data-ship="${pShip}">
+     data-date="${date}" data-slug="${slug}" data-ship="${pShip}"
+     data-slides='${slideUrlsJson}' data-templates='${slideTemplatesJson}'
+     data-effects='${JSON.stringify(slideEffects)}'
+     data-opacities='${JSON.stringify(slideOverlayOpacities)}'
+     data-texts='${JSON.stringify(slideTexts).replace(/'/g, "&#39;")}'
+     data-accentslot="${meta.accentSlot ?? 0}">
 
-  <div class="card-img" data-slides='${slideUrlsJson}' data-templates='${slideTemplatesJson}' data-idx="0"
-       data-date="${date}" data-slug="${slug}">
+  <div class="card-img" data-idx="0" data-date="${date}" data-slug="${slug}">
     ${thumb}
     ${hasRendered && slideCount > 1 ? `
       <button class="nav-btn nav-prev" onclick="slideNav(this.closest('.card-img'),-1)">&#8249;</button>
@@ -354,121 +379,20 @@ function buildQueueHtml(posts, ship = 'otl') {
     ${!isPosted ? `<button class="cancel-btn" onclick="cancelPost('${date}','${slug}',this)" title="Remove">✕</button>` : ''}
   </div>
 
-  <!-- Per-slide toolbar — OTL only, hidden for LOS -->
-  <div class="slide-bar ${isLOS ? 'sbar-hidden' : ''}" id="sbar-${date}-${slug}"
-       data-ovl-opacities='${JSON.stringify(slideOverlayOpacities)}'
-       data-effects='${JSON.stringify(slideEffects)}'>
-    <span class="sbar-num">Slide 1</span>
-    <span class="sbar-tmpl">${slideTemplates[0] || ''}</span>
-    <div class="sbar-actions">
-      <button class="sbar-btn" onclick="slideAction('text-only','${date}','${slug}')">Text only</button>
-      <button class="sbar-btn" onclick="slideAction('restore-photo','${date}','${slug}')">Restore photo</button>
-      <button class="sbar-btn sbar-edit" id="edit-${date}-${slug}"
-        onclick="toggleSlideEdit('${date}','${slug}',this)">✎ Edit text</button>
-      <button class="sbar-btn sbar-gen" id="genimg-${date}-${slug}"
-        onclick="generateImage('${date}','${slug}',this)">✦ Generate image</button>
-    </div>
-    <div class="sbar-overlay-row">
-      <span class="sbar-font-label">World</span>
-      <button class="sbar-btn sbar-ovl" id="ovl-${date}-${slug}" data-ovl="dark"
-        onclick="toggleWorld('${date}','${slug}',this)">Dark</button>
-      <span class="sbar-font-label" style="margin-left:8px">Line 2</span>
-      <button class="sbar-btn sbar-sub-style" id="substyle-${date}-${slug}" data-style="stroke"
-        onclick="cycleSubheadStyle('${date}','${slug}',this)">Stroke</button>
-    </div>
-    <div class="sbar-ovl-slider-row">
-      <span class="sbar-font-label">Overlay</span>
-      <input type="range" class="sbar-ovl-slider" id="ovlslider-${date}-${slug}"
-        min="0" max="100" value="${Math.round((slideOverlayOpacities[0] ?? 0.62) * 100)}" step="1"
-        oninput="previewOverlay('${date}','${slug}',this)"
-        onchange="saveOverlay('${date}','${slug}',this)">
-      <span class="sbar-ovl-val" id="ovlval-${date}-${slug}">${Math.round((slideOverlayOpacities[0] ?? 0.62) * 100)}%</span>
-    </div>
-    <div class="sbar-font-row">
-      <span class="sbar-font-label">H</span>
-      <button class="sbar-font-btn" onclick="adjustFont('${date}','${slug}','headlineFontScale',-0.1)">−</button>
-      <button class="sbar-font-btn" onclick="adjustFont('${date}','${slug}','headlineFontScale',0.1)">+</button>
-      <span class="sbar-font-label" style="margin-left:8px">B</span>
-      <button class="sbar-font-btn" onclick="adjustFont('${date}','${slug}','subheadFontScale',-0.1)">−</button>
-      <button class="sbar-font-btn" onclick="adjustFont('${date}','${slug}','subheadFontScale',0.1)">+</button>
-    </div>
-    <div class="sbar-effect-row" id="sbar-effect-${date}-${slug}">
-      <span class="sbar-font-label" style="min-width:40px">FX</span>
-      <div class="effect-btns">
-        ${['none','portrait_blur','portrait_black','portrait_bw_blur','black_and_white','dramatic','art_noir','vignette','remove_bg'].map(fx => {
-          const labels = { none:'Original', portrait_blur:'Blur BG', portrait_black:'Black BG', portrait_bw_blur:'B&W Blur', black_and_white:'B&W', dramatic:'Dramatic', art_noir:'Noir', vignette:'Vignette', remove_bg:'No BG' };
-          const active = (slideEffects[0] || 'none') === fx ? ' fx-active' : '';
-          return `<button class="fx-btn${active}" data-fx="${fx}" onclick="setEffect('${date}','${slug}','${fx}',this)">${labels[fx]}</button>`;
-        }).join('')}
-      </div>
-    </div>
-  </div>
-  <!-- Image direction input -->
-  <div class="img-dir-row ${isLOS ? 'sbar-hidden' : ''}" id="imgdir-${date}-${slug}">
-    <input class="img-dir-input" id="imgdir-txt-${date}-${slug}"
-      type="text" placeholder="Image direction (optional) — e.g. 'surgical tools on dark surface' or 'empty gym at dawn'">
-  </div>
-  <!-- Per-slide text editor (OTL only) -->
-  <div class="slide-edit-row" id="sedit-${date}-${slug}" style="display:none">
-    <div class="sedit-field">
-      <label class="sedit-lbl">Headline</label>
-      <textarea class="sedit-ta" id="sedit-h-${date}-${slug}" rows="2" placeholder="Headline…"></textarea>
-    </div>
-    <div class="sedit-field">
-      <label class="sedit-lbl">Subhead</label>
-      <textarea class="sedit-ta" id="sedit-s-${date}-${slug}" rows="2" placeholder="Subhead / body text…"></textarea>
-    </div>
-    <div class="sedit-actions">
-      <button class="btn-sedit-save" onclick="saveSlideText('${date}','${slug}',this)">Save text</button>
-      <button class="btn-sedit-clear" onclick="clearSlideText('${date}','${slug}',this)">Clear overrides</button>
-    </div>
-  </div>
-  <!-- Per-slide rework instruction -->
-  <div class="slide-rework-row ${isLOS ? 'sbar-hidden' : ''}" id="srw-${date}-${slug}">
-    <textarea class="rework-box" id="srw-txt-${date}-${slug}"
-      placeholder="Rework this slide — e.g. 'stronger headline' or 'focus on Deanie's surgery story'"></textarea>
-    <button class="btn-rework" onclick="reworkSlide('${date}','${slug}',this)">Rework slide →</button>
-  </div>
-
   <div class="card-body">
     <div class="badges">${trackBadge}${statusBadge(meta)}</div>
     <div class="campaign">${esc(meta.campaign || slug)}</div>
     ${topicLine}
     ${captionHtml}
-
-    <!-- Caption editor -->
-    <div class="section-toggle" onclick="toggleSection(this,'cap-${date}-${slug}')">
-      Caption ${caption ? '●' : '+'}</div>
-    <div class="section" id="cap-${date}-${slug}" style="display:none">
-      <textarea class="notes-box cap-box" id="cap-txt-${date}-${slug}" rows="4"
-        placeholder="Instagram caption…"
-        onblur="saveCaption('${date}','${slug}',this.value)">${esc(caption)}</textarea>
-    </div>
-
-    <!-- Post-level notes -->
-    <div class="section-toggle" onclick="toggleSection(this,'notes-${date}-${slug}')">
-      Post notes ${notes ? '●' : '+'}</div>
-    <div class="section" id="notes-${date}-${slug}" ${notes ? '' : 'style="display:none"'}>
-      <textarea class="notes-box" placeholder="Change something, fix this, try a different angle…"
-        onblur="saveNotes('${date}','${slug}',this.value)">${esc(notes)}</textarea>
-    </div>
-
-    <!-- Per-slide photo picker (OTL only) — opens full-screen modal -->
-    ${!isLOS ? `<button class="pick-photo-btn" onclick="openPhotoPicker('${date}','${slug}')">📷 Change Photo</button>` : ''}
-
     <div class="card-actions">
+      ${!isPosted ? `<button class="btn-edit" onclick="openEditPanel('${date}','${slug}')">Edit →</button>` : ''}
       ${isLOS ? `
         ${!isPosted && !isApproved && hasRendered ? `<button class="btn-action btn-approve" onclick="markStatus('${date}','${slug}','approved',this)">Approve ✓</button>` : ''}
         ${isApproved ? `<button class="btn-action btn-post" onclick="markStatus('${date}','${slug}','posted',this)">Mark Posted</button>` : ''}
       ` : `
-        ${!isPosted && !isApproved ? `
-          <button class="btn-action" onclick="runJob('render','${date}','${slug}',this)">Render</button>
-          <button class="btn-action" onclick="runJob('regenerate','${date}','${slug}',this)">Regenerate</button>
-          ${hasRendered ? `<button class="btn-action btn-approve" onclick="openQueueModal('${date}','${slug}')">Queue →</button>` : ''}
-        ` : ''}
+        ${!isPosted && !isApproved && hasRendered ? `<button class="btn-action btn-approve" onclick="openQueueModal('${date}','${slug}')">Queue →</button>` : ''}
         ${isApproved ? `
           ${meta.scheduledAt ? `<div class="scheduled-label">📅 ${new Date(meta.scheduledAt).toLocaleString('en-US',{month:'short',day:'numeric',hour:'numeric',minute:'2-digit',timeZone:'America/Chicago'})}</div>` : ''}
-          <button class="btn-action" onclick="runJob('regenerate','${date}','${slug}',this)">Regenerate</button>
           <button class="btn-action btn-post-ig" id="igpost-${date}-${slug}"
             onclick="postToIG('${date}','${slug}',this)">▶ Post Now</button>
           <button class="btn-action btn-post" onclick="markStatus('${date}','${slug}','posted',this)">Mark Posted</button>
@@ -476,7 +400,6 @@ function buildQueueHtml(posts, ship = 'otl') {
       `}
       ${hasPreview ? `<a class="btn-preview" href="/${pPrefix}/${date}/${slug}/preview.html" target="_blank">Preview →</a>` : ''}
     </div>
-
     <div class="job-status" id="job-${date}-${slug}"></div>
     <div class="card-date">${ago}</div>
   </div>
@@ -712,6 +635,67 @@ footer{text-align:center;padding:40px;color:#1e1e1e;font-size:10px}
 .upload-tag-chips input[type=checkbox]{accent-color:#003566;cursor:pointer}
 .upload-tag-chips input[type=checkbox]:checked + span{color:#fff}
 .upload-quality-select{background:#0d0d0d;border:1px solid #252525;border-radius:4px;color:#ccc;font-size:11px;padding:5px 8px;width:auto}
+
+/* Edit button on cards */
+.btn-edit{background:#003566;border:1px solid #0055a0;color:#fff;padding:5px 11px;border-radius:4px;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.07em;cursor:pointer;transition:.15s}
+.btn-edit:hover{background:#0055a0}
+
+/* Grid shifts when panel open */
+.grid.panel-open{margin-right:432px}
+
+/* Edit panel — fixed right drawer */
+.ep{position:fixed;top:0;right:-440px;width:420px;height:100vh;background:#111;border-left:1px solid #1e1e1e;display:flex;flex-direction:column;z-index:100;transition:right .25s cubic-bezier(.4,0,.2,1);box-shadow:-4px 0 24px rgba(0,0,0,.6)}
+.ep.open{right:0}
+.ep-header{padding:14px 16px 10px;border-bottom:1px solid #1e1e1e;display:flex;align-items:flex-start;gap:10px;flex-shrink:0}
+.ep-close{background:none;border:1px solid #2a2a2a;color:#555;width:26px;height:26px;border-radius:50%;font-size:12px;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:.15s;margin-top:2px}
+.ep-close:hover{border-color:#666;color:#ccc}
+.ep-hinfo{flex:1;min-width:0}
+.ep-title{font-size:11px;font-weight:700;color:#ccc;text-transform:uppercase;letter-spacing:.06em;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-bottom:4px}
+.ep-nav{display:flex;align-items:center;gap:6px}
+.ep-nav button{background:#161616;border:1px solid #252525;color:#777;width:22px;height:22px;border-radius:3px;font-size:16px;line-height:1;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:.15s}
+.ep-nav button:hover{background:#222;color:#ccc;border-color:#444}
+.ep-nav-counter{font-size:10px;color:#444;letter-spacing:.06em}
+.ep-tmpl{font-size:9px;color:#333;letter-spacing:.07em;margin-top:3px}
+.ep-thumb-wrap{flex-shrink:0;background:#0a0a0a;border-bottom:1px solid #1e1e1e;aspect-ratio:4/5;max-height:200px;overflow:hidden;display:flex;align-items:center;justify-content:center}
+.ep-thumb{width:100%;height:100%;object-fit:contain;display:block}
+.ep-scroll{flex:1;overflow-y:auto;display:flex;flex-direction:column}
+.ep-scroll::-webkit-scrollbar{width:4px}.ep-scroll::-webkit-scrollbar-thumb{background:#222;border-radius:2px}
+.ep-section{padding:12px 16px;border-bottom:1px solid #161616;display:flex;flex-direction:column;gap:7px}
+.ep-section-title{font-size:8px;font-weight:700;color:#444;letter-spacing:.12em;text-transform:uppercase}
+.ep-row{display:flex;align-items:center;gap:6px;flex-wrap:wrap}
+.ep-label{font-size:9px;font-weight:700;color:#444;letter-spacing:.08em;text-transform:uppercase;white-space:nowrap}
+.ep-field{display:flex;flex-direction:column;gap:3px}
+.ep-textarea{width:100%;background:#0d0d0d;border:1px solid #222;border-radius:4px;color:#ccc;font-size:12px;padding:7px 9px;resize:vertical;font-family:inherit;line-height:1.4;min-height:36px}
+.ep-textarea:focus{outline:none;border-color:#003566}
+.ep-btn{background:#161616;border:1px solid #252525;color:#888;padding:4px 10px;border-radius:4px;font-size:10px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;cursor:pointer;transition:.15s;white-space:nowrap}
+.ep-btn:hover{background:#1e1e1e;color:#ccc;border-color:#444}
+.ep-btn:disabled{opacity:.4;cursor:default}
+.ep-btn-photo{border-color:#1a2a1a;color:#558855}
+.ep-btn-photo:hover{background:#0d1a0d;color:#77bb77;border-color:#2a4a2a}
+.ep-btn-save{background:#003566;border-color:#0055a0;color:#fff}
+.ep-btn-save:hover{background:#0055a0}
+.ep-btn-full{width:100%;text-align:center;padding:7px}
+.ep-btn-gen{border-color:#2a1a40;color:#8866bb}
+.ep-btn-gen:hover{background:#1a0d2e;color:#aa88dd;border-color:#4a2a70}
+.ep-btn-regen{border-color:#2a2a1a;color:#777733}
+.ep-btn-regen:hover{background:#1a1a0a;color:#aaaa55;border-color:#4a4a1a}
+.ep-slider{flex:1;accent-color:#003566;height:3px;cursor:pointer}
+.ep-slider-val{font-size:9px;font-weight:700;color:#555;letter-spacing:.06em;min-width:30px;text-align:right}
+.ep-sm-btn{width:22px;height:22px;background:#161616;border:1px solid #252525;color:#666;border-radius:3px;font-size:14px;line-height:1;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:.15s}
+.ep-sm-btn:hover{background:#222;color:#ccc;border-color:#444}
+.ep-fx-btns{display:flex;flex-wrap:wrap;gap:4px}
+.ep-fx-btn{padding:3px 8px;background:#111;border:1px solid #252525;color:#555;border-radius:3px;font-size:10px;font-weight:600;letter-spacing:.04em;text-transform:uppercase;cursor:pointer;transition:.15s}
+.ep-fx-btn:hover{background:#1a1a1a;color:#aaa;border-color:#444}
+.ep-fx-btn.ep-fx-active{background:#0d0d2a;border-color:#003566;color:#6699ff}
+.ep-swatch-row{display:flex;gap:5px;flex-wrap:wrap}
+.ep-swatch{width:20px;height:20px;border-radius:50%;border:2px solid transparent;cursor:pointer;transition:.15s;flex-shrink:0}
+.ep-swatch:hover{transform:scale(1.15)}
+.ep-swatch.ep-swatch-active{border-color:#fff;box-shadow:0 0 0 1px #555}
+.ep-footer{border-bottom:none}
+.ep-status{font-size:11px;color:#556;padding:8px 16px;min-height:20px;flex-shrink:0}
+.ep-status.ok{color:#3d883d}
+.ep-status.err{color:#883333}
+.ep-status.running{color:#3a7ab8;animation:pulse 1.5s infinite}
 </style>
 </head>
 <body>
@@ -813,8 +797,7 @@ function filter(type, btn) {
 
 // ── Slide navigation ──────────────────────────────────────────
 function slideNav(imgBox, dir) {
-  const slides    = JSON.parse(imgBox.dataset.slides    || '[]');
-  const templates = JSON.parse(imgBox.dataset.templates || '[]');
+  const slides = JSON.parse(imgBox.dataset.slides || '[]');
   if (!slides.length) return;
   let idx = (parseInt(imgBox.dataset.idx || '0') + dir + slides.length) % slides.length;
   imgBox.dataset.idx = idx;
@@ -823,43 +806,6 @@ function slideNav(imgBox, dir) {
   if (img) img.src = slides[idx] + '?t=' + Date.now();
   const sc = imgBox.querySelector('.sc');
   if (sc) sc.textContent = (idx + 1) + ' / ' + slides.length;
-
-  // Update per-slide toolbar
-  const date = imgBox.dataset.date, slug = imgBox.dataset.slug;
-  const sbar = document.getElementById(\`sbar-\${date}-\${slug}\`);
-  if (sbar) {
-    sbar.querySelector('.sbar-num').textContent = 'Slide ' + (idx + 1);
-    sbar.querySelector('.sbar-tmpl').textContent = templates[idx] || '';
-    sbar.dataset.slideIdx = idx;
-
-    // Show Line 2 / subheadStyle control for any template with a headline
-    const substyleBtn = document.getElementById(\`substyle-\${date}-\${slug}\`);
-    const substyleRow = substyleBtn?.closest('.sbar-overlay-row')?.querySelector('.sbar-font-label:last-of-type');
-    if (substyleBtn) {
-      const SUBHEAD_TEMPLATES = ['SplashSlide', 'HookSlide', 'ValueSlide', 'CarouselCTA'];
-      const hasSubhead = SUBHEAD_TEMPLATES.includes(templates[idx] || '');
-      substyleBtn.style.display = hasSubhead ? '' : 'none';
-      if (substyleRow) substyleRow.style.display = hasSubhead ? '' : 'none';
-    }
-
-    // Sync overlay slider to this slide's saved opacity
-    const ovlOpacities = JSON.parse(sbar.dataset.ovlOpacities || '[]');
-    const saved = ovlOpacities[idx];
-    const pct = saved != null ? Math.round(saved * 100) : 62;
-    const slider = document.getElementById(\`ovlslider-\${date}-\${slug}\`);
-    const valEl  = document.getElementById(\`ovlval-\${date}-\${slug}\`);
-    if (slider) slider.value = pct;
-    if (valEl)  valEl.textContent = pct + '%';
-
-    // Sync FX buttons to this slide's saved effect
-    const effects = JSON.parse(sbar.dataset.effects || '[]');
-    const activeEffect = effects[idx] || 'none';
-    const fxRow = document.getElementById(\`sbar-effect-\${date}-\${slug}\`);
-    if (fxRow) {
-      fxRow.querySelectorAll('.fx-btn').forEach(b =>
-        b.classList.toggle('fx-active', b.dataset.fx === activeEffect));
-    }
-  }
 }
 
 // ── Per-slide text edit ───────────────────────────────────────
@@ -987,21 +933,390 @@ async function autoRender(date, slug) {
       clearInterval(poll);
       if (j.ok) {
         showSlideStatus(date, slug, '✓ Done');
+        const t = Date.now();
         const imgBox = document.querySelector(\`.card-img[data-date="\${date}"][data-slug="\${slug}"]\`);
         if (imgBox) {
-          const t = Date.now();
           const slides = JSON.parse(imgBox.dataset.slides || '[]');
           const busted = slides.map(s => s.split('?')[0] + '?t=' + t);
           imgBox.dataset.slides = JSON.stringify(busted);
+          const card = imgBox.closest('.card');
+          if (card) card.dataset.slides = JSON.stringify(busted);
           const idx = parseInt(imgBox.dataset.idx || '0');
           const thumb = imgBox.querySelector('img.thumb');
           if (thumb) thumb.src = (busted[idx] || busted[0]);
         }
+        // Refresh panel thumbnail if this post is currently open
+        if (_pd === date && _ps === slug) {
+          _pSlides = _pSlides.map(s => s.split('?')[0] + '?t=' + t);
+          refreshPanelThumb();
+          showPanelStatus('✓ Done', 'ok');
+        }
       } else {
         showSlideStatus(date, slug, '✗ Render failed');
+        if (_pd === date && _ps === slug) showPanelStatus('✗ Render failed', 'err');
       }
     }
   }, 1200);
+}
+
+// ── Edit panel ────────────────────────────────────────────────
+let _pd = null, _ps = null, _pi = 0;
+let _pSlides = [], _pTemplates = [], _pEffects = [], _pOverlays = [], _pTexts = [];
+const ACCENT_SLOTS_CLIENT = ${accentSlotsJson};
+
+async function openEditPanel(date, slug) {
+  _pd = date; _ps = slug; _pi = 0;
+  const card = document.querySelector(\`.card[data-date="\${date}"][data-slug="\${slug}"]\`);
+  if (!card) return;
+  _pSlides    = JSON.parse(card.dataset.slides    || '[]');
+  _pTemplates = JSON.parse(card.dataset.templates || '[]');
+  _pEffects   = JSON.parse(card.dataset.effects   || '[]');
+  _pOverlays  = JSON.parse(card.dataset.opacities || '[]');
+  _pTexts     = JSON.parse(card.dataset.texts     || '[]');
+
+  const campaignEl = card.querySelector('.campaign');
+  document.getElementById('ep-title').textContent = campaignEl ? campaignEl.textContent : slug;
+
+  document.getElementById('ep').classList.add('open');
+  document.getElementById('grid').classList.add('panel-open');
+
+  await updatePanelSlide();
+
+  // Load caption separately (it's stored as caption.txt, not slide text)
+  const capEl = card.querySelector('.cap');
+  if (capEl) {
+    const capText = capEl.textContent.replace(/…$/, '');
+    document.getElementById('ep-caption').value = capText;
+  }
+}
+
+function closeEditPanel() {
+  document.getElementById('ep').classList.remove('open');
+  document.getElementById('grid').classList.remove('panel-open');
+  _pd = null; _ps = null;
+}
+
+async function updatePanelSlide() {
+  if (!_pd || !_ps) return;
+  const slideUrl = _pSlides[_pi] || '';
+  const template = _pTemplates[_pi] || '';
+  const effect   = _pEffects[_pi]   || 'none';
+  const opacity  = _pOverlays[_pi];
+
+  // Thumbnail
+  const thumb = document.getElementById('ep-thumb');
+  if (thumb) {
+    if (slideUrl) {
+      thumb.src = slideUrl.split('?')[0] + '?t=' + Date.now();
+      thumb.style.display = '';
+    } else {
+      thumb.style.display = 'none';
+    }
+  }
+
+  // Counter + template label
+  document.getElementById('ep-counter').textContent = \`\${_pi + 1} / \${Math.max(_pSlides.length, 1)}\`;
+  document.getElementById('ep-tmpl').textContent = template;
+
+  // FX buttons
+  document.querySelectorAll('#ep-fx .ep-fx-btn').forEach(b =>
+    b.classList.toggle('ep-fx-active', b.dataset.fx === effect));
+
+  // World button state (default dark)
+  const worldBtn = document.getElementById('ep-world');
+  if (worldBtn) { worldBtn.dataset.ovl = 'dark'; worldBtn.textContent = 'Dark'; }
+
+  // Overlay slider
+  const pct = opacity != null ? Math.round(opacity * 100) : 62;
+  const slider = document.getElementById('ep-ovl-slider');
+  const valEl  = document.getElementById('ep-ovl-val');
+  if (slider) slider.value = pct;
+  if (valEl)  valEl.textContent = pct + '%';
+
+  // Load text from embedded card data (no fetch needed)
+  const textData = _pTexts[_pi] || {};
+  document.getElementById('ep-headline').value = textData.headline || '';
+  document.getElementById('ep-subhead').value  = textData.subhead  || '';
+
+  // Subhead style button reset
+  const ssBtn = document.getElementById('ep-subhead-style');
+  if (ssBtn) { ssBtn.dataset.style = 'stroke'; ssBtn.textContent = 'Stroke'; }
+
+  // Accent swatches
+  renderAccentSwatches();
+}
+
+async function panelSlideNav(dir) {
+  if (!_pSlides.length) return;
+  _pi = (_pi + dir + _pSlides.length) % _pSlides.length;
+  const imgBox = document.querySelector(\`.card-img[data-date="\${_pd}"][data-slug="\${_ps}"]\`);
+  if (imgBox) { imgBox.dataset.idx = _pi; const sc = imgBox.querySelector('.sc'); if (sc) sc.textContent = (_pi+1)+' / '+_pSlides.length; }
+  await updatePanelSlide();
+}
+
+async function panelSetEffect(fx, btn) {
+  if (!_pd || !_ps) return;
+  showPanelStatus('Applying effect…', 'running');
+  const r = await fetch('/api/slide-effect', {
+    method: 'POST', headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ date: _pd, slug: _ps, slideIdx: _pi, effect: fx }),
+  });
+  const j = await r.json();
+  if (j.ok) {
+    _pEffects[_pi] = fx;
+    document.querySelectorAll('#ep-fx .ep-fx-btn').forEach(b =>
+      b.classList.toggle('ep-fx-active', b.dataset.fx === fx));
+    const card = document.querySelector(\`.card[data-date="\${_pd}"][data-slug="\${_ps}"]\`);
+    if (card) card.dataset.effects = JSON.stringify(_pEffects);
+    showPanelStatus('Rendering…', 'running');
+    autoRender(_pd, _ps);
+  } else {
+    showPanelStatus('✗ ' + (j.error || 'Effect failed'), 'err');
+  }
+}
+
+async function panelToggleWorld() {
+  if (!_pd || !_ps) return;
+  const btn = document.getElementById('ep-world');
+  const next = btn.dataset.ovl === 'dark' ? 'light' : 'dark';
+  const r = await fetch('/api/slide-world', {
+    method: 'POST', headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ date: _pd, slug: _ps, slideIdx: _pi, world: next }),
+  });
+  const j = await r.json();
+  if (j.ok) {
+    btn.dataset.ovl = next;
+    btn.textContent = next === 'light' ? 'Light' : 'Dark';
+    showPanelStatus('Rendering…', 'running');
+    autoRender(_pd, _ps);
+  }
+}
+
+async function panelCycleSubhead() {
+  if (!_pd || !_ps) return;
+  const btn = document.getElementById('ep-subhead-style');
+  const order = ['stroke','color','solid'];
+  const cur   = btn.dataset.style || 'stroke';
+  const next  = order[(order.indexOf(cur) + 1) % order.length];
+  btn.dataset.style = next;
+  btn.textContent   = next.charAt(0).toUpperCase() + next.slice(1);
+  const r = await fetch('/api/slide-subhead-style', {
+    method: 'POST', headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ date: _pd, slug: _ps, slideIdx: _pi, subheadStyle: next }),
+  });
+  const j = await r.json();
+  if (j.ok) { showPanelStatus('Rendering…', 'running'); autoRender(_pd, _ps); }
+}
+
+async function panelSaveOverlay() {
+  if (!_pd || !_ps) return;
+  const opacity = Math.round(document.getElementById('ep-ovl-slider').value) / 100;
+  _pOverlays[_pi] = opacity;
+  const r = await fetch('/api/slide-overlay', {
+    method: 'POST', headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ date: _pd, slug: _ps, slideIdx: _pi, overlayOpacity: opacity }),
+  });
+  const j = await r.json();
+  if (j.ok) { showPanelStatus('Rendering…', 'running'); autoRender(_pd, _ps); }
+}
+
+async function panelFontAdjust(field, delta) {
+  if (!_pd || !_ps) return;
+  const r = await fetch('/api/slide-font', {
+    method: 'POST', headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ date: _pd, slug: _ps, slideIdx: _pi, field, delta }),
+  });
+  const j = await r.json();
+  if (j.ok) { showPanelStatus('Rendering…', 'running'); autoRender(_pd, _ps); }
+}
+
+async function panelSaveText() {
+  if (!_pd || !_ps) return;
+  const headline = document.getElementById('ep-headline').value;
+  const subhead  = document.getElementById('ep-subhead').value;
+  showPanelStatus('Saving…', 'running');
+  const r = await fetch('/api/slide-text', {
+    method: 'POST', headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ date: _pd, slug: _ps, slideIdx: _pi, headline, subhead }),
+  });
+  const j = await r.json();
+  if (j.ok) {
+    // Keep local cache in sync so nav stays accurate
+    if (!_pTexts[_pi]) _pTexts[_pi] = {};
+    _pTexts[_pi].headline = j.headline || '';
+    _pTexts[_pi].subhead  = j.subhead  || '';
+    // Update card data-texts too
+    const card = document.querySelector(\`.card[data-date="\${_pd}"][data-slug="\${_ps}"]\`);
+    if (card) card.dataset.texts = JSON.stringify(_pTexts);
+    showPanelStatus('Rendering…', 'running');
+    autoRender(_pd, _ps);
+  } else showPanelStatus('✗ ' + (j.error || 'Error'), 'err');
+}
+
+async function panelClearText() {
+  if (!_pd || !_ps) return;
+  showPanelStatus('Clearing…', 'running');
+  const r = await fetch('/api/slide-text', {
+    method: 'POST', headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ date: _pd, slug: _ps, slideIdx: _pi, headline: null, subhead: null }),
+  });
+  const j = await r.json();
+  if (j.ok) {
+    const hl = j.headline || '';
+    const sh = j.subhead  || '';
+    document.getElementById('ep-headline').value = hl;
+    document.getElementById('ep-subhead').value  = sh;
+    if (!_pTexts[_pi]) _pTexts[_pi] = {};
+    _pTexts[_pi].headline = hl;
+    _pTexts[_pi].subhead  = sh;
+    const card = document.querySelector(\`.card[data-date="\${_pd}"][data-slug="\${_ps}"]\`);
+    if (card) card.dataset.texts = JSON.stringify(_pTexts);
+    showPanelStatus('Rendering…', 'running');
+    autoRender(_pd, _ps);
+  }
+}
+
+async function panelRework() {
+  if (!_pd || !_ps) return;
+  const instruction = document.getElementById('ep-rework').value.trim();
+  if (!instruction) return;
+  const btn = document.getElementById('ep-rework-btn');
+  if (btn) { btn.textContent = 'Working…'; btn.disabled = true; }
+  showPanelStatus('Claude is reworking slide ' + (_pi + 1) + '…', 'running');
+  const r = await fetch('/api/slide-rework', {
+    method: 'POST', headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ date: _pd, slug: _ps, slideIdx: _pi, instruction }),
+  });
+  const json = await r.json();
+  if (btn) { btn.textContent = 'Rework slide →'; btn.disabled = false; }
+  if (json.ok) {
+    document.getElementById('ep-rework').value = '';
+    showPanelStatus('Rendering…', 'running');
+    autoRender(_pd, _ps);
+  } else {
+    showPanelStatus('✗ ' + (json.error || 'Error'), 'err');
+  }
+}
+
+async function panelGenerateImage() {
+  if (!_pd || !_ps) return;
+  const imageDirection = document.getElementById('ep-imgdir').value.trim();
+  const btn = document.getElementById('ep-gen-btn');
+  if (btn) { btn.textContent = '✦ Generating…'; btn.disabled = true; }
+  showPanelStatus('Generating image…', 'running');
+  const r = await fetch('/api/slide-generate-image', {
+    method: 'POST', headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ date: _pd, slug: _ps, slideIdx: _pi, imageDirection }),
+  });
+  const json = await r.json();
+  if (btn) { btn.textContent = '✦ Generate Image'; btn.disabled = false; }
+  if (json.ok) {
+    showPanelStatus('✓ Image generated — rendering…', 'ok');
+    if (json.jobId) {
+      const poll = setInterval(async () => {
+        const j = await (await fetch(\`/api/job/\${json.jobId}\`)).json();
+        if (j.done) {
+          clearInterval(poll);
+          if (j.ok) { showPanelStatus('✓ Done', 'ok'); refreshPanelThumb(); }
+          else showPanelStatus('✗ Render failed', 'err');
+        }
+      }, 1500);
+    }
+  } else {
+    showPanelStatus('✗ ' + (json.error || 'Error'), 'err');
+  }
+}
+
+async function panelSetAccent(slot) {
+  if (!_pd || !_ps) return;
+  const color = ACCENT_SLOTS_CLIENT[slot]?.accent;
+  if (!color) return;
+  const r = await fetch('/api/post-accent', {
+    method: 'POST', headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ date: _pd, slug: _ps, accentSlot: slot, accentColor: color }),
+  });
+  const j = await r.json();
+  if (j.ok) {
+    const card = document.querySelector(\`.card[data-date="\${_pd}"][data-slug="\${_ps}"]\`);
+    if (card) card.dataset.accentslot = slot;
+    renderAccentSwatches();
+    showPanelStatus('Rendering…', 'running');
+    autoRender(_pd, _ps);
+  }
+}
+
+function renderAccentSwatches() {
+  const card = _pd && _ps ? document.querySelector(\`.card[data-date="\${_pd}"][data-slug="\${_ps}"]\`) : null;
+  const activeSlot = parseInt(card?.dataset.accentslot ?? 0);
+  const container = document.getElementById('ep-swatches');
+  if (!container) return;
+  container.innerHTML = ACCENT_SLOTS_CLIENT.map((s, i) =>
+    \`<button class="ep-swatch \${i === activeSlot ? 'ep-swatch-active' : ''}"
+      title="\${s.label}" style="background:\${s.accent};border-color:\${i === activeSlot ? '#fff' : 'transparent'}"
+      onclick="panelSetAccent(\${i})"></button>\`
+  ).join('');
+}
+
+async function panelTextOnly() {
+  if (!_pd || !_ps) return;
+  const r = await fetch('/api/slide-photo', {
+    method: 'POST', headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ date: _pd, slug: _ps, slideIdx: _pi, photo: '', template: 'BoldStatement' }),
+  });
+  const j = await r.json();
+  if (j.ok) { showPanelStatus('Rendering…', 'running'); autoRender(_pd, _ps); }
+}
+
+async function panelRestorePhoto() {
+  if (!_pd || !_ps) return;
+  const r = await fetch('/api/slide-photo', {
+    method: 'POST', headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ date: _pd, slug: _ps, slideIdx: _pi, photo: null, template: null }),
+  });
+  const j = await r.json();
+  if (j.ok) { showPanelStatus('Rendering…', 'running'); autoRender(_pd, _ps); }
+}
+
+async function panelSaveCaption() {
+  if (!_pd || !_ps) return;
+  const caption = document.getElementById('ep-caption').value;
+  await fetch('/api/caption', {
+    method: 'POST', headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ date: _pd, slug: _ps, caption }),
+  });
+  showPanelStatus('✓ Caption saved', 'ok');
+  const card = document.querySelector(\`.card[data-date="\${_pd}"][data-slug="\${_ps}"]\`);
+  const capEl = card?.querySelector('.cap');
+  if (capEl) capEl.textContent = (caption || '').slice(0, 140) + (caption.length > 140 ? '…' : '');
+}
+
+async function panelRegenerate() {
+  if (!_pd || !_ps) return;
+  const btn = document.getElementById('ep-regen-btn');
+  if (btn) { btn.textContent = 'Regenerating…'; btn.disabled = true; }
+  showPanelStatus('Regenerating post…', 'running');
+  const { jobId } = await api('regenerate', _pd, _ps, {});
+  if (!jobId) { if (btn) { btn.textContent = 'Regenerate post'; btn.disabled = false; } return; }
+  const poll = setInterval(async () => {
+    const j = await (await fetch(\`/api/job/\${jobId}\`)).json();
+    if (j.done) {
+      clearInterval(poll);
+      if (btn) { btn.textContent = 'Regenerate post'; btn.disabled = false; }
+      if (j.ok) { showPanelStatus('✓ Done — reloading…', 'ok'); setTimeout(() => location.reload(), 800); }
+      else showPanelStatus('✗ ' + j.log.slice(-200), 'err');
+    }
+  }, 1400);
+}
+
+function showPanelStatus(msg, type) {
+  const el = document.getElementById('ep-status');
+  if (el) { el.textContent = msg; el.className = 'ep-status ' + (type || 'ok'); }
+}
+
+function refreshPanelThumb() {
+  if (!_pd || !_ps) return;
+  const thumb = document.getElementById('ep-thumb');
+  if (thumb && _pSlides[_pi]) thumb.src = _pSlides[_pi].split('?')[0] + '?t=' + Date.now();
 }
 
 async function slidePhoto(date, slug, payload) {
@@ -1521,9 +1836,14 @@ async function pickPhoto(rawUrl, imgEl) {
   imgEl.classList.add('selected');
   // Apply to current slide
   await setSlidePhoto(_pickerDate, _pickerSlug, rawUrl, null);
-  document.getElementById('photo-modal-status').textContent = '✓ Photo set for slide ' + (getSlideIdx(_pickerDate, _pickerSlug) + 1);
+  document.getElementById('photo-modal-status').textContent = '✓ Photo set';
   // Close after brief confirmation
   setTimeout(closePhotoPicker, 600);
+  // Auto-render (panel handles status if open)
+  if (_pd === _pickerDate && _ps === _pickerSlug) {
+    showPanelStatus('Rendering…', 'running');
+  }
+  autoRender(_pickerDate, _pickerSlug);
 }
 
 // Upload from modal
@@ -1658,6 +1978,118 @@ async function submitQueueModal() {
   </div>
 </div>
 
+<!-- Edit panel (single shared fixed drawer) -->
+<div id="ep" class="ep">
+  <div class="ep-header">
+    <button class="ep-close" onclick="closeEditPanel()">✕</button>
+    <div class="ep-hinfo">
+      <div class="ep-title" id="ep-title">—</div>
+      <div class="ep-nav">
+        <button onclick="panelSlideNav(-1)">‹</button>
+        <span id="ep-counter" class="ep-nav-counter">— / —</span>
+        <button onclick="panelSlideNav(1)">›</button>
+      </div>
+      <div class="ep-tmpl" id="ep-tmpl"></div>
+    </div>
+  </div>
+  <div class="ep-thumb-wrap">
+    <img id="ep-thumb" class="ep-thumb" src="" alt="" style="display:none">
+  </div>
+  <div class="ep-scroll">
+
+    <!-- PHOTO -->
+    <div class="ep-section">
+      <div class="ep-section-title">PHOTO</div>
+      <div class="ep-row">
+        <button class="ep-btn ep-btn-photo" onclick="openPhotoPicker(_pd,_ps)">📷 Change Photo</button>
+        <button class="ep-btn" onclick="panelTextOnly()">Text only</button>
+        <button class="ep-btn" onclick="panelRestorePhoto()">Restore photo</button>
+      </div>
+      <div class="ep-fx-btns" id="ep-fx">
+        ${['none','portrait_blur','portrait_black','portrait_bw_blur','black_and_white','dramatic','art_noir','vignette','remove_bg'].map(fx => {
+          const labels = { none:'Original', portrait_blur:'Blur BG', portrait_black:'Black BG', portrait_bw_blur:'B&W Blur', black_and_white:'B&W', dramatic:'Dramatic', art_noir:'Noir', vignette:'Vignette', remove_bg:'No BG' };
+          return `<button class="ep-fx-btn" data-fx="${fx}" onclick="panelSetEffect('${fx}',this)">${labels[fx]}</button>`;
+        }).join('')}
+      </div>
+    </div>
+
+    <!-- STYLE -->
+    <div class="ep-section">
+      <div class="ep-section-title">STYLE</div>
+      <div class="ep-row">
+        <span class="ep-label">World</span>
+        <button class="ep-btn" id="ep-world" data-ovl="dark" onclick="panelToggleWorld()">Dark</button>
+        <span class="ep-label" style="margin-left:8px">Line 2</span>
+        <button class="ep-btn" id="ep-subhead-style" data-style="stroke" onclick="panelCycleSubhead()">Stroke</button>
+      </div>
+      <div class="ep-row">
+        <span class="ep-label">Overlay</span>
+        <input type="range" id="ep-ovl-slider" class="ep-slider" min="0" max="100" value="62" step="1"
+          oninput="document.getElementById('ep-ovl-val').textContent=this.value+'%'"
+          onchange="panelSaveOverlay()">
+        <span id="ep-ovl-val" class="ep-slider-val">62%</span>
+      </div>
+      <div class="ep-row">
+        <span class="ep-label">H</span>
+        <button class="ep-sm-btn" onclick="panelFontAdjust('headlineFontScale',-0.1)">−</button>
+        <button class="ep-sm-btn" onclick="panelFontAdjust('headlineFontScale',0.1)">+</button>
+        <span class="ep-label" style="margin-left:8px">Body</span>
+        <button class="ep-sm-btn" onclick="panelFontAdjust('subheadFontScale',-0.1)">−</button>
+        <button class="ep-sm-btn" onclick="panelFontAdjust('subheadFontScale',0.1)">+</button>
+      </div>
+      <div class="ep-row">
+        <span class="ep-label">Accent</span>
+        <div class="ep-swatch-row" id="ep-swatches"></div>
+      </div>
+    </div>
+
+    <!-- TEXT -->
+    <div class="ep-section">
+      <div class="ep-section-title">TEXT</div>
+      <div class="ep-field">
+        <label class="ep-label">Headline</label>
+        <textarea class="ep-textarea" id="ep-headline" rows="2" placeholder="Headline…"></textarea>
+      </div>
+      <div class="ep-field">
+        <label class="ep-label">Subhead / Body</label>
+        <textarea class="ep-textarea" id="ep-subhead" rows="3" placeholder="Subhead or body text…"></textarea>
+      </div>
+      <div class="ep-row">
+        <button class="ep-btn ep-btn-save" onclick="panelSaveText()">Save text</button>
+        <button class="ep-btn" onclick="panelClearText()">Clear overrides</button>
+      </div>
+    </div>
+
+    <!-- REWORK -->
+    <div class="ep-section">
+      <div class="ep-section-title">REWORK WITH CLAUDE</div>
+      <textarea class="ep-textarea" id="ep-rework" rows="2" placeholder="e.g. stronger headline, focus on community…"></textarea>
+      <button class="ep-btn ep-btn-full" id="ep-rework-btn" onclick="panelRework()">Rework slide →</button>
+    </div>
+
+    <!-- GENERATE IMAGE -->
+    <div class="ep-section">
+      <div class="ep-section-title">GENERATE IMAGE</div>
+      <textarea class="ep-textarea" id="ep-imgdir" rows="2" placeholder="Direction (optional) — e.g. 'empty gym at dawn'"></textarea>
+      <button class="ep-btn ep-btn-full ep-btn-gen" id="ep-gen-btn" onclick="panelGenerateImage()">✦ Generate Image</button>
+    </div>
+
+    <!-- CAPTION -->
+    <div class="ep-section">
+      <div class="ep-section-title">CAPTION</div>
+      <textarea class="ep-textarea" id="ep-caption" rows="5" placeholder="Instagram caption…"></textarea>
+      <button class="ep-btn" onclick="panelSaveCaption()">Save caption</button>
+    </div>
+
+    <!-- FOOTER -->
+    <div class="ep-section ep-footer">
+      <button class="ep-btn ep-btn-full ep-btn-regen" id="ep-regen-btn" onclick="panelRegenerate()">Regenerate post</button>
+    </div>
+
+    <div class="ep-status" id="ep-status"></div>
+  </div>
+</div>
+
 <!-- Photo picker modal (single shared instance) -->
 <div class="photo-modal" id="photo-modal" onclick="if(event.target===this)closePhotoPicker()">
   <div class="photo-modal-inner">
@@ -1740,16 +2172,26 @@ function serveStatic(res, filePath) {
   if (!existsSync(filePath)) { res.writeHead(404); res.end('Not found'); return; }
   const ext  = extname(filePath).toLowerCase();
   const mime = MIME[ext] || 'application/octet-stream';
-  const headers = { 'Content-Type': mime };
+  const fileData = readFileSync(filePath);
+  const headers = {
+    'Content-Type': mime,
+    'Content-Length': fileData.length,
+    'Connection': 'close',
+  };
   // Never cache HTML or JSON — preview.html and meta.json must always be fresh
   if (ext === '.html' || ext === '.json') headers['Cache-Control'] = 'no-store';
   res.writeHead(200, headers);
-  res.end(readFileSync(filePath));
+  res.end(fileData);
 }
 
 function jsonResp(res, data, code = 200) {
-  res.writeHead(code, { 'Content-Type': 'application/json' });
-  res.end(JSON.stringify(data));
+  const body = JSON.stringify(data);
+  res.writeHead(code, {
+    'Content-Type': 'application/json',
+    'Content-Length': Buffer.byteLength(body),
+    'Connection': 'close',
+  });
+  res.end(body);
 }
 
 function readBody(req) {
@@ -1761,9 +2203,12 @@ function readBody(req) {
 }
 
 const server = http.createServer(async (req, res) => {
+  // Global catch: any unhandled throw → 500, not a hanging connection
+  try {
   const url  = new URL(req.url, `http://localhost:${PORT}`);
   const path = url.pathname;
   const method = req.method;
+  console.log(`[req] ${method} ${path}`);
 
   // ── Static files ────────────────────────────────────────────
   if (path.startsWith('/output/'))
@@ -2291,6 +2736,17 @@ Return ONLY the replacement slide as valid JSON. No markdown. No explanation. No
     return jsonResp(res, { ok: true });
   }
 
+  // ── Post accent color ────────────────────────────────────────
+  if (path === '/api/post-accent' && method === 'POST') {
+    const body = await readBody(req);
+    const { date, slug, accentSlot, accentColor } = body;
+    if (!date || !slug || accentColor == null) return jsonResp(res, { error: 'Missing params' }, 400);
+    const dir = postDir(date, slug);
+    const meta = readMeta(dir);
+    writeMeta(dir, { ...meta, accentSlot, accentColor });
+    return jsonResp(res, { ok: true });
+  }
+
   // ── New post generation ──────────────────────────────────────
   if (path === '/api/new-post' && method === 'POST') {
     const body = await readBody(req);
@@ -2448,7 +2904,7 @@ Return ONLY the replacement slide as valid JSON. No markdown. No explanation. No
       return `<div class="dg"><div class="dl">${esc(day)}</div><div class="dc">${cards}</div></div>`;
     }).join('');
 
-    res.writeHead(200, { 'Content-Type': 'text/html' });
+    res.writeHead(200, { 'Content-Type': 'text/html', 'Connection': 'close' });
     res.end(`<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>LOS · Scheduled Queue</title>
@@ -2527,6 +2983,7 @@ async function del(id, btn) {
   }
 
   if (path === '/api/cancel-scheduled' && method === 'POST') {
+    const body = await readBody(req);
     const { id } = body;
     if (!losSupabase) return jsonResp(res, { error: 'LOS Supabase not configured' }, 500);
     const { error } = await losSupabase.from('scheduled_posts').delete().eq('id', id);
@@ -2539,16 +2996,30 @@ async function del(id, btn) {
     const validShip = SHIPS[ship] ? ship : 'otl';
     const posts = collectPosts(validShip);
     const html  = buildQueueHtml(posts, validShip);
-    res.writeHead(200, { 'Content-Type': 'text/html' });
-    res.end(html);
+    const htmlBuf = Buffer.from(html, 'utf8');
+    res.writeHead(200, { 'Content-Type': 'text/html', 'Content-Length': htmlBuf.length, 'Connection': 'close' });
+    res.end(htmlBuf);
     return;
   }
 
   res.writeHead(404);
   res.end('Not found');
+
+  } catch (e) {
+    console.error('[server] Unhandled error in request handler:', e.message);
+    console.error(e.stack?.split('\n').slice(0,3).join('\n'));
+    if (!res.headersSent) {
+      res.writeHead(500, { 'Content-Type': 'application/json' });
+      res.end(JSON.stringify({ error: 'Internal server error: ' + e.message }));
+    }
+  }
 });
 
 import { networkInterfaces } from 'os';
+
+// Prevent Chrome keep-alive race: Node closes at 5s, Chrome expects >60s
+server.keepAliveTimeout = 65000;
+server.headersTimeout   = 66000;
 
 server.listen(PORT, '0.0.0.0', () => {
   const nets = networkInterfaces();

@@ -7,6 +7,21 @@
 // Sizes are FIXED at the design pixel size (1080×1080 etc).
 // The host (DesignCanvas / IGFrame) is responsible for scaling them.
 
+// ─────────────────────────────────────────────────────────────
+// OTL Brand palette + accent slot system
+// Brand anchors: Navy #003566 | Mid Blue #004a8f | Light Blue #7eb8ff
+// Posts may use any intentional color — brand colors are the anchor,
+// not the ceiling. Never use CrossFit corporate red (#C8102E).
+// ─────────────────────────────────────────────────────────────
+const ACCENT_SLOTS = [
+  { accent: "#7eb8ff", bg: "#0a0a0a",  label: "OTL Blue"   },  // 0 — default
+  { accent: "#003566", bg: "#0d1a2e",  label: "Navy Night"  },  // 1
+  { accent: "#F5C518", bg: "#0a0a0a",  label: "Gold"        },  // 2
+  { accent: "#10B981", bg: "#061a0f",  label: "Emerald"     },  // 3
+  { accent: "#ffffff", bg: "#0a0a0a",  label: "White"       },  // 4
+  { accent: "#E8C49A", bg: "#1a1008",  label: "Sand"        },  // 5
+];
+
 const SIZES = {
   "1:1": { w: 1080, h: 1080, cls: "tpl--1x1" },
   "4:5": { w: 1080, h: 1350, cls: "tpl--4x5" },
@@ -921,7 +936,7 @@ function HookSlide({ campaign, photo, headline, curiosity, variant = "a", size =
   // Curiosity text: ~48px ≈ 17pt — minimum legible on mobile
   const fsCuriosity = size === "9:16" ? 38 : size === "4:5" ? 34 : 28;
   const hl = headline || campaign.statement;
-  const accentColor = accent || "#C8102E";
+  const accentColor = accent || ACCENT_SLOTS[0].accent;
 
   return (
     <div className={`tpl ${cls}`} data-template="hook-slide" data-variant={variant}>
@@ -998,8 +1013,7 @@ function HookSlide({ campaign, photo, headline, curiosity, variant = "a", size =
 function ValueSlide({ campaign, photo, headline, body, nugget, slideNum, slideLabel, variant = "b", size = "4:5", accent, headlineFontScale = 1, subheadStyle = "solid", layout = "headline", stat, statLabel, listItems, quote, attribution }) {
   const { cls } = SIZES[size];
   const p = pad(size);
-  const accentColor = accent || "#C8102E";
-
+  const accentColor = accent || ACCENT_SLOTS[0].accent;
   const badge = slideLabel || (slideNum != null ? `${String(slideNum).padStart(2, "0")}` : null);
   const fsNugget = size === "9:16" ? 52 : size === "4:5" ? 46 : 40;
   const slideNumDisplay = slideLabel?.replace(/[^0-9]/g, '') || (slideNum != null ? String(slideNum) : null);
@@ -1023,7 +1037,7 @@ function ValueSlide({ campaign, photo, headline, body, nugget, slideNum, slideLa
 
   // ── layout: stat ──────────────────────────────────────────
   if (layout === "stat") {
-    const fsStat      = size === "9:16" ? 370 : size === "4:5" ? 330 : 280;
+    const fsStat      = size === "9:16" ? 520 : size === "4:5" ? 480 : 400;
     const fsStatLabel = size === "9:16" ? 30  : size === "4:5" ? 26  : 22;
     const fsStatBody  = size === "9:16" ? 46  : size === "4:5" ? 42  : 36;
     return (
@@ -1132,7 +1146,7 @@ function ValueSlide({ campaign, photo, headline, body, nugget, slideNum, slideLa
 function CompareSlide({ campaign, photoLeft, photoRight, labelLeft, labelRight, textLeft, textRight, headline, nugget, variant = "a", size = "4:5", accent }) {
   const { cls } = SIZES[size];
   const p = pad(size);
-  const accentColor = accent || "#C8102E";
+  const accentColor = accent || ACCENT_SLOTS[0].accent;
 
   const WRONG = "#C8102E";
   const RIGHT = "#22c55e";
@@ -1297,8 +1311,7 @@ function CompareSlide({ campaign, photoLeft, photoRight, labelLeft, labelRight, 
 function CarouselCTA({ campaign, photo, headline, subhead, variant = "a", size = "4:5", accent, headlineFontScale = 1, cta, photoEffect }) {
   const { cls } = SIZES[size];
   const p = pad(size);
-  const accentColor = accent || "#C8102E";
-
+  const accentColor = accent || ACCENT_SLOTS[0].accent;
   const ctaAction = cta?.action || "Book a Free Intro";
   const ctaDetail = cta?.detail || "Link in bio · @crossfitotl";
   const hook      = headline   || "WANT IN?";
