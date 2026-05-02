@@ -983,202 +983,142 @@ function HookSlide({ campaign, photo, headline, curiosity, variant = "a", size =
 
 // ─────────────────────────────────────────────────────────────
 // 11. VALUE SLIDE — Carousel slides 2–N
-//     One clear point per slide. Numbered badge. One-liner nugget at bottom.
-//     Variant A: photo top, text bottom. Variant B: type-dominant (no photo).
+//     Type-dominant only — no photos on value slides (photo budget rule).
+//     Four layout options for typographic variety across a carousel.
+//
+//     layout: "headline" — big centered statement, optional nugget
+//     layout: "stat"     — massive number + label + body explanation
+//     layout: "list"     — numbered list (2–4 items) with body per item
+//     layout: "quote"    — italic pull quote + attribution
+//
+//     All layouts share the same dark frame: diagonal gradient bg,
+//     red left rail, ghost slide number, OTL lockup, badge.
 // ─────────────────────────────────────────────────────────────
 
-function ValueSlide({ campaign, photo, headline, body, nugget, slideNum, slideLabel, variant = "a", size = "4:5", accent, headlineFontScale = 1, photoEffect, subheadStyle = "solid" }) {
+function ValueSlide({ campaign, photo, headline, body, nugget, slideNum, slideLabel, variant = "b", size = "4:5", accent, headlineFontScale = 1, subheadStyle = "solid", layout = "headline", stat, statLabel, listItems, quote, attribution }) {
   const { cls } = SIZES[size];
   const p = pad(size);
   const accentColor = accent || "#C8102E";
 
   const badge = slideLabel || (slideNum != null ? `${String(slideNum).padStart(2, "0")}` : null);
-  // Headlines: 96px ≈ 35pt on mobile — bold and readable
-  const fsHeadline = (size === "9:16" ? 108 : size === "4:5" ? 96 : 80) * headlineFontScale;
-  // Body text: 52px ≈ 19pt on mobile — minimum comfortable reading size
-  const fsBody = size === "9:16" ? 52 : size === "4:5" ? 48 : 42;
-  // Nugget: 58px ≈ 21pt — the save-worthy sentence, must hit hard
-  const fsNugget = size === "9:16" ? 58 : size === "4:5" ? 52 : 44;
+  const fsNugget = size === "9:16" ? 52 : size === "4:5" ? 46 : 40;
+  const slideNumDisplay = slideLabel?.replace(/[^0-9]/g, '') || (slideNum != null ? String(slideNum) : null);
 
-  if (variant === "b") {
-    const fsTypeDom = (size === "9:16" ? 138 : size === "4:5" ? 118 : 100) * headlineFontScale;
-    const slideNumDisplay = slideLabel?.replace(/[^0-9]/g, '') || (slideNum != null ? String(slideNum) : null);
+  // ── Shared dark frame ──────────────────────────────────────
+  const frame = (
+    <React.Fragment>
+      <div style={{ position: "absolute", inset: 0, zIndex: 0, background: "linear-gradient(145deg, #0e0e0e 0%, #070707 100%)" }}></div>
+      <div style={{ position: "absolute", inset: 0, zIndex: 0, pointerEvents: "none", background: `radial-gradient(ellipse 55% 55% at 0% 100%, ${accentColor}18 0%, transparent 68%)` }}></div>
+      <div className="tpl-grain tpl-grain--heavy"></div>
+      {slideNumDisplay && (
+        <div style={{ position: "absolute", right: -15, bottom: -25, zIndex: 1, fontFamily: "var(--font-display)", fontWeight: 400, fontSize: size === "4:5" ? 560 : 640, lineHeight: 1, color: "rgba(255,255,255,0.055)", userSelect: "none", letterSpacing: -15 }}>{slideNumDisplay}</div>
+      )}
+      <div style={{ position: "absolute", top: 0, left: 0, bottom: 0, width: 8, background: accentColor, zIndex: 5, boxShadow: `6px 0 32px ${accentColor}55` }}></div>
+      <div style={{ position: "absolute", top: p.y, left: p.x + 24, right: p.x, zIndex: 10, display: "flex", justifyContent: "space-between", alignItems: "flex-start" }}>
+        <OTLLockup variant="white" size={28} />
+        {badge && <span style={{ fontFamily: "Inter, Helvetica, sans-serif", fontWeight: 800, fontSize: 11, letterSpacing: 4, textTransform: "uppercase", color: accentColor }}>{badge}</span>}
+      </div>
+    </React.Fragment>
+  );
+
+  // ── layout: stat ──────────────────────────────────────────
+  if (layout === "stat") {
+    const fsStat      = size === "9:16" ? 370 : size === "4:5" ? 330 : 280;
+    const fsStatLabel = size === "9:16" ? 30  : size === "4:5" ? 26  : 22;
+    const fsStatBody  = size === "9:16" ? 46  : size === "4:5" ? 42  : 36;
     return (
-      <div className={`tpl ${cls}`} data-template="value-slide" data-variant="b">
-        {/* Layered dark background — subtle diagonal gradient + red bloom from rail corner */}
-        <div style={{
-          position: "absolute", inset: 0, zIndex: 0,
-          background: "linear-gradient(145deg, #0e0e0e 0%, #070707 100%)"
-        }}></div>
-        <div style={{
-          position: "absolute", inset: 0, zIndex: 0, pointerEvents: "none",
-          background: `radial-gradient(ellipse 55% 55% at 0% 100%, ${accentColor}18 0%, transparent 68%)`
-        }}></div>
-        <div className="tpl-grain tpl-grain--heavy"></div>
-
-        {/* Ghost number — large, slightly more visible, anchored bottom-right */}
-        {slideNumDisplay && (
-          <div style={{
-            position: "absolute", right: -15, bottom: -25, zIndex: 1,
-            fontFamily: "var(--font-display)", fontWeight: 400,
-            fontSize: size === "4:5" ? 560 : 640, lineHeight: 1,
-            color: "rgba(255,255,255,0.055)", userSelect: "none",
-            letterSpacing: -15
-          }}>{slideNumDisplay}</div>
-        )}
-
-        {/* Red left rail — thicker with warm glow */}
-        <div style={{
-          position: "absolute", top: 0, left: 0, bottom: 0,
-          width: 8, background: accentColor, zIndex: 5,
-          boxShadow: `6px 0 32px ${accentColor}55`
-        }}></div>
-
-        {/* Top row: brand mark + badge in accent */}
-        <div style={{
-          position: "absolute", top: p.y, left: p.x + 24, right: p.x, zIndex: 10,
-          display: "flex", justifyContent: "space-between", alignItems: "flex-start"
-        }}>
-          <OTLLockup variant="white" size={28} />
-          {badge && (
-            <span style={{
-              fontFamily: "Inter, Helvetica, sans-serif", fontWeight: 800,
-              fontSize: 11, letterSpacing: 4, textTransform: "uppercase",
-              color: accentColor
-            }}>{badge}</span>
+      <div className={`tpl ${cls}`} data-template="value-slide" data-layout="stat">
+        {frame}
+        <div style={{ position: "absolute", left: p.x + 24, right: p.x, zIndex: 10, top: p.y + 100, display: "flex", flexDirection: "column" }}>
+          {statLabel && (
+            <p style={{ fontFamily: "Inter, Helvetica, sans-serif", fontWeight: 600, fontSize: fsStatLabel, letterSpacing: 5, textTransform: "uppercase", color: "rgba(255,255,255,0.45)", margin: 0, marginBottom: 4 }}>{statLabel}</p>
+          )}
+          <div style={{ fontFamily: "var(--font-display)", fontWeight: 400, fontSize: fsStat, lineHeight: 0.85, color: "#fff" }}>{stat || headline}</div>
+          <div style={{ width: 64, height: 4, background: accentColor, margin: "28px 0 22px" }}></div>
+          {body && (
+            <p style={{ fontFamily: "Inter, Helvetica, sans-serif", fontWeight: 400, fontSize: fsStatBody, color: "rgba(255,255,255,0.82)", margin: 0, lineHeight: 1.42, maxWidth: "90%" }}>{body}</p>
           )}
         </div>
-
-        {/* Main headline — left-aligned, flush against rail */}
-        <div style={{
-          position: "absolute", left: p.x + 24, right: p.x, zIndex: 10,
-          top: "50%", transform: "translateY(-50%)",
-          paddingBottom: nugget ? "15%" : 0
-        }}>
-          <h1 style={{
-            fontFamily: "var(--font-display)", fontWeight: 400,
-            fontSize: fsTypeDom, lineHeight: 0.88, color: "#fff",
-            textTransform: "uppercase", margin: 0
-          }}>
-            {(headline || campaign.statement).split("\n").map((l, i) => {
-              if (i === 0) return <React.Fragment key={i}>{l}</React.Fragment>;
-              const sw = Math.max(2, Math.round(fsTypeDom * 0.028));
-              // Variant B: second line defaults to accent color — use STROKE button to override
-              const effectiveStyle = subheadStyle === "solid" ? "color" : subheadStyle;
-              const lineSty = effectiveStyle === "stroke"
-                ? { WebkitTextStroke: `${sw}px #fff`, color: "transparent" }
-                : effectiveStyle === "color" ? { color: accentColor } : {};
-              return <React.Fragment key={i}><br /><span style={lineSty}>{l}</span></React.Fragment>;
-            })}
-          </h1>
-        </div>
-
-        {/* Nugget — bottom, thicker rule */}
-        {nugget && (
-          <div style={{
-            position: "absolute", bottom: p.y, left: p.x + 24, right: p.x, zIndex: 10
-          }}>
-            <div style={{ width: 48, height: 3, background: accentColor, marginBottom: 16 }}></div>
-            <p style={{
-              fontFamily: "Inter, Helvetica, sans-serif", fontWeight: 700,
-              fontSize: fsNugget, color: "rgba(255,255,255,0.92)", margin: 0, lineHeight: 1.2,
-              textTransform: "uppercase", letterSpacing: 0.5
-            }}>{nugget}</p>
-          </div>
-        )}
       </div>
     );
   }
 
-  // Variant A: photo top half, text bottom half
-  const photoHeight = size === "9:16" ? "52%" : "50%";
-  return (
-    <div className={`tpl ${cls}`} data-template="value-slide" data-variant="a">
-      <div style={{ position: "absolute", inset: 0, background: "#0a0a0a", zIndex: 0 }}></div>
-
-      {/* Photo — top portion */}
-      {photo && (
-        <div style={{
-          position: "absolute", top: 0, left: 0, right: 0,
-          height: photoHeight, overflow: "hidden", zIndex: 1
-        }}>
-          {(photoEffect === "portrait_blur" || photoEffect === "portrait_bw_blur") ? (
-            <PortraitBlurLayer
-              photo={photo} bw={photoEffect === "portrait_bw_blur"}
-              slot="value" coverStyle={{ objectPosition: "top center" }}
-            />
-          ) : (
-            <img src={photo} alt="" style={{ width: "100%", height: "100%", objectFit: "cover", objectPosition: "top center" }} />
+  // ── layout: list ──────────────────────────────────────────
+  if (layout === "list") {
+    const fsListTitle = size === "9:16" ? 68 : size === "4:5" ? 60 : 50;
+    const fsListNum   = size === "9:16" ? 88 : size === "4:5" ? 76 : 64;
+    const fsListItem  = size === "9:16" ? 50 : size === "4:5" ? 44 : 38;
+    const fsListBody  = size === "9:16" ? 34 : size === "4:5" ? 30 : 26;
+    const items = listItems || [];
+    return (
+      <div className={`tpl ${cls}`} data-template="value-slide" data-layout="list">
+        {frame}
+        <div style={{ position: "absolute", left: p.x + 24, right: p.x, zIndex: 10, top: p.y + 100, bottom: p.y }}>
+          {headline && (
+            <h2 style={{ fontFamily: "Inter, Helvetica, sans-serif", fontWeight: 800, fontSize: fsListTitle, lineHeight: 1.0, color: "#fff", textTransform: "uppercase", margin: 0, marginBottom: 32, letterSpacing: -0.5 }}>{headline}</h2>
           )}
-          <div style={{
-            position: "absolute", inset: 0,
-            background: "linear-gradient(180deg, transparent 50%, rgba(10,10,10,1) 100%)"
-          }}></div>
-          {photoEffect === "vignette" && (
-            <div style={{
-              position: "absolute", inset: 0, pointerEvents: "none",
-              background: "radial-gradient(ellipse at 50% 40%, transparent 25%, rgba(0,0,0,0.6) 100%)"
-            }} />
-          )}
-        </div>
-      )}
-
-      {/* Brand mark — top-left over photo */}
-      <div style={{ position: "absolute", top: p.y, left: p.x, zIndex: 10 }}>
-        <OTLLockup variant="white" size={26} />
-      </div>
-
-      {/* Badge — top-right */}
-      {badge && (
-        <div style={{ position: "absolute", top: p.y, right: p.x, zIndex: 10 }}>
-          <span style={{
-            fontFamily: "Inter, Helvetica, sans-serif", fontWeight: 800,
-            fontSize: 13, letterSpacing: 4, textTransform: "uppercase",
-            color: accentColor
-          }}>{badge}</span>
-        </div>
-      )}
-
-      {/* Text content — bottom half */}
-      <div style={{
-        position: "absolute", bottom: 0, left: 0, right: 0,
-        padding: `${p.y * 0.6}px ${p.x}px ${p.y}px`,
-        zIndex: 10, display: "flex", flexDirection: "column", gap: 16
-      }}>
-        {headline && (
-          <h2 style={{
-            fontFamily: "var(--font-display)", fontWeight: 400,
-            fontSize: fsHeadline, lineHeight: 0.93, color: "#fff",
-            textTransform: "uppercase", margin: 0
-          }}>
-            {headline.split("\n").map((l, i) => {
-              if (i === 0) return <React.Fragment key={i}>{l}</React.Fragment>;
-              const sw = Math.max(2, Math.round(fsHeadline * 0.028));
-              const lineSty = subheadStyle === "stroke"
-                ? { WebkitTextStroke: `${sw}px #fff`, color: "transparent" }
-                : subheadStyle === "color" ? { color: accentColor } : {};
-              return <React.Fragment key={i}><br /><span style={lineSty}>{l}</span></React.Fragment>;
-            })}
-          </h2>
-        )}
-        {body && (
-          <p style={{
-            fontFamily: "Inter, Helvetica, sans-serif", fontWeight: 400,
-            fontSize: fsBody, color: "rgba(255,255,255,0.75)",
-            margin: 0, lineHeight: 1.45, maxWidth: "92%"
-          }}>{body}</p>
-        )}
-        {nugget && (
-          <div style={{ marginTop: 8 }}>
-            <div style={{ width: 32, height: 2, background: accentColor, marginBottom: 10 }}></div>
-            <p style={{
-              fontFamily: "Inter, Helvetica, sans-serif", fontWeight: 700,
-              fontSize: fsNugget, color: "#fff", margin: 0, lineHeight: 1.2,
-              textTransform: "uppercase", letterSpacing: 0.5
-            }}>{nugget}</p>
+          <div style={{ display: "flex", flexDirection: "column" }}>
+            {items.map((item, i) => (
+              <div key={i} style={{ display: "grid", gridTemplateColumns: `${Math.round(fsListNum * 0.65)}px 1fr`, gap: 18, paddingBottom: 22, marginBottom: 22, borderBottom: i < items.length - 1 ? "1px solid rgba(255,255,255,0.1)" : "none", alignItems: "flex-start" }}>
+                <div style={{ fontFamily: "var(--font-display)", fontWeight: 400, fontSize: fsListNum, lineHeight: 0.85, color: accentColor }}>{String(i + 1).padStart(2, "0")}</div>
+                <div>
+                  <p style={{ fontFamily: "Inter, Helvetica, sans-serif", fontWeight: 700, fontSize: fsListItem, color: "#fff", margin: 0, lineHeight: 1.1, textTransform: "uppercase" }}>{item.text || item}</p>
+                  {item.body && <p style={{ fontFamily: "Inter, Helvetica, sans-serif", fontWeight: 400, fontSize: fsListBody, color: "rgba(255,255,255,0.62)", margin: 0, marginTop: 7, lineHeight: 1.38 }}>{item.body}</p>}
+                </div>
+              </div>
+            ))}
           </div>
-        )}
+        </div>
       </div>
+    );
+  }
+
+  // ── layout: quote ─────────────────────────────────────────
+  if (layout === "quote") {
+    const fsQuoteMark = size === "4:5" ? 220 : 260;
+    const fsQuote     = size === "9:16" ? 74 : size === "4:5" ? 66 : 56;
+    const fsAttrib    = size === "9:16" ? 28 : size === "4:5" ? 24 : 20;
+    return (
+      <div className={`tpl ${cls}`} data-template="value-slide" data-layout="quote">
+        {frame}
+        <div style={{ position: "absolute", left: p.x + 24, right: p.x, zIndex: 10, top: "50%", transform: "translateY(-52%)", display: "flex", flexDirection: "column", gap: 20 }}>
+          <div style={{ fontFamily: "var(--font-display)", fontSize: fsQuoteMark, lineHeight: 0.55, color: accentColor, opacity: 0.45, userSelect: "none" }}>"</div>
+          <p style={{ fontFamily: "Inter, Helvetica, sans-serif", fontWeight: 500, fontStyle: "italic", fontSize: fsQuote, color: "#fff", margin: 0, lineHeight: 1.32, maxWidth: "94%" }}>{quote || headline}</p>
+          {attribution && (
+            <div style={{ display: "flex", alignItems: "center", gap: 16, marginTop: 8 }}>
+              <div style={{ width: 40, height: 2, background: accentColor }}></div>
+              <p style={{ fontFamily: "Inter, Helvetica, sans-serif", fontWeight: 700, fontSize: fsAttrib, letterSpacing: 4, textTransform: "uppercase", color: accentColor, margin: 0 }}>{attribution}</p>
+            </div>
+          )}
+        </div>
+      </div>
+    );
+  }
+
+  // ── layout: headline (default) ────────────────────────────
+  const fsTypeDom = (size === "9:16" ? 138 : size === "4:5" ? 118 : 100) * headlineFontScale;
+  return (
+    <div className={`tpl ${cls}`} data-template="value-slide" data-layout="headline">
+      {frame}
+      <div style={{ position: "absolute", left: p.x + 24, right: p.x, zIndex: 10, top: "50%", transform: "translateY(-50%)", paddingBottom: nugget ? "15%" : 0 }}>
+        <h1 style={{ fontFamily: "var(--font-display)", fontWeight: 400, fontSize: fsTypeDom, lineHeight: 0.88, color: "#fff", textTransform: "uppercase", margin: 0 }}>
+          {(headline || campaign.statement).split("\n").map((l, i) => {
+            if (i === 0) return <React.Fragment key={i}>{l}</React.Fragment>;
+            const sw = Math.max(2, Math.round(fsTypeDom * 0.028));
+            const effectiveStyle = subheadStyle === "solid" ? "color" : subheadStyle;
+            const lineSty = effectiveStyle === "stroke"
+              ? { WebkitTextStroke: `${sw}px #fff`, color: "transparent" }
+              : effectiveStyle === "color" ? { color: accentColor } : {};
+            return <React.Fragment key={i}><br /><span style={lineSty}>{l}</span></React.Fragment>;
+          })}
+        </h1>
+      </div>
+      {nugget && (
+        <div style={{ position: "absolute", bottom: p.y, left: p.x + 24, right: p.x, zIndex: 10 }}>
+          <div style={{ width: 48, height: 3, background: accentColor, marginBottom: 16 }}></div>
+          <p style={{ fontFamily: "Inter, Helvetica, sans-serif", fontWeight: 700, fontSize: fsNugget, color: "rgba(255,255,255,0.92)", margin: 0, lineHeight: 1.2, textTransform: "uppercase", letterSpacing: 0.5 }}>{nugget}</p>
+        </div>
+      )}
     </div>
   );
 }

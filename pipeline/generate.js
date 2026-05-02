@@ -134,9 +134,23 @@ CREATIVE LENSES — YOU MUST CHOOSE ONE:
 5. THE TRANSLATION — Take what happens in the gym. Show what it prepares you for outside it.
 
 SLIDE STRUCTURE — 5 slides total:
-- Slide 1 (HookSlide): Stop the scroll. One bold claim. Short. The kind of thing that makes someone pause mid-swipe.
-- Slides 2–4 (ValueSlide): One true thing per slide. Use variant "a" (photo + text) for at least 2 of the 3 value slides. Variant "b" (type-dominant, NO photo) for at most 1 slide — only when the headline is strong enough to own the full frame with zero visual support. Each slide stands alone.
-- Slide 5 (CarouselCTA): Always last. Photo required. CTA feels earned — tied to the post's argument.
+- Slide 1 (HookSlide): Stop the scroll. One bold claim. Photo required (pipeline assigns). Short. The kind of thing that makes someone pause mid-swipe.
+- Slides 2–4 (ValueSlide): One true thing per slide. NO PHOTOS — all value slides are type-dominant. Vary the layout across the 3 slides — never use the same layout twice in a row. Choose from 4 layout types (see below).
+- Slide 5 (CarouselCTA): Always last. Photo required (pipeline assigns). CTA feels earned — tied to the post's argument.
+
+VALUE SLIDE LAYOUT TYPES — use variety across slides 2, 3, 4:
+
+"headline" — big centered statement (best for bold claims):
+  Fields: layout, slideLabel, headline (use \\n for a second line in different color), nugget (bold save-worthy one-liner)
+
+"stat" — huge number dominates the frame (best when you have a concrete number):
+  Fields: layout, slideLabel, stat (the number — e.g. "85%", "3X", "21"), statLabel (small label above — e.g. "OF ATHLETES"), body (2–3 sentences explaining the stat)
+
+"list" — numbered breakdown 2–4 items (best for principles/steps):
+  Fields: layout, slideLabel, headline (the list title — e.g. "3 REASONS IT WORKS"), listItems (array of {text, body} — text is the item name ALL CAPS, body is 1-sentence explanation)
+
+"quote" — large italic pull quote (best for coach wisdom or research quotes):
+  Fields: layout, slideLabel, quote (the full quote, no quotation marks), attribution (name/source in small caps)
 
 WHAT A GREAT HOOK HEADLINE LOOKS LIKE:
 ✓ "RANDOM IS NOT A PROGRAM"
@@ -153,9 +167,9 @@ The post should make a 42-year-old parent who did the 6am class think: "I've fel
 Generate an Instagram carousel post. Return valid JSON only — no markdown, no commentary.
 
 TEMPLATE REFERENCE:
-- "HookSlide": full-bleed photo, bold hook. Fields: template, photo (null — pipeline assigns), headline, curiosity (short teaser line above headline), campaign
-- "ValueSlide": variant "a" = photo top + text bottom; variant "b" = type-dominant, NO photo, pure text. Fields: template, variant, slideLabel (e.g. "TRUTH 01"), headline, body (2-3 sentences), nugget (bold one-liner at bottom), photo (null for variant b, null for a — pipeline assigns), campaign
-- "CarouselCTA": last slide, photo required. Fields: template, headline, cta: {action, detail}, photo (null — pipeline assigns), campaign
+- "HookSlide": Fields: template, photo (null — pipeline assigns), headline, curiosity (short teaser line above headline), campaign
+- "ValueSlide": Fields: template, layout (headline|stat|list|quote), slideLabel, photo (always null), campaign, plus layout-specific fields above
+- "CarouselCTA": Fields: template, headline, cta: {action, detail}, photo (null — pipeline assigns), campaign
 
 Do NOT include "size" — defaults to "4:5".
 Do NOT put photo paths — leave photo as null on every slide. Pipeline assigns real photos automatically.
@@ -216,14 +230,15 @@ CAROUSEL ASOP — FOLLOW THESE RULES:
    - The contrarian hook outperforms the instructional hook every time.
    - Examples of strong hooks: "MOST PEOPLE QUIT IN 90 DAYS." / "YOUR GYM IS LYING TO YOU." / "RANDOM IS NOT A PROGRAM."
 
-2. Slides 2–N are ValueSlides. One thing per slide. Numbered badge. One-liner nugget at bottom.
-   - headline: the slide's single claim (short, ALL CAPS)
-   - body: one to two sentences expanding the claim. Plain. Sounds like a coach.
-   - nugget: the save-worthy one-liner at the bottom. Bold. Memorable. ≤10 words.
-   - slideLabel: "SHIFT 01", "RULE 01", "REASON 01", etc. — consistent with the post's frame
-   - variant "a" uses photo + text layout (use this for the MAJORITY of value slides).
-   - variant "b" is type-dominant (oversized headline, no photo) — use for ONE slide maximum, when the headline is so strong it needs no visual support.
-   - Default to "a" unless the slide's single claim is so punchy it carries the whole frame alone.
+2. Slides 2–N are ValueSlides. One thing per slide. NO PHOTOS — all value slides are type-dominant. Use the layout field to vary the visual treatment across slides. Never use the same layout on consecutive slides.
+
+   LAYOUT OPTIONS:
+   - "headline": big centered statement. Fields: headline (use \\n for second line in accent), nugget (save-worthy one-liner ≤10 words)
+   - "stat": massive number dominates frame. Fields: stat (the number — "85%", "3X", "21 DAYS"), statLabel (small label above — "OF MEMBERS", "FASTER RECOVERY"), body (2-3 sentences)
+   - "list": numbered breakdown. Fields: headline (list title ALL CAPS), listItems [{text: "ITEM NAME", body: "one sentence"}] (2–4 items)
+   - "quote": italic pull quote. Fields: quote (full quote text), attribution (name/source)
+
+   slideLabel: "SHIFT 01", "RULE 01", "REASON 01" — consistent with the post's frame.
 
 3. Last slide is CarouselCTA. Always. Fixed structure every carousel.
    - headline: optional, ties back to the post theme
@@ -580,8 +595,8 @@ async function main() {
 
   for (const slide of post.slides) {
     if (!PHOTO_TEMPLATES.has(slide.template) || slide.photo) continue;
-    // ValueSlide variant "b" is type-dominant — no photo needed
-    if (slide.template === 'ValueSlide' && slide.variant === 'b') continue;
+    // ValueSlides are type-dominant only — no photos (photo budget rule)
+    if (slide.template === 'ValueSlide') continue;
 
     // Hook/CTA slides: need high-quality intensity shot regardless of text theme
     const isHero = slide.template === 'HookSlide' || slide.template === 'CarouselCTA';
