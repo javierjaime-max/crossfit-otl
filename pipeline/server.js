@@ -58,6 +58,19 @@ const SUPABASE_URL = dotenvVars.SUPABASE_URL || '';
 const SUPABASE_KEY = dotenvVars.SUPABASE_ANON_KEY || '';
 const supabase = SUPABASE_URL && SUPABASE_KEY ? createClient(SUPABASE_URL, SUPABASE_KEY) : null;
 
+// ── Supabase client (LOS project — scheduled_posts) ──────────
+const LOS_ENV_PATH = '/Users/javierjaimemini/Library/CloudStorage/OneDrive-OnTheLineFitness/L·OS/los-library/04_content_matrix/pipeline/.env';
+const losEnv = existsSync(LOS_ENV_PATH)
+  ? Object.fromEntries(
+      readFileSync(LOS_ENV_PATH, 'utf8').split('\n')
+        .map(l => l.trim()).filter(l => l && !l.startsWith('#'))
+        .map(l => { const i = l.indexOf('='); return [l.slice(0,i).trim(), l.slice(i+1).trim()]; })
+    )
+  : {};
+const losSupabase = losEnv.SUPABASE_URL && losEnv.SUPABASE_SERVICE_ROLE_KEY
+  ? createClient(losEnv.SUPABASE_URL, losEnv.SUPABASE_SERVICE_ROLE_KEY)
+  : null;
+
 // ── Slide helpers ─────────────────────────────────────────────
 function resolvePhoto(photo) {
   if (!photo) return undefined;
@@ -341,8 +354,8 @@ function buildQueueHtml(posts, ship = 'otl') {
     ${!isPosted ? `<button class="cancel-btn" onclick="cancelPost('${date}','${slug}',this)" title="Remove">✕</button>` : ''}
   </div>
 
-  <!-- Per-slide toolbar — updates as you navigate slides -->
-  <div class="slide-bar" id="sbar-${date}-${slug}"
+  <!-- Per-slide toolbar — OTL only, hidden for LOS -->
+  <div class="slide-bar ${isLOS ? 'sbar-hidden' : ''}" id="sbar-${date}-${slug}"
        data-ovl-opacities='${JSON.stringify(slideOverlayOpacities)}'
        data-effects='${JSON.stringify(slideEffects)}'>
     <span class="sbar-num">Slide 1</span>
@@ -391,11 +404,11 @@ function buildQueueHtml(posts, ship = 'otl') {
     </div>
   </div>
   <!-- Image direction input -->
-  <div class="img-dir-row" id="imgdir-${date}-${slug}">
+  <div class="img-dir-row ${isLOS ? 'sbar-hidden' : ''}" id="imgdir-${date}-${slug}">
     <input class="img-dir-input" id="imgdir-txt-${date}-${slug}"
       type="text" placeholder="Image direction (optional) — e.g. 'surgical tools on dark surface' or 'empty gym at dawn'">
   </div>
-  <!-- Per-slide text editor -->
+  <!-- Per-slide text editor (OTL only) -->
   <div class="slide-edit-row" id="sedit-${date}-${slug}" style="display:none">
     <div class="sedit-field">
       <label class="sedit-lbl">Headline</label>
@@ -411,7 +424,7 @@ function buildQueueHtml(posts, ship = 'otl') {
     </div>
   </div>
   <!-- Per-slide rework instruction -->
-  <div class="slide-rework-row" id="srw-${date}-${slug}">
+  <div class="slide-rework-row ${isLOS ? 'sbar-hidden' : ''}" id="srw-${date}-${slug}">
     <textarea class="rework-box" id="srw-txt-${date}-${slug}"
       placeholder="Rework this slide — e.g. 'stronger headline' or 'focus on Deanie's surgery story'"></textarea>
     <button class="btn-rework" onclick="reworkSlide('${date}','${slug}',this)">Rework slide →</button>
@@ -440,10 +453,10 @@ function buildQueueHtml(posts, ship = 'otl') {
         onblur="saveNotes('${date}','${slug}',this.value)">${esc(notes)}</textarea>
     </div>
 
-    <!-- Per-slide photo picker -->
-    <div class="section-toggle" onclick="toggleSection(this,'photos-${date}-${slug}')">
+    <!-- Per-slide photo picker (OTL only) -->
+    <div class="section-toggle ${isLOS ? 'sbar-hidden' : ''}" onclick="toggleSection(this,'photos-${date}-${slug}')">
       Slide photo +</div>
-    <div class="section photo-grid" id="photos-${date}-${slug}" style="display:none">
+    <div class="section photo-grid ${isLOS ? 'sbar-hidden' : ''}" id="photos-${date}-${slug}" style="${isLOS ? 'display:none' : 'display:none'}">
       <div class="photo-opts" id="photo-opts-${date}-${slug}">${photoOpts.replace(/onclick="setPhoto\(/g, `onclick="setSlidePhoto(`)}</div>
       <div class="upload-row">
         <label class="upload-btn">
@@ -558,6 +571,7 @@ main{padding:24px 28px;max-width:1400px;margin:0 auto}
 .photo-opt:hover{opacity:1;border-color:#555}
 .photo-opt.selected{border-color:#003566;opacity:1}
 .slide-bar{display:flex;align-items:center;gap:7px;padding:7px 13px;background:#0d0d0d;border-bottom:1px solid #1a1a1a;flex-wrap:wrap}
+.sbar-hidden{display:none!important}
 .sbar-num{font-size:10px;font-weight:700;color:#555;text-transform:uppercase;letter-spacing:.08em;white-space:nowrap}
 .sbar-tmpl{font-size:9px;color:#333;letter-spacing:.06em;flex:1}
 .sbar-actions{display:flex;gap:5px;margin-left:auto}
@@ -679,6 +693,7 @@ footer{text-align:center;padding:40px;color:#1e1e1e;font-size:10px}
   <div class="ship-selector">
     <button class="ship-btn ${ship === 'otl' ? 'active-otl' : ''}" onclick="location.href='/?ship=otl'">OTL</button>
     <button class="ship-btn ${ship === 'los' ? 'active-los' : ''}" onclick="location.href='/?ship=los'">LOS</button>
+    <button class="ship-btn" onclick="location.href='/scheduled'" style="border-color:#10B98144;color:#10B981">Queue</button>
   </div>
   <div class="logo"><span>${shipCfg.handle}</span> Post Queue</div>
   <div class="stats">
@@ -690,12 +705,19 @@ footer{text-align:center;padding:40px;color:#1e1e1e;font-size:10px}
   </div>
   <div class="filters">
     <button class="fb on" onclick="filter('all',this)">All</button>
-    <button class="fb" onclick="filter('edu',this)">Educational</button>
-    <button class="fb" onclick="filter('camp',this)">Campaign</button>
+    ${ship === 'los' ? `
+      <button class="fb" onclick="filter('short',this)">Short</button>
+      <button class="fb" onclick="filter('depth',this)">Depth</button>
+      <button class="fb" onclick="filter('gap',this)">Gap</button>
+    ` : `
+      <button class="fb" onclick="filter('edu',this)">Educational</button>
+      <button class="fb" onclick="filter('camp',this)">Campaign</button>
+    `}
     <button class="fb" onclick="filter('staged',this)">Staged</button>
     <button class="fb" onclick="filter('rendered',this)">Rendered</button>
     <button class="fb" onclick="filter('approved',this)">Approved</button>
     <button class="fb" onclick="filter('posted',this)">Posted</button>
+    ${ship === 'otl' ? `
     <div style="position:relative;margin-left:8px">
       <button class="new-post-btn" onclick="toggleNewPost(this)">+ New Post</button>
       <div class="new-post-panel" id="new-post-panel">
@@ -730,6 +752,7 @@ footer{text-align:center;padding:40px;color:#1e1e1e;font-size:10px}
         <div class="job-status" id="np-status"></div>
       </div>
     </div>
+    ` : ''}
   </div>
 </header>
 
@@ -754,7 +777,9 @@ function filter(type, btn) {
       type === 'posted'   ? !!c.querySelector('.badge.posted') :
       type === 'approved' ? !!c.querySelector('.badge.approved') :
       type === 'rendered' ? !!c.querySelector('.badge.rendered') :
-      type === 'staged'   ? !!c.querySelector('.badge.staged') : true;
+      type === 'staged'   ? !!c.querySelector('.badge.staged') :
+      // LOS format filters — match badge text
+      ['short','depth','gap'].includes(type) ? !![...c.querySelectorAll('.badge.los-fmt')].find(b => b.textContent.trim().toLowerCase() === type) : true;
     c.style.display = show ? '' : 'none';
   });
 }
@@ -2057,6 +2082,142 @@ Return ONLY the replacement slide as valid JSON. No markdown. No explanation. No
     writeMeta(dir, { ...meta, status: 'approved', scheduledAt, queueId: row.id, queuedAt: new Date().toISOString() });
 
     return jsonResp(res, { ok: true, queueId: row.id, scheduledAt, cloudinaryUrls });
+  }
+
+  // ── LOS Scheduled Queue (Supabase) ───────────────────────────
+  if (path === '/scheduled' && method === 'GET') {
+    if (!losSupabase) {
+      res.writeHead(500); res.end('LOS Supabase not configured'); return;
+    }
+    const { data: posts } = await losSupabase
+      .from('scheduled_posts')
+      .select('id, scheduled_at, cloudinary_urls, caption')
+      .eq('status', 'pending')
+      .order('scheduled_at', { ascending: true });
+
+    const CDT = { timeZone: 'America/Chicago' };
+    const grouped = {};
+    for (const p of (posts || [])) {
+      const day = new Date(p.scheduled_at).toLocaleDateString('en-US',
+        { ...CDT, weekday: 'long', month: 'long', day: 'numeric' });
+      (grouped[day] = grouped[day] || []).push(p);
+    }
+
+    const esc = s => String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+    const dayHtml = Object.entries(grouped).map(([day, items]) => {
+      const cards = items.map(p => {
+        const hr = new Date(p.scheduled_at).getHours();
+        const time = new Date(p.scheduled_at).toLocaleTimeString('en-US',
+          { ...CDT, hour: '2-digit', minute: '2-digit' });
+        const slot = hr < 11 ? ['MORNING · 9AM','#F59E0B','#1a1200']
+                   : hr < 15 ? ['MIDDAY · 1PM','#6366F1','#0d0d1a']
+                              : ['EVENING · 6PM','#10B981','#001a0d'];
+        const imgs = (p.cloudinary_urls || []).slice(0, 10);
+        const strip = imgs.map((u,i) =>
+          `<img class="sthumb${i===0?' on':''}" src="${esc(u)}" loading="lazy" onclick="pick(this,${i})">`
+        ).join('');
+        const cap = esc((p.caption || '').slice(0, 160));
+        return `<div class="sc" id="sc-${esc(p.id)}">
+  <div class="sc-head">
+    <span class="slot" style="color:${slot[1]};background:${slot[2]}">${slot[0]}</span>
+    <span class="sc-time">${time}</span>
+    <button class="sc-del" onclick="del('${esc(p.id)}',this)">✕</button>
+  </div>
+  <div class="sv">
+    <div class="smain"><img class="sbig" src="${esc(imgs[0]||'')}">
+      ${imgs.length>1?`<button class="sn sl" onclick="step(this,-1)">❮</button><button class="sn sr" onclick="step(this,1)">❯</button><span class="scnt">1/${imgs.length}</span>`:''}
+    </div>
+    ${imgs.length>1?`<div class="ss">${strip}</div>`:''}
+  </div>
+  <div class="sc-cap">${cap}${(p.caption||'').length>160?'…':''}</div>
+</div>`;
+      }).join('');
+      return `<div class="dg"><div class="dl">${esc(day)}</div><div class="dc">${cards}</div></div>`;
+    }).join('');
+
+    res.writeHead(200, { 'Content-Type': 'text/html' });
+    res.end(`<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>LOS · Scheduled Queue</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:#0a0a0a;color:#ddd;font-family:-apple-system,BlinkMacSystemFont,sans-serif}
+header{background:#111;border-bottom:1px solid #1e1e1e;padding:14px 24px;display:flex;align-items:center;gap:12px;position:sticky;top:0;z-index:9}
+.logo{font-size:14px;font-weight:700;color:#fff}.logo em{color:#10B981;font-style:normal}
+nav{display:flex;gap:4px;margin-left:auto}
+.nb{background:#161616;border:1px solid #252525;color:#666;padding:5px 13px;border-radius:4px;font-size:10px;text-transform:uppercase;letter-spacing:.08em;cursor:pointer;text-decoration:none;transition:.15s}
+.nb:hover{color:#ccc}.nb.on{background:#10B981;border-color:#10B981;color:#fff}
+.cnt{background:#10B981;color:#fff;font-size:9px;font-weight:700;padding:1px 6px;border-radius:99px;margin-left:6px}
+main{padding:24px;max-width:1100px;margin:0 auto}
+.empty{text-align:center;padding:80px;color:#333;font-size:13px}
+.dg{margin-bottom:32px}
+.dl{font-size:10px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:#333;border-bottom:1px solid #181818;padding-bottom:8px;margin-bottom:14px}
+.dc{display:grid;grid-template-columns:repeat(auto-fill,minmax(270px,1fr));gap:14px}
+.sc{background:#111;border:1px solid #1e1e1e;border-radius:8px;overflow:hidden}
+.sc-head{display:flex;align-items:center;gap:8px;padding:9px 11px;border-bottom:1px solid #161616}
+.slot{font-size:8px;font-weight:700;letter-spacing:.1em;padding:2px 7px;border-radius:3px}
+.sc-time{font-size:10px;color:#444;margin-left:auto}
+.sc-del{background:none;border:none;color:#2a2a2a;font-size:13px;cursor:pointer;padding:0 3px;border-radius:3px;line-height:1;transition:.15s}
+.sc-del:hover{color:#cc4444;background:#1a0808}
+.sv{position:relative}
+.smain{position:relative;aspect-ratio:4/5;background:#0d0d0d;overflow:hidden}
+.sbig{width:100%;height:100%;object-fit:cover;display:block}
+.sn{position:absolute;top:50%;transform:translateY(-50%);background:rgba(0,0,0,.6);border:none;color:#fff;font-size:22px;width:28px;height:44px;cursor:pointer;display:flex;align-items:center;justify-content:center;opacity:0;transition:.15s}
+.smain:hover .sn{opacity:1}.sl{left:0;border-radius:0 4px 4px 0}.sr{right:0;border-radius:4px 0 0 4px}
+.scnt{position:absolute;bottom:6px;right:6px;background:rgba(0,0,0,.8);color:#888;font-size:8px;padding:2px 5px;border-radius:3px;pointer-events:none}
+.ss{display:flex;gap:3px;padding:5px;background:#0d0d0d;overflow-x:auto}
+.ss::-webkit-scrollbar{height:3px}.ss::-webkit-scrollbar-thumb{background:#222;border-radius:3px}
+.sthumb{width:36px;height:45px;object-fit:cover;border-radius:2px;cursor:pointer;opacity:.4;border:1px solid transparent;flex-shrink:0;transition:.12s}
+.sthumb.on{opacity:1;border-color:#10B981}
+.sc-cap{padding:9px 11px;font-size:11px;color:#444;line-height:1.5;border-top:1px solid #141414}
+</style></head><body>
+<header>
+  <div class="logo">Lifestyle <em>OS</em> · Scheduled</div>
+  <nav>
+    <a class="nb" href="/?ship=los">← LOS Posts</a>
+    <a class="nb" href="/?ship=otl">OTL Posts</a>
+    <a class="nb on" href="/scheduled">Queue <span class="cnt">${(posts||[]).length}</span></a>
+  </nav>
+</header>
+<main>${(posts||[]).length === 0
+  ? '<div class="empty">Queue is empty — weekly-cycle.mjs runs every Sunday at noon.</div>'
+  : dayHtml}</main>
+<script>
+function pick(img, idx) {
+  const sv = img.closest('.sv');
+  sv.querySelectorAll('.sthumb').forEach((t,i) => t.classList.toggle('on', i===idx));
+  const big = sv.querySelector('.sbig');
+  if (big) big.src = img.src;
+  const cnt = sv.querySelector('.scnt');
+  if (cnt) cnt.textContent = (idx+1)+'/'+sv.querySelectorAll('.sthumb').length;
+}
+function step(btn, dir) {
+  const sv = btn.closest('.sv');
+  const thumbs = [...sv.querySelectorAll('.sthumb')];
+  const cur = thumbs.findIndex(t => t.classList.contains('on'));
+  const next = Math.max(0, Math.min(thumbs.length-1, cur+dir));
+  pick(thumbs[next], next);
+}
+async function del(id, btn) {
+  if (!confirm('Remove from queue?')) return;
+  btn.disabled = true;
+  const r = await fetch('/api/cancel-scheduled', {
+    method:'POST', headers:{'content-type':'application/json'},
+    body: JSON.stringify({id})
+  });
+  const j = await r.json();
+  if (j.ok) document.getElementById('sc-'+id)?.remove();
+  else { alert('Error: '+j.error); btn.disabled=false; }
+}
+</script></body></html>`);
+    return;
+  }
+
+  if (path === '/api/cancel-scheduled' && method === 'POST') {
+    const { id } = body;
+    if (!losSupabase) return jsonResp(res, { error: 'LOS Supabase not configured' }, 500);
+    const { error } = await losSupabase.from('scheduled_posts').delete().eq('id', id);
+    return jsonResp(res, error ? { ok: false, error: error.message } : { ok: true });
   }
 
   // ── Queue page ───────────────────────────────────────────────
