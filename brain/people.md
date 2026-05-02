@@ -34,9 +34,8 @@ tags:
 - **Background:** Twin sister is Lamar DeOreo (also an OTL coach), who lives across the street. Former VP of Human Resources in healthcare. Left the corporate world to raise the kids. Managed the homeschool curriculum.
 - **Credentials:** CrossFit **L2** ✅ — took L2 with Lamar; a few months before Clay and Nicholas got their L2s.
 - **Fitness origin:** Outdoor boot camp in the driveway → CrossFit (joined after the gym opened, not a member before)
-- **The moment:** After a family photo they both looked at each other and said "we're not in good shape." Deanie went to boot camp at 5am in parking lots regardless of weather — Javier had never seen her commit to anything physically like that.
-- **Health transformation:** Had GERD, skin problems, headaches post-pregnancy for years. Was scheduled for throat surgery. Went Paleo with Javier → symptoms cleared within days → surgery cancelled.
 - **Personality:** "The most excellent manager in the world." Cold-hardened when needed. Said "you're fat" to Javier at the gate — changed the course of history.
+- **⚠️ CONTENT RULE:** Do NOT use Deanie's personal health history (GERD, surgery, health transformation) in any Instagram content. This is private. Do not reference it, allude to it, or use it as an example angle under any circumstances.
 
 ---
 

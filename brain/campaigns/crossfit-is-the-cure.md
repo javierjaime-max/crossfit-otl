@@ -89,7 +89,28 @@ We're open to all, but earned by few. Being a CrossFit athlete is a badge of hon
 
 - Javier's CCFT credential depth as "holding the standard" in DFW
 - InBody scan data as measurable outcomes — the prevention story made concrete
-- Members who came in on GLP-1s or post-surgery — CrossFit as the real cure
+- Members who came in on GLP-1s or after chronic disease diagnosis — CrossFit as the real cure
 - Coach Nicholas, Ava, Clay, Isabel — mic them mid-class, squat cues, standard enforcement
 - NRH community diversity — the "for anyone, not everyone" story is our roster
 - Debunk "CrossFit is dangerous" with our coaching standards and L1/CCFT credentials
+
+## Content Direction — IMPORTANT
+
+**Do NOT use Deanie's personal health history (surgery, GERD, health transformation) — ever.** It is private and off-limits for all content. This is not a "use sparingly" note — do not use it at all.
+
+**This is primarily a conviction campaign, not a story campaign.** Most posts should be bold statements, methodology arguments, or hard truths — not personal narratives. Member stories can appear occasionally as supporting evidence, but they are not the lead.
+
+Generate content that spans the campaign's four themes:
+- Bold anti-pharma statements ("F*CK THE QUICK FIX" energy — institutional, unapologetic)
+- The methodology argument — why consistent functional movement beats reactive medicine
+- Coaching standard — what L2/CCFT-level coaching actually delivers vs. a Planet Fitness or a pill
+- Community proof — diverse members, ages, backgrounds, all doing hard work
+- Hard truths a parent needs to hear about preventive health
+
+**OTL-specific stories to draw on (rotate these — don't repeat):**
+- Javier as founder and the reason he built OTL (origin story)
+- InBody scan outcomes — real data, real change
+- The $180 flat rate as a statement against "wellness upsell" culture
+- The 30 founding members from the garage gym — community earned
+- "You don't need to be fit to start" — but you do need to be willing
+- Coach credentials: CCFT path, L2 team — standard is the standard
