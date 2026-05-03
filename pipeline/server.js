@@ -2229,7 +2229,7 @@ async function submitUploadModal() {
 
 // ── One-click approve with calendar date ──────────────────────
 async function approveWithCalendarDate(date, slug, scheduledAt) {
-  const btn = document.querySelector(`.card[data-date="${date}"][data-slug="${slug}"] .btn-approve`);
+  const btn = document.querySelector('.card[data-date="' + date + '"][data-slug="' + slug + '"] .btn-approve');
   if (btn) { btn.disabled = true; btn.textContent = 'Approving…'; }
   try {
     const res = await fetch('/api/approve-post', {
