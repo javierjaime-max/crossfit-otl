@@ -287,6 +287,271 @@ const ACCENT_SLOTS_SERVER = [
 ];
 
 // ── Queue HTML ────────────────────────────────────────────────
+function buildCalendarHtml() {
+  return `<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>OTL Content Calendar</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:#0a0a0a;color:#e0e0e0;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;min-height:100vh}
+header{background:#111;border-bottom:1px solid #1e1e1e;padding:14px 24px;display:flex;align-items:center;gap:16px;position:sticky;top:0;z-index:20}
+.nav-btn-h{background:#161616;border:1px solid #252525;color:#888;padding:5px 12px;border-radius:4px;font-size:11px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;cursor:pointer;text-decoration:none}
+.nav-btn-h:hover{background:#222;color:#ccc}
+.logo{font-size:13px;font-weight:700;letter-spacing:.06em;color:#fff;text-transform:uppercase}
+.logo span{color:#7eb8ff}
+h1{font-size:13px;font-weight:700;color:#aaa;letter-spacing:.06em;text-transform:uppercase}
+main{padding:24px;max-width:1100px;margin:0 auto}
+.cal-nav{display:flex;align-items:center;gap:12px;margin-bottom:20px}
+.cal-nav button{background:#161616;border:1px solid #252525;color:#aaa;width:30px;height:30px;border-radius:4px;font-size:18px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:.15s}
+.cal-nav button:hover{background:#222;color:#fff}
+.cal-month{font-size:18px;font-weight:700;color:#fff;letter-spacing:.04em;min-width:160px;text-align:center}
+.extend-btn{margin-left:auto;background:#1a0a2e;border:1px solid #7C3AED44;color:#7C3AED;padding:6px 14px;border-radius:4px;font-size:11px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;cursor:pointer;transition:.15s}
+.extend-btn:hover{background:#2d0a52;border-color:#7C3AED}
+.grid-header{display:grid;grid-template-columns:repeat(7,1fr);gap:4px;margin-bottom:4px}
+.grid-header div{text-align:center;font-size:10px;font-weight:700;color:#444;letter-spacing:.08em;text-transform:uppercase;padding:4px}
+.cal-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:4px}
+.cal-day{min-height:88px;background:#111;border:1px solid #1a1a1a;border-radius:6px;padding:8px;cursor:pointer;transition:.15s;position:relative;display:flex;flex-direction:column;gap:4px}
+.cal-day:hover{border-color:#333;background:#161616}
+.cal-day.empty{background:#0a0a0a;border-color:#111;cursor:default}
+.cal-day.today{border-color:#003566}
+.day-num{font-size:11px;font-weight:600;color:#444;text-align:right;line-height:1}
+.day-chip{font-size:9px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;padding:2px 6px;border-radius:3px;line-height:1.4;word-break:break-word;margin-top:2px}
+.day-status{font-size:8px;font-weight:600;letter-spacing:.05em;text-transform:uppercase;padding:2px 5px;border-radius:3px;margin-top:auto;display:inline-flex;align-items:center;gap:3px;align-self:flex-start}
+.ds-staged{color:#666}
+.ds-approved{color:#5599bb}
+.ds-posted{color:#3d883d}
+/* Campaign colors */
+.chip-edu{background:#0d2540;color:#7eb8ff}
+.chip-lifestyle-reset{background:#2d0a52;color:#a78bfa}
+.chip-join-our-culture{background:#062a1a;color:#34d399}
+.chip-forging-elite-fitness{background:#2a1e00;color:#F5C518}
+.chip-crossfit-is-the-cure{background:#2a0808;color:#f87171}
+.chip-this-is-crossfit{background:#2a1000;color:#fb923c}
+.chip-the-crossfit-effect{background:#001a20;color:#22d3ee}
+.chip-share-your-stories{background:#28002a;color:#e879f9}
+.chip-other{background:#1a1a1a;color:#888}
+/* Modal */
+.modal-bg{position:fixed;inset:0;background:rgba(0,0,0,.7);z-index:100;display:flex;align-items:center;justify-content:center}
+.modal{background:#161616;border:1px solid #2a2a2a;border-radius:8px;padding:24px;width:340px;max-width:95vw}
+.modal h3{font-size:13px;font-weight:700;color:#fff;letter-spacing:.06em;text-transform:uppercase;margin-bottom:16px}
+.modal label{display:block;font-size:10px;font-weight:600;color:#666;letter-spacing:.07em;text-transform:uppercase;margin-bottom:4px;margin-top:12px}
+.modal select{width:100%;background:#111;border:1px solid #2a2a2a;color:#e0e0e0;padding:8px 10px;border-radius:4px;font-size:12px}
+.modal-actions{display:flex;gap:8px;margin-top:20px}
+.btn-save{flex:1;background:#003566;border:none;color:#fff;padding:9px;border-radius:4px;font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;cursor:pointer}
+.btn-save:hover{background:#004a8f}
+.btn-cancel{background:#1a1a1a;border:1px solid #2a2a2a;color:#888;padding:9px 16px;border-radius:4px;font-size:11px;font-weight:600;cursor:pointer}
+.btn-cancel:hover{background:#222;color:#aaa}
+.status-bar{font-size:11px;color:#666;margin-top:8px;min-height:16px;text-align:center}
+</style>
+</head>
+<body>
+<header>
+  <div style="display:flex;gap:8px">
+    <a href="/?ship=otl" class="nav-btn-h">OTL</a>
+    <a href="/?ship=los" class="nav-btn-h">LOS</a>
+    <a href="/scheduled" class="nav-btn-h" style="border-color:#10B98144;color:#10B981">Queue</a>
+    <a href="/calendar" class="nav-btn-h" style="border-color:#7C3AED;color:#7C3AED">Calendar</a>
+  </div>
+  <div class="logo"><span>@crossfitotl</span> Content Calendar</div>
+</header>
+
+<main>
+  <div class="cal-nav">
+    <button onclick="changeMonth(-1)">&#8249;</button>
+    <div class="cal-month" id="month-label"></div>
+    <button onclick="changeMonth(1)">&#8250;</button>
+    <button class="extend-btn" onclick="extendCalendar()">+ Extend 60 days</button>
+  </div>
+  <div class="grid-header">
+    <div>Sun</div><div>Mon</div><div>Tue</div><div>Wed</div><div>Thu</div><div>Fri</div><div>Sat</div>
+  </div>
+  <div class="cal-grid" id="cal-grid"></div>
+  <div class="status-bar" id="status-bar"></div>
+</main>
+
+<div class="modal-bg" id="modal" style="display:none" onclick="closeModal(event)">
+  <div class="modal" onclick="event.stopPropagation()">
+    <h3 id="modal-title">Edit Day</h3>
+    <label>Track</label>
+    <select id="m-track" onchange="trackChanged()">
+      <option value="educational">Educational</option>
+      <option value="campaign">Campaign</option>
+    </select>
+    <label id="m-camp-label">Campaign</label>
+    <select id="m-campaign">
+      <option value="forging-elite-fitness">Forging Elite Fitness</option>
+      <option value="crossfit-is-the-cure">CrossFit Is the Cure</option>
+      <option value="this-is-crossfit">This Is CrossFit</option>
+      <option value="the-crossfit-effect">The CrossFit Effect</option>
+      <option value="share-your-stories">Share Your Stories</option>
+      <option value="join-our-culture">Join Our Culture</option>
+      <option value="lifestyle-reset">Lifestyle Reset</option>
+    </select>
+    <div class="modal-actions">
+      <button class="btn-save" onclick="saveEntry()">Save</button>
+      <button class="btn-cancel" onclick="document.getElementById('modal').style.display='none'">Cancel</button>
+    </div>
+  </div>
+</div>
+
+<script>
+let calData = {}, postStatus = {}, plan = {};
+let currentYear  = new Date().getFullYear();
+let currentMonth = new Date().getMonth();
+let editingDate  = null;
+
+const CAMPAIGN_LABELS = {
+  'educational':            'Educational',
+  'lifestyle-reset':        'Lifestyle Reset',
+  'join-our-culture':       'Join Our Culture',
+  'forging-elite-fitness':  'Forging Elite Fitness',
+  'crossfit-is-the-cure':   'CrossFit Is The Cure',
+  'this-is-crossfit':       'This Is CrossFit',
+  'the-crossfit-effect':    'The CrossFit Effect',
+  'share-your-stories':     'Share Your Stories',
+};
+
+function chipClass(entry) {
+  if (!entry) return 'chip-other';
+  if (entry.track === 'educational') return 'chip-edu';
+  return 'chip-' + (entry.campaign || 'other');
+}
+
+function chipLabel(entry) {
+  if (!entry) return '';
+  if (entry.track === 'educational') return 'Educational';
+  return CAMPAIGN_LABELS[entry.campaign] || entry.campaign || '';
+}
+
+function statusHtml(date) {
+  const s = postStatus[date];
+  if (!s) return '';
+  const cls = 'ds-' + s;
+  const icon = s === 'posted' ? '✓' : s === 'approved' ? '●' : '·';
+  return \`<span class="day-status \${cls}">\${icon} \${s}</span>\`;
+}
+
+function renderCalendar() {
+  const label = new Date(currentYear, currentMonth, 1)
+    .toLocaleString('en-US', { month: 'long', year: 'numeric' });
+  document.getElementById('month-label').textContent = label;
+
+  const today = new Date().toISOString().slice(0, 10);
+  const grid  = document.getElementById('cal-grid');
+  grid.innerHTML = '';
+
+  const firstDay = new Date(currentYear, currentMonth, 1).getDay();
+  const daysInMonth = new Date(currentYear, currentMonth + 1, 0).getDate();
+
+  // Empty cells before month start
+  for (let i = 0; i < firstDay; i++) {
+    const el = document.createElement('div');
+    el.className = 'cal-day empty';
+    grid.appendChild(el);
+  }
+
+  for (let d = 1; d <= daysInMonth; d++) {
+    const dateStr = \`\${currentYear}-\${String(currentMonth+1).padStart(2,'0')}-\${String(d).padStart(2,'0')}\`;
+    const entry   = calData[dateStr];
+    const isToday = dateStr === today;
+
+    const el = document.createElement('div');
+    el.className = 'cal-day' + (isToday ? ' today' : '');
+    el.onclick = () => openModal(dateStr);
+    el.innerHTML = \`
+      <div class="day-num">\${d}</div>
+      \${entry ? \`<div class="day-chip \${chipClass(entry)}">\${chipLabel(entry)}</div>\` : '<div class="day-chip chip-other">No plan</div>'}
+      \${statusHtml(dateStr)}
+    \`;
+    grid.appendChild(el);
+  }
+}
+
+function changeMonth(dir) {
+  currentMonth += dir;
+  if (currentMonth > 11) { currentMonth = 0;  currentYear++; }
+  if (currentMonth < 0)  { currentMonth = 11; currentYear--; }
+  renderCalendar();
+}
+
+function openModal(date) {
+  editingDate = date;
+  const entry = calData[date] || {};
+  document.getElementById('modal-title').textContent = new Date(date + 'T12:00:00Z')
+    .toLocaleDateString('en-US', { weekday:'long', month:'long', day:'numeric', year:'numeric' });
+  document.getElementById('m-track').value    = entry.track    || 'educational';
+  document.getElementById('m-campaign').value = entry.campaign || 'forging-elite-fitness';
+  trackChanged();
+  document.getElementById('modal').style.display = 'flex';
+}
+
+function closeModal(e) {
+  if (e.target === document.getElementById('modal'))
+    document.getElementById('modal').style.display = 'none';
+}
+
+function trackChanged() {
+  const isCamp = document.getElementById('m-track').value === 'campaign';
+  document.getElementById('m-camp-label').style.display  = isCamp ? 'block' : 'none';
+  document.getElementById('m-campaign').style.display    = isCamp ? 'block' : 'none';
+}
+
+async function saveEntry() {
+  const track    = document.getElementById('m-track').value;
+  const campaign = track === 'campaign' ? document.getElementById('m-campaign').value : null;
+  const body     = { date: editingDate, track, ...(campaign ? { campaign } : {}) };
+  setStatus('Saving…');
+  const r = await fetch('/api/calendar-entry', { method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify(body) });
+  const j = await r.json();
+  if (j.ok) {
+    calData[editingDate] = j.entry;
+    document.getElementById('modal').style.display = 'none';
+    renderCalendar();
+    setStatus('Saved.');
+    setTimeout(() => setStatus(''), 2000);
+  } else {
+    setStatus('✗ ' + (j.error || 'Error'));
+  }
+}
+
+async function extendCalendar() {
+  setStatus('Extending calendar…');
+  const r = await fetch('/api/calendar-extend', { method:'POST' });
+  const j = await r.json();
+  if (j.ok) {
+    await loadData();
+    renderCalendar();
+    setStatus('✓ Extended. ' + (j.output?.split('\\n')[0] || ''));
+    setTimeout(() => setStatus(''), 4000);
+  } else {
+    setStatus('✗ Failed');
+  }
+}
+
+function setStatus(msg) {
+  document.getElementById('status-bar').textContent = msg;
+}
+
+async function loadData() {
+  const r = await fetch('/api/calendar-data');
+  const j = await r.json();
+  calData    = j.calendar    || {};
+  plan       = j.plan        || {};
+  postStatus = j.postStatus  || {};
+}
+
+(async () => {
+  await loadData();
+  renderCalendar();
+})();
+</script>
+</body>
+</html>`;
+}
+
 function buildQueueHtml(posts, ship = 'otl') {
   const shipCfg  = SHIPS[ship] || SHIPS.otl;
   const total    = posts.length;
@@ -367,7 +632,9 @@ function buildQueueHtml(posts, ship = 'otl') {
      data-effects='${JSON.stringify(slideEffects)}'
      data-opacities='${JSON.stringify(slideOverlayOpacities)}'
      data-texts='${JSON.stringify(slideTexts).replace(/'/g, "&#39;")}'
-     data-accentslot="${meta.accentSlot ?? 0}">
+     data-accentslot="${meta.accentSlot ?? 0}"
+     data-scheduled="${meta.scheduledAt || ''}"
+     data-queueid="${meta.queueId || ''}">
 
   <div class="card-img" data-idx="0" data-date="${date}" data-slug="${slug}">
     ${thumb}
@@ -392,7 +659,16 @@ function buildQueueHtml(posts, ship = 'otl') {
       ` : `
         ${!isPosted && !isApproved && hasRendered ? `<button class="btn-action btn-approve" onclick="openQueueModal('${date}','${slug}')">Queue →</button>` : ''}
         ${isApproved ? `
-          ${meta.scheduledAt ? `<div class="scheduled-label">📅 ${new Date(meta.scheduledAt).toLocaleString('en-US',{month:'short',day:'numeric',hour:'numeric',minute:'2-digit',timeZone:'America/Chicago'})}</div>` : ''}
+          ${meta.scheduledAt
+            ? `<div class="autopost-label">
+                 <span class="autopost-icon">⏰</span>
+                 <span class="autopost-time">Auto-posts ${new Date(meta.scheduledAt).toLocaleString('en-US',{weekday:'short',month:'short',day:'numeric',hour:'numeric',minute:'2-digit',timeZone:'America/Chicago'})}</span>
+                 <button class="reschedule-btn" onclick="openQueueModal('${date}','${slug}')">Reschedule</button>
+               </div>`
+            : `<div class="no-schedule-label">
+                 <span>⚠ No post date — won't auto-post</span>
+                 <button class="reschedule-btn" onclick="openQueueModal('${date}','${slug}')">Set Date →</button>
+               </div>`}
           <button class="btn-action btn-post-ig" id="igpost-${date}-${slug}"
             onclick="postToIG('${date}','${slug}',this)">▶ Post Now</button>
           <button class="btn-action btn-post" onclick="markStatus('${date}','${slug}','posted',this)">Mark Posted</button>
@@ -566,6 +842,15 @@ main{padding:24px 28px;max-width:1400px;margin:0 auto}
 .btn-approve{border-color:#1a4a1a;color:#3d883d}
 .btn-approve:hover{background:#0d1a0d;color:#5daa5d}
 .scheduled-label{font-size:10px;color:#3d883d;letter-spacing:.04em;padding:3px 0;width:100%}
+.autopost-label{display:flex;align-items:center;gap:6px;background:#0a1f0a;border:1px solid #1e4a1e;border-radius:4px;padding:5px 8px;width:100%;margin-bottom:2px;flex-wrap:wrap}
+.autopost-icon{font-size:12px;flex-shrink:0}
+.autopost-time{font-size:10px;font-weight:600;color:#4ade80;letter-spacing:.03em;flex:1}
+.no-schedule-label{display:flex;align-items:center;gap:6px;background:#1f0a0a;border:1px solid #4a1e1e;border-radius:4px;padding:5px 8px;width:100%;margin-bottom:2px;flex-wrap:wrap}
+.no-schedule-label span{font-size:10px;font-weight:600;color:#f87171;letter-spacing:.03em;flex:1}
+.reschedule-btn{background:transparent;border:1px solid #2a3a2a;color:#4ade8088;font-size:9px;font-weight:600;letter-spacing:.05em;text-transform:uppercase;padding:2px 6px;border-radius:3px;cursor:pointer;flex-shrink:0;transition:.15s}
+.reschedule-btn:hover{border-color:#4ade80;color:#4ade80}
+.no-schedule-label .reschedule-btn{border-color:#4a2a2a;color:#f8717188}
+.no-schedule-label .reschedule-btn:hover{border-color:#f87171;color:#f87171}
 
 /* Queue modal */
 .qmodal-backdrop{display:none;position:fixed;inset:0;background:rgba(0,0,0,.75);z-index:999;align-items:center;justify-content:center}
@@ -705,6 +990,7 @@ footer{text-align:center;padding:40px;color:#1e1e1e;font-size:10px}
     <button class="ship-btn ${ship === 'otl' ? 'active-otl' : ''}" onclick="location.href='/?ship=otl'">OTL</button>
     <button class="ship-btn ${ship === 'los' ? 'active-los' : ''}" onclick="location.href='/?ship=los'">LOS</button>
     <button class="ship-btn" onclick="location.href='/scheduled'" style="border-color:#10B98144;color:#10B981">Queue</button>
+    <button class="ship-btn" onclick="location.href='/calendar'" style="border-color:#7C3AED44;color:#7C3AED">Calendar</button>
   </div>
   <div class="logo"><span>${shipCfg.handle}</span> Post Queue</div>
   <div class="stats">
@@ -797,7 +1083,7 @@ function filter(type, btn) {
 
 // ── Slide navigation ──────────────────────────────────────────
 function slideNav(imgBox, dir) {
-  const slides = JSON.parse(imgBox.dataset.slides || '[]');
+  const slides = JSON.parse((imgBox.closest('.card') || imgBox).dataset.slides || '[]');
   if (!slides.length) return;
   let idx = (parseInt(imgBox.dataset.idx || '0') + dir + slides.length) % slides.length;
   imgBox.dataset.idx = idx;
@@ -1919,15 +2205,26 @@ let _qDate = null, _qSlug = null;
 
 function openQueueModal(date, slug) {
   _qDate = date; _qSlug = slug;
-  // Default to tomorrow 9am CST
-  const now = new Date();
-  now.setDate(now.getDate() + 1);
-  now.setHours(9, 0, 0, 0);
-  // Format for datetime-local input (local time)
   const pad = n => String(n).padStart(2,'0');
-  const local = \`\${now.getFullYear()}-\${pad(now.getMonth()+1)}-\${pad(now.getDate())}T\${pad(now.getHours())}:\${pad(now.getMinutes())}\`;
+
+  // Try to pre-populate from card's data-scheduled (set by generate-next.js)
+  const card = document.querySelector(\`.card[data-date="\${date}"][data-slug="\${slug}"]\`);
+  const existing = card?.dataset?.scheduled;
+  const isReschedule = card?.dataset?.queueid;
+
+  let dt;
+  if (existing) {
+    dt = new Date(existing);
+  } else {
+    // Default: 7am tomorrow local time
+    dt = new Date();
+    dt.setDate(dt.getDate() + 1);
+    dt.setHours(7, 0, 0, 0);
+  }
+  const local = \`\${dt.getFullYear()}-\${pad(dt.getMonth()+1)}-\${pad(dt.getDate())}T\${pad(dt.getHours())}:\${pad(dt.getMinutes())}\`;
   document.getElementById('qmodal-dt').value = local;
   document.getElementById('qmodal-status').textContent = '';
+  document.getElementById('qmodal-submit').textContent = isReschedule ? 'Reschedule →' : 'Queue it →';
   document.getElementById('qmodal-backdrop').classList.add('open');
 }
 
@@ -1943,10 +2240,16 @@ async function submitQueueModal() {
   const btn = document.getElementById('qmodal-submit');
   const statusEl = document.getElementById('qmodal-status');
   btn.disabled = true;
-  statusEl.textContent = 'Uploading slides…';
+
+  // If already approved (has queueId), reschedule instead of re-uploading
+  const card = document.querySelector(\`.card[data-date="\${_qDate}"][data-slug="\${_qSlug}"]\`);
+  const isReschedule = !!card?.dataset?.queueid;
+  const endpoint = isReschedule ? '/api/reschedule-post' : '/api/approve-post';
+
+  statusEl.textContent = isReschedule ? 'Rescheduling…' : 'Uploading slides…';
   statusEl.style.color = '#3a7ab8';
   try {
-    const res = await fetch('/api/approve-post', {
+    const res = await fetch(endpoint, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ date: _qDate, slug: _qSlug, scheduledAt }),
@@ -1954,7 +2257,7 @@ async function submitQueueModal() {
     const data = await res.json();
     if (!data.ok) throw new Error(data.error || 'Failed');
     statusEl.style.color = '#3d883d';
-    statusEl.textContent = '✓ Queued!';
+    statusEl.textContent = isReschedule ? '✓ Rescheduled!' : '✓ Queued!';
     setTimeout(() => { closeQueueModal(); location.reload(); }, 1200);
   } catch (e) {
     statusEl.style.color = '#883333';
@@ -2991,6 +3294,88 @@ async function del(id, btn) {
   }
 
   // ── Queue page ───────────────────────────────────────────────
+  // ── Reschedule approved post ──────────────────────────────────
+  if (path === '/api/reschedule-post' && method === 'POST') {
+    const body = await readBody(req);
+    const { date, slug, scheduledAt } = body;
+    if (!date || !slug || !scheduledAt) return jsonResp(res, { error: 'Missing date/slug/scheduledAt' }, 400);
+    const dir  = postDir(date, slug);
+    const meta = readMeta(dir);
+    // Update local meta
+    writeMeta(dir, { ...meta, scheduledAt });
+    // Update Supabase row if we have a queueId
+    if (supabase && meta.queueId) {
+      const { error } = await supabase
+        .from('otl_post_queue')
+        .update({ scheduled_at: scheduledAt })
+        .eq('id', meta.queueId);
+      if (error) return jsonResp(res, { error: `Supabase: ${error.message}` }, 500);
+    }
+    return jsonResp(res, { ok: true, scheduledAt });
+  }
+
+  // ── Content Calendar API ─────────────────────────────────────
+  if (path === '/api/calendar-data' && method === 'GET') {
+    const calPath  = resolve(__dirname, 'content-calendar.json');
+    const planPath = resolve(__dirname, 'content-plan.json');
+    const calendar = existsSync(calPath)  ? JSON.parse(readFileSync(calPath,  'utf8')) : {};
+    const plan     = existsSync(planPath) ? JSON.parse(readFileSync(planPath, 'utf8')) : {};
+
+    // Build a map of date → post status from local output dirs
+    const postStatus = {};
+    const outDir = resolve(__dirname, 'output');
+    if (existsSync(outDir)) {
+      for (const dateDir of readdirSync(outDir, { withFileTypes: true }).filter(d => d.isDirectory()).map(d => d.name)) {
+        const datePath = join(outDir, dateDir);
+        for (const slugDir of readdirSync(datePath, { withFileTypes: true }).filter(d => d.isDirectory()).map(d => d.name)) {
+          const metaPath = join(datePath, slugDir, 'meta.json');
+          if (!existsSync(metaPath)) continue;
+          try {
+            const m = JSON.parse(readFileSync(metaPath, 'utf8'));
+            if (!postStatus[dateDir] || m.status === 'posted') postStatus[dateDir] = m.status;
+          } catch {}
+        }
+      }
+    }
+    return jsonResp(res, { calendar, plan, postStatus });
+  }
+
+  if (path === '/api/calendar-entry' && method === 'POST') {
+    const body     = await readBody(req);
+    const { date, track, campaign } = body;
+    if (!date || !track) return jsonResp(res, { error: 'Missing date/track' }, 400);
+    const calPath  = resolve(__dirname, 'content-calendar.json');
+    const calendar = existsSync(calPath) ? JSON.parse(readFileSync(calPath, 'utf8')) : {};
+    const existing = calendar[date] || {};
+    calendar[date] = { ...existing, track, ...(campaign ? { campaign } : {}), ...(track === 'educational' ? {} : {}) };
+    if (track === 'educational') delete calendar[date].campaign;
+    const sorted = Object.fromEntries(Object.entries(calendar).sort(([a],[b]) => a.localeCompare(b)));
+    writeFileSync(calPath, JSON.stringify(sorted, null, 2), 'utf8');
+    return jsonResp(res, { ok: true, entry: calendar[date] });
+  }
+
+  if (path === '/api/calendar-extend' && method === 'POST') {
+    return new Promise((resolve2) => {
+      const child = spawn(NODE, [resolve(__dirname, 'extend-calendar.js')], { cwd: __dirname });
+      let out = '';
+      child.stdout.on('data', d => { out += d; });
+      child.stderr.on('data', d => { out += d; });
+      child.on('close', code => {
+        jsonResp(res, { ok: code === 0, output: out.trim() });
+        resolve2();
+      });
+    });
+  }
+
+  // ── Content Calendar Page ─────────────────────────────────────
+  if (path === '/calendar') {
+    const html = buildCalendarHtml();
+    const buf  = Buffer.from(html, 'utf8');
+    res.writeHead(200, { 'Content-Type': 'text/html', 'Content-Length': buf.length, 'Connection': 'close' });
+    res.end(buf);
+    return;
+  }
+
   if (path === '/' || path === '/queue') {
     const ship = url.searchParams.get('ship') || 'otl';
     const validShip = SHIPS[ship] ? ship : 'otl';

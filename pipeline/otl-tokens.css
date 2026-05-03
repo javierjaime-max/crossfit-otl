@@ -1,0 +1,210 @@
+/* ============================================================
+   CROSSFIT OTL — COLORS & TYPE
+   The dark, high-contrast foundation. White on near-black.
+   Sharp corners. Earned, not soft.
+   ============================================================ */
+
+/* Fonts are bundled locally in assets/fonts/ for reliable Puppeteer rendering.
+   render.html loads assets/fonts/local-fonts.css directly. */
+
+:root {
+  /* ---------- BRAND COLOR — NAVY ----------
+     The single brand accent. Used for primary CTAs, hover/focus rings,
+     and the "Blue Badge" lockup. Hover state lifts to #004a8f. */
+  --otl-navy:           #003566;
+  --otl-navy-hover:     #004a8f;
+  --otl-navy-tint:      #7eb8ff;   /* Section labels, links, accents on dark bg */
+
+  /* ---------- BACKGROUND SCALE ----------
+     A four-step dark scale, all near-black. Use bg-primary for the
+     page, bg-secondary for alternating sections, card / card-hover
+     for surfaces that lift slightly above the page. */
+  --otl-bg-primary:     #0a0a0a;
+  --otl-bg-secondary:   #111111;
+  --otl-bg-card:        #161616;
+  --otl-bg-card-hover:  #1a1a1a;
+  --otl-black:          #000000;   /* Footer, deep wells */
+
+  /* ---------- TEXT SCALE ---------- */
+  --otl-text-primary:   #ffffff;   /* Headlines, body on dark */
+  --otl-text-secondary: #a4a4a4;   /* Subheads, body copy on dark */
+  --otl-text-tertiary:  #d0d0d0;   /* Tabular data */
+  --otl-text-muted:     #666666;   /* Footnotes, captions, "—" */
+
+  /* ---------- BORDERS & DIVIDERS ----------
+     Borders are almost always white-with-low-alpha on the dark
+     theme — they create separation without breaking the matte feel. */
+  --otl-border-faint:   rgba(255, 255, 255, 0.05);
+  --otl-border-soft:    rgba(255, 255, 255, 0.07);
+  --otl-border-default: rgba(255, 255, 255, 0.10);
+  --otl-border-strong:  rgba(255, 255, 255, 0.20);
+
+  /* ---------- SEMANTIC ALIASES ----------
+     What you reach for in components. Map back to the brand scale above. */
+  --bg:                 var(--otl-bg-primary);
+  --bg-alt:             var(--otl-bg-secondary);
+  --surface:            var(--otl-bg-card);
+  --surface-hover:      var(--otl-bg-card-hover);
+  --fg:                 var(--otl-text-primary);
+  --fg-muted:           var(--otl-text-secondary);
+  --fg-faint:           var(--otl-text-muted);
+  --accent:             var(--otl-navy);
+  --accent-hover:       var(--otl-navy-hover);
+  --link:               var(--otl-navy-tint);
+
+  /* ---------- TYPOGRAPHY ---------- */
+  --font-display:       'Bebas Neue', 'Oswald', 'Impact', sans-serif;
+  --font-body:          'Inter', -apple-system, BlinkMacSystemFont,
+                        'Segoe UI', Roboto, sans-serif;
+
+  /* Type scale — display is the workhorse for any branded surface.
+     All-caps + heavy letter-spacing is the OTL signature. */
+  --fs-display-xl:      clamp(4rem, 12vw, 10rem);   /* Hero */
+  --fs-display-l:       clamp(3rem, 6vw, 5.5rem);   /* Section title */
+  --fs-display-m:       clamp(2rem, 4vw, 3.5rem);   /* Quote / break */
+  --fs-display-s:       2rem;                       /* Card title */
+  --fs-display-xs:      1.5rem;                     /* Small display */
+
+  --fs-body-l:          1.15rem;
+  --fs-body:            1rem;
+  --fs-body-s:          0.9rem;
+  --fs-meta:            0.75rem;     /* Eyebrows, labels */
+  --fs-micro:           0.65rem;     /* Tags, footer links */
+
+  --lh-tight:           1;           /* Display */
+  --lh-snug:            1.3;         /* Quotes */
+  --lh-normal:          1.6;         /* Body */
+  --lh-loose:           1.8;         /* Long form */
+
+  /* Letter-spacing is the OTL voice. Display is wide. Eyebrows wider. */
+  --ls-display:         3px;
+  --ls-display-tight:   2px;
+  --ls-eyebrow:         4px;
+  --ls-eyebrow-wide:    6px;
+  --ls-button:          3px;
+
+  /* ---------- SPACING / RADII / SHADOW ---------- */
+  --radius-cta:         2px;     /* Sharp. Almost-square. */
+  --radius-card:        8px;     /* Cards, photo containers */
+  --radius-pill:        999px;   /* Rare. Used for status dots. */
+
+  --shadow-cta:         0 10px 40px rgba(0, 53, 102, 0.5);
+  --shadow-card:        0 4px 20px rgba(0, 0, 0, 0.4);
+
+  /* ---------- MOTION ----------
+     Easing used everywhere. Long, smooth ease-out is the house curve. */
+  --ease-out:           cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-in-out:        cubic-bezier(0.65, 0, 0.35, 1);
+  --dur-fast:           0.2s;
+  --dur-base:           0.3s;
+  --dur-slow:           0.6s;
+  --dur-cinematic:      0.8s;
+}
+
+/* ============================================================
+   BASE / RESET
+   ============================================================ */
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+html {
+  font-size: 17px;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+@media (min-width: 1400px) { html { font-size: 18px; } }
+@media (min-width: 1800px) { html { font-size: 19px; } }
+@media (max-width: 768px)  { html { font-size: 16px; } }
+
+body {
+  background: var(--bg);
+  color: var(--fg);
+  font-family: var(--font-body);
+  line-height: var(--lh-normal);
+  font-weight: 400;
+}
+
+/* ============================================================
+   SEMANTIC TYPE — drop-in tags
+   ============================================================ */
+h1, .otl-h1 {
+  font-family: var(--font-display);
+  font-size: var(--fs-display-xl);
+  letter-spacing: var(--ls-display) + 1px;
+  line-height: 0.95;
+  color: var(--fg);
+  text-transform: uppercase;
+}
+h2, .otl-h2 {
+  font-family: var(--font-display);
+  font-size: var(--fs-display-l);
+  letter-spacing: var(--ls-display);
+  line-height: var(--lh-tight);
+  color: var(--fg);
+  text-transform: uppercase;
+}
+h3, .otl-h3 {
+  font-family: var(--font-display);
+  font-size: var(--fs-display-s);
+  letter-spacing: var(--ls-display-tight);
+  line-height: 1.1;
+  color: var(--fg);
+  text-transform: uppercase;
+}
+h4, .otl-h4 {
+  font-family: var(--font-display);
+  font-size: var(--fs-display-xs);
+  letter-spacing: var(--ls-display-tight);
+  line-height: 1.2;
+  color: var(--fg);
+  text-transform: uppercase;
+}
+
+p, .otl-body {
+  font-family: var(--font-body);
+  font-size: var(--fs-body);
+  line-height: var(--lh-normal);
+  color: var(--fg-muted);
+}
+
+.otl-eyebrow {
+  font-family: var(--font-body);
+  font-size: var(--fs-meta);
+  font-weight: 600;
+  letter-spacing: var(--ls-eyebrow);
+  text-transform: uppercase;
+  color: var(--link);
+}
+
+.otl-tag {
+  font-family: var(--font-body);
+  font-size: var(--fs-micro);
+  font-weight: 600;
+  letter-spacing: var(--ls-eyebrow);
+  text-transform: uppercase;
+  color: var(--fg);
+}
+
+.otl-meta {
+  font-family: var(--font-body);
+  font-size: var(--fs-meta);
+  letter-spacing: var(--ls-eyebrow);
+  text-transform: uppercase;
+  color: var(--fg-faint);
+}
+
+.otl-quote {
+  font-family: var(--font-display);
+  font-size: var(--fs-display-m);
+  letter-spacing: var(--ls-display-tight);
+  line-height: var(--lh-snug);
+  color: var(--fg);
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+  transition: color var(--dur-base) ease;
+}
+a:hover { color: var(--fg); }
+
+img { max-width: 100%; display: block; }
+button { cursor: pointer; border: none; background: none; font-family: inherit; }

@@ -83,14 +83,15 @@ function pickAccentSlot() {
 const args = process.argv.slice(2);
 const get = (flag) => { const i = args.indexOf(flag); return i !== -1 ? args[i + 1] : null; };
 
-const campaignSlug = get('--campaign') || 'crossfit-is-the-cure';
-const slug         = get('--slug') || campaignSlug + '_' + Date.now();
-const date         = get('--date') || new Date().toISOString().slice(0, 10);
-const previewOnly  = args.includes('--preview');
-const rerender     = args.includes('--rerender');     // re-render existing preview.html
-const single       = args.includes('--single');       // single SplashSlide format
-const track        = get('--track') || 'campaign';
-const forceTopic   = get('--topic');
+const campaignSlug  = get('--campaign') || 'crossfit-is-the-cure';
+const slug          = get('--slug') || campaignSlug + '_' + Date.now();
+const date          = get('--date') || new Date().toISOString().slice(0, 10);
+const previewOnly   = args.includes('--preview');
+const rerender      = args.includes('--rerender');     // re-render existing preview.html
+const single        = args.includes('--single');       // single SplashSlide format
+const track         = get('--track') || 'campaign';
+const forceTopic    = get('--topic');
+const scheduledAt   = get('--scheduled-at') || null;  // ISO date — set by generate-next.js
 const directorNotes = process.env.OTL_NOTES || '';   // injected by server for regenerate
 
 // ── Photo pool — matched by content type ─────────────────────
@@ -492,7 +493,12 @@ async function renderSlides(post, postDir, previewOnly = false) {
 
     for (let i = 0; i < printPages.length; i++) {
       const outPath = resolve(postDir, `slide_${i + 1}.png`);
-      await printPages[i].screenshot({ path: outPath, type: 'png' });
+      const box = await printPages[i].boundingBox();
+      await page.screenshot({
+        path: outPath,
+        type: 'png',
+        clip: { x: box.x, y: box.y, width: 1080, height: 1350 },
+      });
       process.stdout.write(`  ✓ slide ${i + 1}/${printPages.length}\n`);
     }
   } finally {
@@ -582,7 +588,12 @@ async function rerenderPost(postDir) {
 
     for (let i = 0; i < printPages.length; i++) {
       const outPath = resolve(postDir, `slide_${i + 1}.png`);
-      await printPages[i].screenshot({ path: outPath, type: 'png' });
+      const box = await printPages[i].boundingBox();
+      await page.screenshot({
+        path: outPath,
+        type: 'png',
+        clip: { x: box.x, y: box.y, width: 1080, height: 1350 },
+      });
       process.stdout.write(`  ✓ slide ${i + 1}/${printPages.length}\n`);
     }
   } finally {
@@ -720,6 +731,7 @@ async function main() {
     accentSlot,
     accentColor,
     generated: new Date().toISOString(),
+    ...(scheduledAt ? { scheduledAt } : {}),
   }, null, 2), 'utf8');
 
   if (previewOnly) {

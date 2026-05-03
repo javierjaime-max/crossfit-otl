@@ -1,0 +1,431 @@
+/* ============================================================
+   OTL Instagram Template — base atoms
+   Templates render at FIXED design size (1080×1080, 1080×1350,
+   1080×1920) and are scaled to fit on the design canvas via
+   transform: scale(...). All internal type uses absolute px so
+   it stays consistent across the three formats.
+   ============================================================ */
+
+.tpl {
+  position: relative;
+  font-family: var(--font-body);
+  color: var(--otl-text-primary);
+  background: var(--otl-bg-primary);
+  overflow: hidden;
+  isolation: isolate;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Three Instagram canvas sizes — fixed pixel dimensions.
+   Use transform:scale() in the parent to fit on the canvas. */
+.tpl--1x1   { width: 1080px; height: 1080px; }
+.tpl--4x5   { width: 1080px; height: 1350px; }
+.tpl--9x16  { width: 1080px; height: 1920px; }
+
+/* Photo zone (full-bleed image with gradient overlay for legibility) */
+.tpl-photo {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+}
+.tpl-photo img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+.tpl-photo--placeholder {
+  background:
+    repeating-linear-gradient(
+      45deg,
+      #1a1a1a 0 18px,
+      #161616 18px 36px
+    );
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.tpl-photo--placeholder .ph-label {
+  font-family: var(--font-body);
+  font-size: 28px;
+  font-weight: 600;
+  letter-spacing: 4px;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.35);
+}
+.tpl-photo--placeholder .ph-frame {
+  position: absolute;
+  inset: 32px;
+  border: 2px dashed rgba(255,255,255,0.18);
+  border-radius: 8px;
+}
+
+/* Film-grain texture — the actual "grit". A subtle SVG noise
+   overlay sits above the photo + gradient but below content.
+   Multiplies into the image to feel like real film, not a sticker. */
+.tpl-grain {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  opacity: 0.18;
+  mix-blend-mode: overlay;
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='240' height='240'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='1.6' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 1.4 -0.3'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");
+  background-size: 240px 240px;
+}
+.tpl-grain--heavy { opacity: 0.32; mix-blend-mode: soft-light; }
+
+/* Gritty bottom-fade gradient — heavy black from ~50% downward,
+   keeps photo readable up top while giving headline a dark base. */
+.tpl-overlay--gritty {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  background:
+    linear-gradient(180deg,
+      rgba(0,0,0,0.30) 0%,
+      rgba(0,0,0,0.10) 25%,
+      rgba(0,0,0,0.10) 45%,
+      rgba(0,0,0,0.75) 78%,
+      rgba(0,0,0,0.95) 100%);
+}
+
+/* Clean editorial headline — NOT condensed display.
+   Big bold sans, normal width, tight leading. */
+.tpl-headline-clean {
+  font-family: "Inter", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-weight: 800;
+  text-transform: uppercase;
+  color: #fff;
+  line-height: 1.0;
+  letter-spacing: -0.5px;
+}
+
+/* Editorial byline — light weight, generous leading */
+.tpl-byline {
+  font-family: "Inter", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-weight: 400;
+  color: rgba(255,255,255,0.85);
+  line-height: 1.45;
+}
+
+/* Standard 3-stop gradient overlay — keeps display type legible
+   over any photo. Matches design system "photo break" rules. */
+.tpl-overlay {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  background: linear-gradient(
+    180deg,
+    rgba(0,0,0,0.35) 0%,
+    rgba(0,0,0,0.15) 35%,
+    rgba(0,0,0,0.85) 100%
+  );
+}
+.tpl-overlay--top {
+  background: linear-gradient(
+    180deg,
+    rgba(0,0,0,0.85) 0%,
+    rgba(0,0,0,0.30) 50%,
+    rgba(0,0,0,0.10) 100%
+  );
+}
+.tpl-overlay--solid {
+  background: linear-gradient(
+    180deg,
+    rgba(0,0,0,0.55) 0%,
+    rgba(0,0,0,0.55) 100%
+  );
+}
+.tpl-overlay--dark {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  background: rgba(0,0,0,0.62);
+}
+
+.tpl-overlay--light {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  background: rgba(255,255,255,0.58);
+}
+
+.tpl-overlay--vignette {
+  background:
+    linear-gradient(180deg, rgba(0,0,0,0.55) 0%, rgba(0,0,0,0.10) 30%, rgba(0,0,0,0.10) 60%, rgba(0,0,0,0.85) 100%),
+    radial-gradient(120% 100% at 50% 50%, transparent 30%, rgba(0,0,0,0.55) 100%);
+}
+
+.tpl-content {
+  position: relative;
+  z-index: 2;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+/* OTL chip / lockup */
+.tpl-lockup {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 4px;
+}
+.tpl-lockup img {
+  height: 36px;
+  width: auto;
+}
+.tpl-lockup .lockup-tag {
+  font-family: var(--font-body);
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.7);
+}
+
+/* Eyebrow / campaign chip */
+.tpl-eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  font-family: var(--font-body);
+  font-size: 18px;
+  font-weight: 600;
+  letter-spacing: 5px;
+  text-transform: uppercase;
+  color: var(--otl-navy-tint);
+}
+.tpl-eyebrow::before {
+  content: "";
+  display: inline-block;
+  width: 36px;
+  height: 2px;
+  background: var(--otl-navy-tint);
+}
+.tpl-eyebrow--solid::before { display: none; }
+
+/* Big display headline — NOW INTER BLACK (gritty editorial),
+   not the condensed Bebas display. Kept the .tpl-headline class
+   name so existing templates inherit the new aesthetic. */
+.tpl-headline {
+  font-family: "Inter", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-weight: 800;
+  text-transform: uppercase;
+  color: var(--otl-text-primary);
+  line-height: 1.0;
+  letter-spacing: -0.5px;
+}
+.tpl-headline em {
+  font-style: normal;
+  font-family: inherit;
+  color: inherit;
+  opacity: 0.7;
+}
+
+/* Subhead / byline — Inter, light, generous leading */
+.tpl-sub {
+  font-family: "Inter", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-weight: 400;
+  font-size: 22px;
+  line-height: 1.45;
+  color: rgba(255,255,255,0.85);
+  letter-spacing: 0;
+  text-transform: none;
+}
+.tpl-sub strong {
+  font-weight: 600;
+  color: var(--otl-text-primary);
+}
+
+/* Footer rule */
+.tpl-rule {
+  height: 1px;
+  width: 100%;
+  background: rgba(255,255,255,0.18);
+}
+.tpl-rule--strong { background: rgba(255,255,255,0.35); height: 2px; }
+
+/* Caption micro-row */
+.tpl-meta {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-family: var(--font-body);
+  font-size: 20px;
+  font-weight: 600;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.6);
+}
+
+/* Bebas big numerals (eyebrow numerals) */
+.tpl-numeral {
+  font-family: var(--font-display);
+  font-size: 280px;
+  line-height: 0.85;
+  letter-spacing: -4px;
+  color: rgba(255,255,255,0.10);
+}
+
+/* Right-aligned variant for arrows etc */
+.tpl-arrow {
+  font-family: var(--font-display);
+  color: var(--otl-text-primary);
+}
+
+/* CTA */
+.tpl-cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 14px;
+  padding: 18px 28px;
+  background: var(--otl-navy);
+  color: var(--otl-text-primary);
+  font-family: var(--font-body);
+  font-weight: 600;
+  font-size: 15px;
+  letter-spacing: 4px;
+  text-transform: uppercase;
+  border-radius: 2px;
+}
+.tpl-cta--ghost {
+  background: transparent;
+  border: 2px solid rgba(255,255,255,0.85);
+}
+
+/* "Bold statement" giant quote treatment */
+.tpl-quote-mark {
+  font-family: var(--font-display);
+  font-size: 320px;
+  line-height: 0.7;
+  color: var(--otl-navy-tint);
+  opacity: 0.35;
+}
+
+/* Schedule rows */
+.tpl-schedule {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 0;
+  width: 100%;
+}
+.tpl-schedule .row {
+  display: contents;
+}
+.tpl-schedule .cell {
+  padding: 22px 0;
+  border-bottom: 1px solid rgba(255,255,255,0.10);
+  font-family: var(--font-display);
+  font-size: 38px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+}
+.tpl-schedule .cell.right {
+  text-align: right;
+  color: rgba(255,255,255,0.7);
+  font-family: var(--font-body);
+  font-weight: 500;
+  font-size: 22px;
+  letter-spacing: 2px;
+}
+.tpl-schedule .cell.closed {
+  color: var(--otl-navy-tint);
+}
+
+/* Coach card photo frame */
+.tpl-coach-photo {
+  width: 100%;
+  height: 100%;
+  background: #161616;
+  overflow: hidden;
+  border-radius: 8px;
+  position: relative;
+}
+.tpl-coach-photo img {
+  width: 100%; height: 100%; object-fit: cover;
+}
+.tpl-coach-photo .credentials {
+  position: absolute;
+  top: 18px;
+  left: 18px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.tpl-coach-photo .cred-chip {
+  display: inline-block;
+  padding: 6px 12px;
+  background: rgba(0,0,0,0.7);
+  border: 1px solid rgba(255,255,255,0.2);
+  font-family: var(--font-body);
+  font-weight: 600;
+  font-size: 11px;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: var(--otl-navy-tint);
+}
+
+/* Hero WOD movement table */
+.tpl-wod {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+.tpl-wod .wod-row {
+  display: grid;
+  grid-template-columns: 80px 1fr;
+  gap: 24px;
+  align-items: baseline;
+  padding-bottom: 14px;
+  border-bottom: 1px solid rgba(255,255,255,0.10);
+}
+.tpl-wod .wod-reps {
+  font-family: var(--font-display);
+  font-size: 56px;
+  letter-spacing: 0;
+  line-height: 1;
+  color: var(--otl-text-primary);
+}
+.tpl-wod .wod-move {
+  font-family: var(--font-display);
+  font-size: 36px;
+  letter-spacing: 2px;
+  line-height: 1.1;
+  text-transform: uppercase;
+  color: var(--otl-text-primary);
+}
+.tpl-wod .wod-detail {
+  font-family: var(--font-body);
+  font-size: 16px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.55);
+}
+
+/* Diagonal corner stamp (campaign tag) */
+.tpl-stamp {
+  position: absolute;
+  top: 32px;
+  right: 32px;
+  z-index: 3;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 4px;
+}
+.tpl-stamp .stamp-line {
+  font-family: var(--font-body);
+  font-weight: 600;
+  font-size: 11px;
+  letter-spacing: 4px;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.7);
+}
+.tpl-stamp .stamp-rule {
+  width: 80px;
+  height: 1px;
+  background: var(--otl-navy-tint);
+}

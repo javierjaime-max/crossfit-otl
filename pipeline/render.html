@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>CrossFit OTL — Slide Renderer</title>
+<link rel="stylesheet" href="assets/fonts/local-fonts.css">
+<style id="otl-tokens"></style>
+<style id="otl-templates"></style>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { background: #1a1a1a; }
+  .print-page { display: block; }
+</style>
+</head>
+<body>
+
+<script id="slide-data" type="application/json">
+[]
+</script>
+
+<script src="vendor.react.js"></script>
+<script src="vendor.react-dom.js"></script>
+<script src="vendor.babel.js"></script>
+<script type="text/babel" src="templates.jsx"></script>
+
+<script type="text/babel">
+  const params = new URLSearchParams(window.location.search);
+  const isPrint = params.get('print') === '1';
+
+  function SlideRenderer() {
+    const raw = document.getElementById('slide-data').textContent;
+    const slides = JSON.parse(raw);
+
+    const isCarousel = slides.length > 1;
+
+    return (
+      <div>
+        {slides.map((slide, i) => {
+          const Template = window.OTL_TEMPLATES[slide.template];
+          if (!Template) return <div key={i}>Unknown template: {slide.template}</div>;
+          const showSwipe = isCarousel && i < slides.length - 1;
+          return (
+            <div key={i} className="print-page" style={{ display: 'block', marginBottom: isPrint ? 0 : 24, position: 'relative' }}>
+              <Template {...slide} />
+              {showSwipe && (
+                <div style={{
+                  position: 'absolute', bottom: 36, right: 36,
+                  display: 'flex', alignItems: 'center', gap: 8,
+                  background: 'rgba(0,0,0,0.45)', backdropFilter: 'blur(4px)',
+                  borderRadius: 100, padding: '10px 18px',
+                  fontFamily: 'Inter, Helvetica, sans-serif',
+                  fontWeight: 700, fontSize: 18, letterSpacing: 2,
+                  textTransform: 'uppercase', color: '#fff',
+                  pointerEvents: 'none', zIndex: 100,
+                }}>
+                  SWIPE
+                  <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                    <path d="M7 4l6 6-6 6" stroke="#fff" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"/>
+                  </svg>
+                </div>
+              )}
+            </div>
+          );
+        })}
+      </div>
+    );
+  }
+
+  const root = ReactDOM.createRoot(document.getElementById('root'));
+  root.render(<SlideRenderer />);
+</script>
+
+<div id="root"></div>
+
+</body>
+</html>

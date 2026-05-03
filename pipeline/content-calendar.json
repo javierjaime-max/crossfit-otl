@@ -1,0 +1,281 @@
+{
+  "2026-05-02": {
+    "track": "campaign",
+    "campaign": "lifestyle-reset",
+    "scheduledAt": "2026-05-02T12:00:00.000Z"
+  },
+  "2026-05-03": {
+    "track": "campaign",
+    "campaign": "join-our-culture",
+    "scheduledAt": "2026-05-03T12:00:00.000Z"
+  },
+  "2026-05-04": {
+    "track": "educational",
+    "scheduledAt": "2026-05-04T12:00:00.000Z"
+  },
+  "2026-05-05": {
+    "track": "campaign",
+    "campaign": "forging-elite-fitness",
+    "scheduledAt": "2026-05-05T12:00:00.000Z"
+  },
+  "2026-05-06": {
+    "track": "educational",
+    "scheduledAt": "2026-05-06T12:00:00.000Z"
+  },
+  "2026-05-07": {
+    "track": "campaign",
+    "campaign": "crossfit-is-the-cure",
+    "scheduledAt": "2026-05-07T12:00:00.000Z"
+  },
+  "2026-05-08": {
+    "track": "educational",
+    "scheduledAt": "2026-05-08T12:00:00.000Z"
+  },
+  "2026-05-09": {
+    "track": "campaign",
+    "campaign": "lifestyle-reset",
+    "scheduledAt": "2026-05-09T12:00:00.000Z"
+  },
+  "2026-05-10": {
+    "track": "campaign",
+    "campaign": "join-our-culture",
+    "scheduledAt": "2026-05-10T12:00:00.000Z"
+  },
+  "2026-05-11": {
+    "track": "educational",
+    "scheduledAt": "2026-05-11T12:00:00.000Z"
+  },
+  "2026-05-12": {
+    "track": "campaign",
+    "campaign": "this-is-crossfit",
+    "scheduledAt": "2026-05-12T12:00:00.000Z"
+  },
+  "2026-05-13": {
+    "track": "educational",
+    "scheduledAt": "2026-05-13T12:00:00.000Z"
+  },
+  "2026-05-14": {
+    "track": "campaign",
+    "campaign": "the-crossfit-effect",
+    "scheduledAt": "2026-05-14T12:00:00.000Z"
+  },
+  "2026-05-15": {
+    "track": "educational",
+    "scheduledAt": "2026-05-15T12:00:00.000Z"
+  },
+  "2026-05-16": {
+    "track": "campaign",
+    "campaign": "lifestyle-reset",
+    "scheduledAt": "2026-05-16T12:00:00.000Z"
+  },
+  "2026-05-17": {
+    "track": "campaign",
+    "campaign": "join-our-culture",
+    "scheduledAt": "2026-05-17T12:00:00.000Z"
+  },
+  "2026-05-18": {
+    "track": "educational",
+    "scheduledAt": "2026-05-18T12:00:00.000Z"
+  },
+  "2026-05-19": {
+    "track": "campaign",
+    "campaign": "share-your-stories",
+    "scheduledAt": "2026-05-19T12:00:00.000Z"
+  },
+  "2026-05-20": {
+    "track": "educational",
+    "scheduledAt": "2026-05-20T12:00:00.000Z"
+  },
+  "2026-05-21": {
+    "track": "campaign",
+    "campaign": "forging-elite-fitness",
+    "scheduledAt": "2026-05-21T12:00:00.000Z"
+  },
+  "2026-05-22": {
+    "track": "educational",
+    "scheduledAt": "2026-05-22T12:00:00.000Z"
+  },
+  "2026-05-23": {
+    "track": "campaign",
+    "campaign": "lifestyle-reset",
+    "scheduledAt": "2026-05-23T12:00:00.000Z"
+  },
+  "2026-05-24": {
+    "track": "campaign",
+    "campaign": "join-our-culture",
+    "scheduledAt": "2026-05-24T12:00:00.000Z"
+  },
+  "2026-05-25": {
+    "track": "educational",
+    "scheduledAt": "2026-05-25T12:00:00.000Z"
+  },
+  "2026-05-26": {
+    "track": "campaign",
+    "campaign": "crossfit-is-the-cure",
+    "scheduledAt": "2026-05-26T12:00:00.000Z"
+  },
+  "2026-05-27": {
+    "track": "educational",
+    "scheduledAt": "2026-05-27T12:00:00.000Z"
+  },
+  "2026-05-28": {
+    "track": "campaign",
+    "campaign": "this-is-crossfit",
+    "scheduledAt": "2026-05-28T12:00:00.000Z"
+  },
+  "2026-05-29": {
+    "track": "educational",
+    "scheduledAt": "2026-05-29T12:00:00.000Z"
+  },
+  "2026-05-30": {
+    "track": "campaign",
+    "campaign": "lifestyle-reset",
+    "scheduledAt": "2026-05-30T12:00:00.000Z"
+  },
+  "2026-05-31": {
+    "track": "campaign",
+    "campaign": "join-our-culture",
+    "scheduledAt": "2026-05-31T12:00:00.000Z"
+  },
+  "2026-06-01": {
+    "track": "educational",
+    "scheduledAt": "2026-06-01T12:00:00.000Z"
+  },
+  "2026-06-02": {
+    "track": "campaign",
+    "campaign": "the-crossfit-effect",
+    "scheduledAt": "2026-06-02T12:00:00.000Z"
+  },
+  "2026-06-03": {
+    "track": "educational",
+    "scheduledAt": "2026-06-03T12:00:00.000Z"
+  },
+  "2026-06-04": {
+    "track": "campaign",
+    "campaign": "share-your-stories",
+    "scheduledAt": "2026-06-04T12:00:00.000Z"
+  },
+  "2026-06-05": {
+    "track": "educational",
+    "scheduledAt": "2026-06-05T12:00:00.000Z"
+  },
+  "2026-06-06": {
+    "track": "campaign",
+    "campaign": "lifestyle-reset",
+    "scheduledAt": "2026-06-06T12:00:00.000Z"
+  },
+  "2026-06-07": {
+    "track": "campaign",
+    "campaign": "join-our-culture",
+    "scheduledAt": "2026-06-07T12:00:00.000Z"
+  },
+  "2026-06-08": {
+    "track": "educational",
+    "scheduledAt": "2026-06-08T12:00:00.000Z"
+  },
+  "2026-06-09": {
+    "track": "campaign",
+    "campaign": "forging-elite-fitness",
+    "scheduledAt": "2026-06-09T12:00:00.000Z"
+  },
+  "2026-06-10": {
+    "track": "educational",
+    "scheduledAt": "2026-06-10T12:00:00.000Z"
+  },
+  "2026-06-11": {
+    "track": "campaign",
+    "campaign": "crossfit-is-the-cure",
+    "scheduledAt": "2026-06-11T12:00:00.000Z"
+  },
+  "2026-06-12": {
+    "track": "educational",
+    "scheduledAt": "2026-06-12T12:00:00.000Z"
+  },
+  "2026-06-13": {
+    "track": "campaign",
+    "campaign": "lifestyle-reset",
+    "scheduledAt": "2026-06-13T12:00:00.000Z"
+  },
+  "2026-06-14": {
+    "track": "campaign",
+    "campaign": "join-our-culture",
+    "scheduledAt": "2026-06-14T12:00:00.000Z"
+  },
+  "2026-06-15": {
+    "track": "educational",
+    "scheduledAt": "2026-06-15T12:00:00.000Z"
+  },
+  "2026-06-16": {
+    "track": "campaign",
+    "campaign": "this-is-crossfit",
+    "scheduledAt": "2026-06-16T12:00:00.000Z"
+  },
+  "2026-06-17": {
+    "track": "educational",
+    "scheduledAt": "2026-06-17T12:00:00.000Z"
+  },
+  "2026-06-18": {
+    "track": "campaign",
+    "campaign": "the-crossfit-effect",
+    "scheduledAt": "2026-06-18T12:00:00.000Z"
+  },
+  "2026-06-19": {
+    "track": "educational",
+    "scheduledAt": "2026-06-19T12:00:00.000Z"
+  },
+  "2026-06-20": {
+    "track": "campaign",
+    "campaign": "lifestyle-reset",
+    "scheduledAt": "2026-06-20T12:00:00.000Z"
+  },
+  "2026-06-21": {
+    "track": "campaign",
+    "campaign": "join-our-culture",
+    "scheduledAt": "2026-06-21T12:00:00.000Z"
+  },
+  "2026-06-22": {
+    "track": "educational",
+    "scheduledAt": "2026-06-22T12:00:00.000Z"
+  },
+  "2026-06-23": {
+    "track": "campaign",
+    "campaign": "share-your-stories",
+    "scheduledAt": "2026-06-23T12:00:00.000Z"
+  },
+  "2026-06-24": {
+    "track": "educational",
+    "scheduledAt": "2026-06-24T12:00:00.000Z"
+  },
+  "2026-06-25": {
+    "track": "campaign",
+    "campaign": "forging-elite-fitness",
+    "scheduledAt": "2026-06-25T12:00:00.000Z"
+  },
+  "2026-06-26": {
+    "track": "educational",
+    "scheduledAt": "2026-06-26T12:00:00.000Z"
+  },
+  "2026-06-27": {
+    "track": "campaign",
+    "campaign": "lifestyle-reset",
+    "scheduledAt": "2026-06-27T12:00:00.000Z"
+  },
+  "2026-06-28": {
+    "track": "campaign",
+    "campaign": "join-our-culture",
+    "scheduledAt": "2026-06-28T12:00:00.000Z"
+  },
+  "2026-06-29": {
+    "track": "educational",
+    "scheduledAt": "2026-06-29T12:00:00.000Z"
+  },
+  "2026-06-30": {
+    "track": "campaign",
+    "campaign": "crossfit-is-the-cure",
+    "scheduledAt": "2026-06-30T12:00:00.000Z"
+  },
+  "2026-07-01": {
+    "track": "educational",
+    "scheduledAt": "2026-07-01T12:00:00.000Z"
+  }
+}

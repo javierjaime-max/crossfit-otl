@@ -1,0 +1,182 @@
+[
+  {
+    "id": "virtuosity",
+    "title": "Virtuosity",
+    "source": "CFJ — Greg Glassman",
+    "hook": "Doing common things uncommonly well. The hardest skill in CrossFit isn't the muscle-up.",
+    "reframe": "Virtuosity isn't advanced. It's what separates gyms that produce results from gyms that produce activity.",
+    "mechanism": "Perfect mechanics at light loads transfer to perfect mechanics under fatigue. The reverse is never true.",
+    "photo": "training",
+    "tags": ["coaching", "fundamentals", "movement-quality"]
+  },
+  {
+    "id": "constantly-varied",
+    "title": "The CrossFit Template",
+    "source": "CrossFit Journal #6",
+    "hook": "Random is not a program. Constantly varied is not random.",
+    "reframe": "Most people confuse chaos for variety. Variance has a structure — it just doesn't look like Monday = chest day.",
+    "mechanism": "Randomizing stimulus prevents your body from adapting to the program. Every adaptation is temporary unless the challenge keeps changing.",
+    "photo": "training",
+    "tags": ["programming", "methodology", "variance"]
+  },
+  {
+    "id": "aerobic-paradox",
+    "title": "The Aerobic Paradox",
+    "source": "CrossFit Journal #52",
+    "hook": "The fitter you are, the harder Fran feels. That's not a bug. That's the point.",
+    "reframe": "Most people train to feel comfortable. We train to access higher intensities — which means the ceiling keeps moving.",
+    "mechanism": "A better aerobic engine allows you to sustain higher work rates, which means your body is doing more work at the same perceived effort — not less.",
+    "photo": "training",
+    "tags": ["aerobic-capacity", "intensity", "adaptation"]
+  },
+  {
+    "id": "human-power-output",
+    "title": "Human Power Output",
+    "source": "CrossFit Journal #71",
+    "hook": "Fitness is measurable. Not a feeling. Not a vibe. Work divided by time.",
+    "reframe": "Every gym talks about results. We can actually show you the number — and whether it went up.",
+    "mechanism": "Power output (force × distance ÷ time) is the only objective measure of fitness. Heart rate and perceived effort measure strain, not output.",
+    "photo": "training",
+    "tags": ["measurement", "intensity", "data"]
+  },
+  {
+    "id": "hopper-model",
+    "title": "Dissecting the Hierarchy of the Hopper",
+    "source": "CrossFit Journal #69",
+    "hook": "The best preparation for the unknown is to be competent at everything.",
+    "reframe": "Specializing in one thing is a liability disguised as a strength. Life doesn't program for your strengths.",
+    "mechanism": "The hopper model tests fitness by random selection across all modal domains. If you can't be tested without preparation, your fitness has a bias.",
+    "photo": "community",
+    "tags": ["general-physical-preparedness", "methodology", "broad-fitness"]
+  },
+  {
+    "id": "scaling",
+    "title": "Scaling CrossFit Workouts",
+    "source": "CFJ — Gordon, 2015",
+    "hook": "Scaling is not cheating. Rx is not the goal.",
+    "reframe": "The goal is the stimulus — not the load. A 95# Fran that takes 12 minutes missed the point. A 45# Fran that takes 3:30 hit it.",
+    "mechanism": "Intensity drives adaptation. Scaling preserves the intended stimulus when load or skill would reduce intensity below the threshold that triggers change.",
+    "photo": "coaching",
+    "tags": ["scaling", "intensity", "coaching"]
+  },
+  {
+    "id": "vo2-not-gold-standard",
+    "title": "VO2 Max is Not the Gold Standard",
+    "source": "CrossFit Journal #52",
+    "hook": "VO2 max can't be trained much. That's why it was never the point.",
+    "reframe": "Exercise science spent decades chasing a metric that's mostly genetic. Meanwhile, CrossFit was training the things that actually move.",
+    "mechanism": "VO2 max plateaus after initial adaptation. Power output, work capacity across modal domains, and resilience under fatigue continue to improve for years.",
+    "photo": "training",
+    "tags": ["physiology", "measurement", "methodology"]
+  },
+  {
+    "id": "adaptations",
+    "title": "CrossFit Adaptations",
+    "source": "CFJ — Kilgore",
+    "hook": "Ten things happen in your body when you start CrossFit. Most people only know one.",
+    "reframe": "People join for weight loss. They stay because of what else changed — strength, sleep, insulin sensitivity, pain tolerance, mood.",
+    "mechanism": "CrossFit training drives simultaneous adaptations across cardiovascular, muscular, hormonal, and neurological systems — not one at a time.",
+    "photo": "community",
+    "tags": ["adaptation", "health", "physiology"]
+  },
+  {
+    "id": "goals",
+    "title": "Goals",
+    "source": "CFJ — Amundson",
+    "hook": "We're not training you to compete. We're training you to live.",
+    "reframe": "Elite performance is a narrow target. Lifelong health is a wide one. OTL coaches for the wide one — with the precision of the narrow.",
+    "mechanism": "Training for longevity and training for performance use the same methods — the difference is the load, the volume, and who it's for.",
+    "photo": "family",
+    "tags": ["goals", "longevity", "purpose"]
+  },
+  {
+    "id": "the-log",
+    "title": "The Log",
+    "source": "CFJ — Harrison",
+    "hook": "If you don't write it down, it didn't happen.",
+    "reframe": "Tracking your work isn't obsessive. It's the only way to know if you're actually getting better — not just feeling like you are.",
+    "mechanism": "Without logged benchmarks, you're training by feel. Feel lies. Numbers show trend — and trend is the only honest feedback a program can give.",
+    "photo": "coaching",
+    "tags": ["tracking", "benchmarks", "accountability"]
+  },
+  {
+    "id": "aging",
+    "title": "Aging and CrossFit",
+    "source": "CFJ 2015 — Kilgore",
+    "hook": "Muscle mass is the pension you fund in your 40s and spend in your 70s.",
+    "reframe": "Aging is not decline. Sedentary aging is decline. These are different problems with different solutions.",
+    "mechanism": "Resistance training and high-intensity work in midlife preserve fast-twitch fiber mass, bone density, and insulin sensitivity — the three metrics that determine quality of life at 75.",
+    "photo": "lifestyle",
+    "tags": ["aging", "longevity", "masters"]
+  },
+  {
+    "id": "coaching-bergeron",
+    "title": "Coaching",
+    "source": "CFJ — Ben Bergeron",
+    "hook": "The best coaches aren't the most knowledgeable. They're the best observers.",
+    "reframe": "Knowing the movement is the entrance exam. Seeing what a specific person needs, in this rep, in this class — that's the job.",
+    "mechanism": "Effective coaching requires pattern recognition, not just technique recall. The coach who sees the athlete, not the movement, produces faster results.",
+    "photo": "coaching",
+    "tags": ["coaching", "observation", "instruction"]
+  },
+  {
+    "id": "not-about-wod",
+    "title": "It's Not About the WOD",
+    "source": "CFJ — Platek",
+    "hook": "People don't stay for the workouts. They stay for who they become.",
+    "reframe": "If the workout was the product, any app would replace us. The workout is the excuse to show up. Community is why people don't leave.",
+    "mechanism": "Social accountability and identity-based belonging are the strongest predictors of long-term exercise adherence — not program quality alone.",
+    "photo": "community",
+    "tags": ["community", "retention", "culture"]
+  },
+  {
+    "id": "volume-hobart",
+    "title": "A Deft Dose of Volume",
+    "source": "CFJ 2016 — James Hobart",
+    "hook": "More is not harder. More is often just longer.",
+    "reframe": "The gym that runs you into the ground every session is not working harder — it's just accumulating fatigue without accumulating fitness.",
+    "mechanism": "Effective volume is the minimum dose that drives adaptation. Beyond that threshold, you're recovering from the workout rather than adapting to it.",
+    "photo": "training",
+    "tags": ["programming", "recovery", "volume"]
+  },
+  {
+    "id": "crossfit-diabetes",
+    "title": "CrossFit and Diabetes",
+    "source": "CFJ — Cochran",
+    "hook": "Exercise is medicine. CrossFit's prescription is specific.",
+    "reframe": "The gym is often the last intervention when it should be the first. We've watched people change labs — not just aesthetics.",
+    "mechanism": "High-intensity training improves insulin sensitivity more effectively than moderate-intensity continuous exercise. Muscle contraction drives glucose uptake independent of insulin.",
+    "photo": "lifestyle",
+    "tags": ["health", "diabetes", "clinical"]
+  },
+  {
+    "id": "mental-game",
+    "title": "The Mental Game",
+    "source": "CFJ — Shrago",
+    "hook": "You quit in your head before you quit with your body. Always.",
+    "reframe": "Mental toughness is not personality — it's a skill. And like all skills, it transfers.",
+    "mechanism": "Training under high-intensity discomfort builds a gap between stimulus and response. That gap — learning to act through discomfort — is the thing that changes behavior outside the gym.",
+    "photo": "training",
+    "tags": ["mental-toughness", "psychology", "performance"]
+  },
+  {
+    "id": "benchmark-workouts",
+    "title": "Benchmark Workouts",
+    "source": "CrossFit Journal #13",
+    "hook": "Fran is not a workout. Fran is a mirror.",
+    "reframe": "We name our workouts because they're repeatable tests — not experiences you run once and forget. A benchmark you never retest is just a story.",
+    "mechanism": "Named benchmarks create longitudinal data points. The only valid comparison in CrossFit is you vs. you, six months apart — same test, different score.",
+    "photo": "training",
+    "tags": ["benchmarks", "measurement", "progress"]
+  },
+  {
+    "id": "three-metabolic-pathways",
+    "title": "The Three Metabolic Pathways",
+    "source": "CrossFit L1 Training Guide",
+    "hook": "Your body has three engines. Most training only uses one.",
+    "reframe": "Cardio vs. weights is a false choice invented by people who don't understand how energy works. CrossFit trains all three — because life calls all three.",
+    "mechanism": "Phosphagen (0–10 sec), glycolytic (10 sec–2 min), and oxidative (2+ min) pathways all have distinct adaptation curves. Training all three creates the broad fitness that single-modal athletes lack.",
+    "photo": "training",
+    "tags": ["energy-systems", "methodology", "physiology"]
+  }
+]

@@ -1,0 +1,37 @@
+{
+  "weekly": {
+    "monday": {
+      "track": "educational"
+    },
+    "tuesday": {
+      "track": "campaign",
+      "pool": "rotation"
+    },
+    "wednesday": {
+      "track": "educational"
+    },
+    "thursday": {
+      "track": "campaign",
+      "pool": "rotation"
+    },
+    "friday": {
+      "track": "educational"
+    },
+    "saturday": {
+      "track": "campaign",
+      "campaign": "lifestyle-reset"
+    },
+    "sunday": {
+      "track": "campaign",
+      "campaign": "join-our-culture"
+    }
+  },
+  "campaignRotation": [
+    "forging-elite-fitness",
+    "crossfit-is-the-cure",
+    "this-is-crossfit",
+    "the-crossfit-effect",
+    "share-your-stories"
+  ],
+  "rotationIndex": 17
+}
