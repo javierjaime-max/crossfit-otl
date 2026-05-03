@@ -657,7 +657,16 @@ function buildQueueHtml(posts, ship = 'otl') {
         ${!isPosted && !isApproved && hasRendered ? `<button class="btn-action btn-approve" onclick="markStatus('${date}','${slug}','approved',this)">Approve ✓</button>` : ''}
         ${isApproved ? `<button class="btn-action btn-post" onclick="markStatus('${date}','${slug}','posted',this)">Mark Posted</button>` : ''}
       ` : `
-        ${!isPosted && !isApproved && hasRendered ? `<button class="btn-action btn-approve" onclick="openQueueModal('${date}','${slug}')">Queue →</button>` : ''}
+        ${!isPosted && !isApproved && hasRendered ? `
+          ${meta.scheduledAt ? `<div class="autopost-label draft-schedule-label">
+            <span class="autopost-icon">📅</span>
+            <span class="autopost-time draft-schedule-text">${new Date(meta.scheduledAt).toLocaleString('en-US',{weekday:'short',month:'short',day:'numeric',hour:'numeric',minute:'2-digit',timeZone:'America/Chicago'})}</span>
+          </div>` : ''}
+          <div class="draft-queue-row">
+            <button class="btn-action btn-approve" onclick="${meta.scheduledAt ? `approveWithCalendarDate('${date}','${slug}','${meta.scheduledAt}')` : `openQueueModal('${date}','${slug}')`}">Approve ✓</button>
+            <button class="reschedule-btn draft-reschedule" onclick="openQueueModal('${date}','${slug}')">Change Date</button>
+          </div>
+        ` : ''}
         ${isApproved ? `
           ${meta.scheduledAt
             ? (() => {
@@ -854,6 +863,11 @@ main{padding:24px 28px;max-width:1400px;margin:0 auto}
 .scheduled-label{font-size:10px;color:#3d883d;letter-spacing:.04em;padding:3px 0;width:100%}
 .autopost-label{display:flex;align-items:center;gap:6px;background:#0a1f0a;border:1px solid #1e4a1e;border-radius:4px;padding:5px 8px;width:100%;margin-bottom:2px;flex-wrap:wrap}
 .overdue-label{background:#1f0a0a;border-color:#7f1d1d;animation:pulse-border 1.5s ease-in-out infinite}
+.draft-schedule-label{background:#0a0f1f;border-color:#1e2a4a}
+.draft-schedule-text{color:#93c5fd !important}
+.draft-queue-row{display:flex;align-items:center;gap:6px;width:100%}
+.draft-reschedule{font-size:10px;color:#666;background:none;border:none;cursor:pointer;padding:0;text-decoration:underline}
+.draft-reschedule:hover{color:#aaa}
 @keyframes pulse-border{0%,100%{border-color:#7f1d1d}50%{border-color:#ef4444}}
 .autopost-icon{font-size:12px;flex-shrink:0}
 .autopost-time{font-size:10px;font-weight:600;color:#4ade80;letter-spacing:.03em;flex:1}
@@ -2211,6 +2225,25 @@ async function submitUploadModal() {
     }
   };
   reader.readAsDataURL(file);
+}
+
+// ── One-click approve with calendar date ──────────────────────
+async function approveWithCalendarDate(date, slug, scheduledAt) {
+  const btn = document.querySelector(`.card[data-date="${date}"][data-slug="${slug}"] .btn-approve`);
+  if (btn) { btn.disabled = true; btn.textContent = 'Approving…'; }
+  try {
+    const res = await fetch('/api/approve-post', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ date, slug, scheduledAt }),
+    });
+    const data = await res.json();
+    if (!data.ok) throw new Error(data.error || 'Failed');
+    location.reload();
+  } catch (e) {
+    if (btn) { btn.disabled = false; btn.textContent = 'Approve ✓'; }
+    alert('Error: ' + e.message);
+  }
 }
 
 // ── Queue modal ───────────────────────────────────────────────
