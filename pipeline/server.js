@@ -2246,6 +2246,30 @@ async function approveWithCalendarDate(date, slug, scheduledAt) {
   }
 }
 
+// ── CT timezone helpers (so modal always works in Central Time) ──
+function utcToCtLocal(utcDate) {
+  // Returns "YYYY-MM-DDTHH:MM" in America/Chicago, for datetime-local input
+  const fmt = new Intl.DateTimeFormat('sv-SE', {
+    timeZone: 'America/Chicago',
+    year: 'numeric', month: '2-digit', day: '2-digit',
+    hour: '2-digit', minute: '2-digit'
+  });
+  return fmt.format(utcDate).replace(' ', 'T');
+}
+
+function ctLocalToUtc(ctStr) {
+  // Treats "YYYY-MM-DDTHH:MM" as America/Chicago local time, returns UTC ISO string
+  const naiveUtc = new Date(ctStr + 'Z');
+  const fmt = new Intl.DateTimeFormat('sv-SE', {
+    timeZone: 'America/Chicago',
+    year: 'numeric', month: '2-digit', day: '2-digit',
+    hour: '2-digit', minute: '2-digit', second: '2-digit'
+  });
+  const ctOfNaive = fmt.format(naiveUtc).replace(' ', 'T');
+  const offsetMs = naiveUtc - new Date(ctOfNaive + 'Z');
+  return new Date(naiveUtc.getTime() + offsetMs).toISOString();
+}
+
 // ── Queue modal ───────────────────────────────────────────────
 let _qDate = null, _qSlug = null;
 
@@ -2258,17 +2282,17 @@ function openQueueModal(date, slug) {
   const existing = card?.dataset?.scheduled;
   const isReschedule = card?.dataset?.queueid;
 
-  let dt;
+  let ctLocal;
   if (existing) {
-    dt = new Date(existing);
+    ctLocal = utcToCtLocal(new Date(existing));
   } else {
-    // Default: 7am tomorrow local time
-    dt = new Date();
-    dt.setDate(dt.getDate() + 1);
-    dt.setHours(7, 0, 0, 0);
+    // Default: 7am tomorrow CT
+    const tomorrow = new Date();
+    tomorrow.setDate(tomorrow.getDate() + 1);
+    tomorrow.setUTCHours(12, 0, 0, 0); // 7am CDT = 12:00 UTC
+    ctLocal = utcToCtLocal(tomorrow);
   }
-  const local = \`\${dt.getFullYear()}-\${pad(dt.getMonth()+1)}-\${pad(dt.getDate())}T\${pad(dt.getHours())}:\${pad(dt.getMinutes())}\`;
-  document.getElementById('qmodal-dt').value = local;
+  document.getElementById('qmodal-dt').value = ctLocal;
   document.getElementById('qmodal-status').textContent = '';
   document.getElementById('qmodal-submit').textContent = isReschedule ? 'Reschedule →' : 'Queue it →';
   document.getElementById('qmodal-backdrop').classList.add('open');
@@ -2282,7 +2306,7 @@ function closeQueueModal() {
 async function submitQueueModal() {
   const dtVal = document.getElementById('qmodal-dt').value;
   if (!dtVal) return;
-  const scheduledAt = new Date(dtVal).toISOString();
+  const scheduledAt = ctLocalToUtc(dtVal);
   const btn = document.getElementById('qmodal-submit');
   const statusEl = document.getElementById('qmodal-status');
   btn.disabled = true;
@@ -2317,7 +2341,7 @@ async function submitQueueModal() {
 <div class="qmodal-backdrop" id="qmodal-backdrop" onclick="if(event.target===this)closeQueueModal()">
   <div class="qmodal">
     <h3>Schedule Post</h3>
-    <label>Post date &amp; time (your local time)</label>
+    <label>Post date &amp; time <span style="color:#888;font-weight:400">(Central Time — CT)</span></label>
     <input type="datetime-local" id="qmodal-dt">
     <div class="qmodal-status" id="qmodal-status"></div>
     <div class="qmodal-actions">
