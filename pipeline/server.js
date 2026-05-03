@@ -660,11 +660,21 @@ function buildQueueHtml(posts, ship = 'otl') {
         ${!isPosted && !isApproved && hasRendered ? `<button class="btn-action btn-approve" onclick="openQueueModal('${date}','${slug}')">Queue →</button>` : ''}
         ${isApproved ? `
           ${meta.scheduledAt
-            ? `<div class="autopost-label">
-                 <span class="autopost-icon">⏰</span>
-                 <span class="autopost-time">Auto-posts ${new Date(meta.scheduledAt).toLocaleString('en-US',{weekday:'short',month:'short',day:'numeric',hour:'numeric',minute:'2-digit',timeZone:'America/Chicago'})}</span>
-                 <button class="reschedule-btn" onclick="openQueueModal('${date}','${slug}')">Reschedule</button>
-               </div>`
+            ? (() => {
+                const isPast = new Date(meta.scheduledAt) < new Date();
+                const timeStr = new Date(meta.scheduledAt).toLocaleString('en-US',{weekday:'short',month:'short',day:'numeric',hour:'numeric',minute:'2-digit',timeZone:'America/Chicago'});
+                return isPast
+                  ? `<div class="autopost-label overdue-label">
+                       <span class="autopost-icon">🚨</span>
+                       <span class="autopost-time overdue-text">OVERDUE — was ${timeStr}</span>
+                       <button class="reschedule-btn" onclick="openQueueModal('${date}','${slug}')">Reschedule</button>
+                     </div>`
+                  : `<div class="autopost-label">
+                       <span class="autopost-icon">⏰</span>
+                       <span class="autopost-time">Auto-posts ${timeStr}</span>
+                       <button class="reschedule-btn" onclick="openQueueModal('${date}','${slug}')">Reschedule</button>
+                     </div>`;
+              })()
             : `<div class="no-schedule-label">
                  <span>⚠ No post date — won't auto-post</span>
                  <button class="reschedule-btn" onclick="openQueueModal('${date}','${slug}')">Set Date →</button>
@@ -843,8 +853,11 @@ main{padding:24px 28px;max-width:1400px;margin:0 auto}
 .btn-approve:hover{background:#0d1a0d;color:#5daa5d}
 .scheduled-label{font-size:10px;color:#3d883d;letter-spacing:.04em;padding:3px 0;width:100%}
 .autopost-label{display:flex;align-items:center;gap:6px;background:#0a1f0a;border:1px solid #1e4a1e;border-radius:4px;padding:5px 8px;width:100%;margin-bottom:2px;flex-wrap:wrap}
+.overdue-label{background:#1f0a0a;border-color:#7f1d1d;animation:pulse-border 1.5s ease-in-out infinite}
+@keyframes pulse-border{0%,100%{border-color:#7f1d1d}50%{border-color:#ef4444}}
 .autopost-icon{font-size:12px;flex-shrink:0}
 .autopost-time{font-size:10px;font-weight:600;color:#4ade80;letter-spacing:.03em;flex:1}
+.overdue-text{color:#f87171 !important}
 .no-schedule-label{display:flex;align-items:center;gap:6px;background:#1f0a0a;border:1px solid #4a1e1e;border-radius:4px;padding:5px 8px;width:100%;margin-bottom:2px;flex-wrap:wrap}
 .no-schedule-label span{font-size:10px;font-weight:600;color:#f87171;letter-spacing:.03em;flex:1}
 .reschedule-btn{background:transparent;border:1px solid #2a3a2a;color:#4ade8088;font-size:9px;font-weight:600;letter-spacing:.05em;text-transform:uppercase;padding:2px 6px;border-radius:3px;cursor:pointer;flex-shrink:0;transition:.15s}

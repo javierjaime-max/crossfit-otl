@@ -17,6 +17,9 @@ import { fileURLToPath } from 'url';
 import 'dotenv/config';
 import { createClient } from '@supabase/supabase-js';
 
+// Log immediately so launchd log file is never empty on crash
+process.stdout.write(`[publish-overdue-otl] startup ${new Date().toISOString()}\n`);
+
 // Supabase client — optional, used to sync status so the Vercel backup publisher
 // sees 'posted' and never double-posts the same carousel.
 const supabase = process.env.SUPABASE_URL && process.env.SUPABASE_ANON_KEY
