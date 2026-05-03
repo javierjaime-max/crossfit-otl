@@ -1,9 +1,13 @@
 /**
- * CrossFit OTL — Vercel cron: publish scheduled Instagram posts
+ * CrossFit OTL — Vercel cron: cloud backup publisher
  *
  * Runs every 5 minutes via vercel.json cron config.
- * Queries Supabase otl_post_queue for pending posts where scheduled_at <= now(),
- * publishes each via Meta Graph API, updates status.
+ * Queries Supabase otl_post_queue for approved posts where scheduled_at <= now(),
+ * publishes each via Meta Graph API, marks status 'posted'.
+ *
+ * Role: CLOUD BACKUP. Primary publisher is launchd publish-overdue-otl.js at 7:00am CT.
+ * This fires if the Mac mini is offline — catches any missed posts within 5 minutes.
+ * Both publishers write status='posted' to Supabase so neither double-posts.
  *
  * Required Vercel env vars:
  *   SUPABASE_URL, SUPABASE_ANON_KEY
@@ -115,11 +119,14 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
 
   const supabase = createClient(supabaseUrl, supabaseKey);
 
-  // Fetch all pending posts due now (or overdue), oldest first
+  // Fetch approved posts due now (or overdue), oldest first.
+  // Status 'approved' is set by the queue UI review flow.
+  // This Vercel cron is the cloud backup publisher — launchd publish-overdue-otl.js
+  // is primary (fires at 7:00am CT). If the Mac mini is offline, this catches it within 5 min.
   const { data: posts, error: fetchError } = await supabase
     .from("otl_post_queue")
     .select("id, slug, date, cloudinary_urls, caption, scheduled_at")
-    .eq("status", "pending")
+    .eq("status", "approved")
     .lte("scheduled_at", new Date().toISOString())
     .order("scheduled_at", { ascending: true });
 
@@ -151,11 +158,11 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
 
       await supabase
         .from("otl_post_queue")
-        .update({ status: "published", ig_post_id: igPostId })
+        .update({ status: "posted", ig_post_id: igPostId, posted_at: new Date().toISOString() })
         .eq("id", post.id);
 
-      console.log(`✓ Published ${post.date}/${post.slug} → IG ${igPostId}`);
-      results.push({ id: post.id, slug: post.slug, status: "published", igPostId });
+      console.log(`✓ Posted ${post.date}/${post.slug} → IG ${igPostId}`);
+      results.push({ id: post.id, slug: post.slug, status: "posted", igPostId });
     } catch (err: unknown) {
       const message = err instanceof Error ? err.message : String(err);
       console.error(`✗ Failed ${post.date}/${post.slug}:`, message);

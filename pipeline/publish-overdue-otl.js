@@ -15,6 +15,13 @@ import { existsSync, readdirSync, readFileSync, writeFileSync } from 'fs';
 import { resolve, dirname, join } from 'path';
 import { fileURLToPath } from 'url';
 import 'dotenv/config';
+import { createClient } from '@supabase/supabase-js';
+
+// Supabase client — optional, used to sync status so the Vercel backup publisher
+// sees 'posted' and never double-posts the same carousel.
+const supabase = process.env.SUPABASE_URL && process.env.SUPABASE_ANON_KEY
+  ? createClient(process.env.SUPABASE_URL, process.env.SUPABASE_ANON_KEY)
+  : null;
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const outputDir = resolve(__dirname, 'output');
@@ -125,12 +132,22 @@ for (const { date, slug, postDir, meta } of overdue) {
       onProgress: (msg) => console.log(`  ${msg}`),
     });
 
+    const postedAt = new Date().toISOString();
     writeMeta(postDir, {
       ...meta,
       status:   'posted',
-      postedAt: new Date().toISOString(),
+      postedAt,
       igPostId: result.postId,
     });
+
+    // Sync to Supabase so Vercel backup publisher sees 'posted' and won't double-post
+    if (supabase && meta.queueId) {
+      await supabase
+        .from('otl_post_queue')
+        .update({ status: 'posted', ig_post_id: result.postId, posted_at: postedAt })
+        .eq('id', meta.queueId)
+        .then(({ error }) => { if (error) console.warn(`  ⚠️  Supabase sync failed: ${error.message}`); });
+    }
 
     console.log(`  ✓ Posted → Instagram ID: ${result.postId}`);
     successCount++;
