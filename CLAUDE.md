@@ -184,7 +184,7 @@ curl -s http://localhost:4040/api/tunnels | python3 -c \
 nohup ngrok http 3001 > /tmp/ngrok.log 2>&1 &
 ```
 
-Note: ngrok URL changes on each restart. Permanent remote access will come from an OTL Queue view in the Atlas app (not yet built).
+Note: ngrok URL changes on each restart. Permanent remote access is via the OTL Queue view in the Atlas app (`atlas-app-nine-mauve.vercel.app` → OTL Queue nav item).
 
 ### launchd Agents (Mac mini)
 
