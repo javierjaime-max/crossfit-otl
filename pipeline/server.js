@@ -694,6 +694,7 @@ function buildQueueHtml(posts, ship = 'otl') {
           <button class="btn-action btn-post-ig" id="igpost-${date}-${slug}"
             onclick="postToIG('${date}','${slug}',this)">▶ Post Now</button>
           <button class="btn-action btn-post" onclick="markStatus('${date}','${slug}','posted',this)">Mark Posted</button>
+          <button class="btn-unqueue" onclick="unqueuePost('${date}','${slug}',this)">↩ Back to Draft</button>
         ` : ''}
       `}
       ${hasPreview ? `<a class="btn-preview" href="/${pPrefix}/${date}/${slug}/preview.html" target="_blank">Preview →</a>` : ''}
@@ -873,6 +874,8 @@ main{padding:24px 28px;max-width:1400px;margin:0 auto}
 .draft-reschedule:hover{color:#aaa}
 .btn-set-date{border-color:#1e3a5f;color:#93c5fd;font-size:11px}
 .btn-set-date:hover{background:#0a1a2e;color:#bfdbfe}
+.btn-unqueue{background:none;border:none;color:#555;font-size:10px;cursor:pointer;padding:2px 0;text-decoration:underline;margin-top:2px}
+.btn-unqueue:hover{color:#aaa}
 @keyframes pulse-border{0%,100%{border-color:#7f1d1d}50%{border-color:#ef4444}}
 .autopost-icon{font-size:12px;flex-shrink:0}
 .autopost-time{font-size:10px;font-weight:600;color:#4ade80;letter-spacing:.03em;flex:1}
@@ -2232,6 +2235,25 @@ async function submitUploadModal() {
   reader.readAsDataURL(file);
 }
 
+// ── Unqueue approved post back to draft ───────────────────────
+async function unqueuePost(date, slug, btn) {
+  if (!confirm('Move this post back to Draft? It will be removed from the queue.')) return;
+  btn.disabled = true; btn.textContent = 'Reverting…';
+  try {
+    const res = await fetch('/api/unqueue-post', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ date, slug }),
+    });
+    const data = await res.json();
+    if (!data.ok) throw new Error(data.error || 'Failed');
+    location.reload();
+  } catch (e) {
+    btn.disabled = false; btn.textContent = '↩ Back to Draft';
+    alert('Error: ' + e.message);
+  }
+}
+
 // ── One-click approve with calendar date ──────────────────────
 async function approveWithCalendarDate(date, slug, scheduledAt) {
   const btn = document.querySelector('.card[data-date="' + date + '"][data-slug="' + slug + '"] .btn-approve');
@@ -3391,6 +3413,27 @@ async function del(id, btn) {
       if (error) return jsonResp(res, { error: `Supabase: ${error.message}` }, 500);
     }
     return jsonResp(res, { ok: true, scheduledAt });
+  }
+
+  // ── Unqueue post back to draft ───────────────────────────────
+  if (path === '/api/unqueue-post' && method === 'POST') {
+    const body = await readBody(req);
+    const { date, slug } = body;
+    if (!date || !slug) return jsonResp(res, { error: 'Missing date/slug' }, 400);
+    const dir  = postDir(date, slug);
+    const meta = readMeta(dir);
+    const queueId = meta.queueId;
+    // Revert local meta to staged, clear queue fields
+    writeMeta(dir, { ...meta, status: 'staged', queueId: undefined, queuedAt: undefined, scheduledAt: undefined });
+    // Delete from Supabase if queued
+    if (supabase && queueId) {
+      const { error } = await supabase
+        .from('otl_post_queue')
+        .delete()
+        .eq('id', queueId);
+      if (error) console.warn('Supabase unqueue error:', error.message);
+    }
+    return jsonResp(res, { ok: true });
   }
 
   // ── Content Calendar API ─────────────────────────────────────
