@@ -634,6 +634,7 @@ function buildQueueHtml(posts, ship = 'otl') {
      data-texts='${JSON.stringify(slideTexts).replace(/'/g, "&#39;")}'
      data-accentslot="${meta.accentSlot ?? 0}"
      data-scheduled="${meta.scheduledAt || ''}"
+     data-status="${meta.status || ''}"
      data-queueid="${meta.queueId || ''}">
 
   <div class="card-img" data-idx="0" data-date="${date}" data-slug="${slug}">
@@ -658,14 +659,16 @@ function buildQueueHtml(posts, ship = 'otl') {
         ${isApproved ? `<button class="btn-action btn-post" onclick="markStatus('${date}','${slug}','posted',this)">Mark Posted</button>` : ''}
       ` : `
         ${!isPosted && !isApproved && hasRendered ? `
-          ${meta.scheduledAt ? `<div class="autopost-label draft-schedule-label">
-            <span class="autopost-icon">📅</span>
-            <span class="autopost-time draft-schedule-text">${new Date(meta.scheduledAt).toLocaleString('en-US',{weekday:'short',month:'short',day:'numeric',hour:'numeric',minute:'2-digit',timeZone:'America/Chicago'})}</span>
-          </div>` : ''}
-          <div class="draft-queue-row">
-            <button class="btn-action btn-approve" onclick="${meta.scheduledAt ? `approveWithCalendarDate('${date}','${slug}','${meta.scheduledAt}')` : `openQueueModal('${date}','${slug}')`}">Approve ✓</button>
-            <button class="reschedule-btn draft-reschedule" onclick="openQueueModal('${date}','${slug}')">Change Date</button>
-          </div>
+          ${meta.scheduledAt
+            ? `<div class="autopost-label draft-schedule-label">
+                 <span class="autopost-icon">📅</span>
+                 <span class="autopost-time draft-schedule-text">${new Date(meta.scheduledAt).toLocaleString('en-US',{weekday:'short',month:'short',day:'numeric',hour:'numeric',minute:'2-digit',timeZone:'America/Chicago'})}</span>
+               </div>
+               <div class="draft-queue-row">
+                 <button class="btn-action btn-approve" onclick="approveWithCalendarDate('${date}','${slug}','${meta.scheduledAt}')">Approve ✓</button>
+                 <button class="reschedule-btn draft-reschedule" onclick="openQueueModal('${date}','${slug}')">Change Date</button>
+               </div>`
+            : `<button class="btn-action btn-set-date" onclick="openQueueModal('${date}','${slug}')">📅 Set Date</button>`}
         ` : ''}
         ${isApproved ? `
           ${meta.scheduledAt
@@ -868,6 +871,8 @@ main{padding:24px 28px;max-width:1400px;margin:0 auto}
 .draft-queue-row{display:flex;align-items:center;gap:6px;width:100%}
 .draft-reschedule{font-size:10px;color:#666;background:none;border:none;cursor:pointer;padding:0;text-decoration:underline}
 .draft-reschedule:hover{color:#aaa}
+.btn-set-date{border-color:#1e3a5f;color:#93c5fd;font-size:11px}
+.btn-set-date:hover{background:#0a1a2e;color:#bfdbfe}
 @keyframes pulse-border{0%,100%{border-color:#7f1d1d}50%{border-color:#ef4444}}
 .autopost-icon{font-size:12px;flex-shrink:0}
 .autopost-time{font-size:10px;font-weight:600;color:#4ade80;letter-spacing:.03em;flex:1}
@@ -2294,7 +2299,9 @@ function openQueueModal(date, slug) {
   }
   document.getElementById('qmodal-dt').value = ctLocal;
   document.getElementById('qmodal-status').textContent = '';
-  document.getElementById('qmodal-submit').textContent = isReschedule ? 'Reschedule →' : 'Queue it →';
+  const cardStatus = document.querySelector('.card[data-date="' + date + '"][data-slug="' + slug + '"]')?.dataset?.status;
+  const btnLabel = isReschedule ? 'Reschedule →' : (cardStatus === 'approved' ? 'Reschedule →' : 'Set Date →');
+  document.getElementById('qmodal-submit').textContent = btnLabel;
   document.getElementById('qmodal-backdrop').classList.add('open');
 }
 
@@ -2311,12 +2318,14 @@ async function submitQueueModal() {
   const statusEl = document.getElementById('qmodal-status');
   btn.disabled = true;
 
-  // If already approved (has queueId), reschedule instead of re-uploading
   const card = document.querySelector(\`.card[data-date="\${_qDate}"][data-slug="\${_qSlug}"]\`);
-  const isReschedule = !!card?.dataset?.queueid;
-  const endpoint = isReschedule ? '/api/reschedule-post' : '/api/approve-post';
+  const isApproved = card?.dataset?.status === 'approved';
+  const hasQueueId = !!card?.dataset?.queueid;
+  // Already approved → reschedule in Supabase
+  // Not yet approved → just save the date locally, don't approve yet
+  const endpoint = (isApproved && hasQueueId) ? '/api/reschedule-post' : '/api/reschedule-post';
 
-  statusEl.textContent = isReschedule ? 'Rescheduling…' : 'Uploading slides…';
+  statusEl.textContent = isApproved ? 'Rescheduling…' : 'Saving date…';
   statusEl.style.color = '#3a7ab8';
   try {
     const res = await fetch(endpoint, {
