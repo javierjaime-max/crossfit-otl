@@ -2358,7 +2358,7 @@ async function submitQueueModal() {
     const data = await res.json();
     if (!data.ok) throw new Error(data.error || 'Failed');
     statusEl.style.color = '#3d883d';
-    statusEl.textContent = isReschedule ? '✓ Rescheduled!' : '✓ Queued!';
+    statusEl.textContent = isApproved ? '✓ Rescheduled!' : '✓ Date saved!';
     setTimeout(() => { closeQueueModal(); location.reload(); }, 1200);
   } catch (e) {
     statusEl.style.color = '#883333';
