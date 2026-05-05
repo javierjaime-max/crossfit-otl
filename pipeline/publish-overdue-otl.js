@@ -147,7 +147,7 @@ for (const { date, slug, postDir, meta } of overdue) {
     if (supabase && meta.queueId) {
       await supabase
         .from('otl_post_queue')
-        .update({ status: 'posted', ig_post_id: result.postId, posted_at: postedAt })
+        .update({ status: 'posted', ig_post_id: result.postId })
         .eq('id', meta.queueId)
         .then(({ error }) => { if (error) console.warn(`  ⚠️  Supabase sync failed: ${error.message}`); });
     }
