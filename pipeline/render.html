@@ -44,7 +44,11 @@
               <Template {...slide} />
               {showSwipe && (
                 <div style={{
-                  position: 'absolute', bottom: 36, right: 36,
+                  /* Bottom-CENTER, between the lower-left repost-avatar zone
+                     and the lower-right audio-mute zone, so neither IG overlay
+                     covers the swipe affordance. */
+                  position: 'absolute', bottom: 36, left: '50%',
+                  transform: 'translateX(-50%)',
                   display: 'flex', alignItems: 'center', gap: 8,
                   background: 'rgba(0,0,0,0.45)', backdropFilter: 'blur(4px)',
                   borderRadius: 100, padding: '10px 18px',

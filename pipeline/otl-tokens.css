@@ -99,6 +99,41 @@
   --dur-base:           0.3s;
   --dur-slow:           0.6s;
   --dur-cinematic:      0.8s;
+
+  /* ============================================================
+     IG UI SAFE ZONES — keep readable text out of native overlays
+     ------------------------------------------------------------
+     Instagram puts persistent UI on top of carousel posts:
+       • Reposter avatar circle  → lower-LEFT  (~20% × 20%)
+       • Audio mute button       → lower-RIGHT (~20% × 20%)
+       • Reel auto-crop          → trims sides when 4:5 → 9:16
+     The values below are the NO-FLY ZONES for headline + body
+     + page indicators. Templates reference them via JS (templates.jsx
+     reads matching constants in safeZones()) but they live here too
+     so future CSS-only templates can use them directly.
+     All values assume 1080-px-wide canvases.
+     ============================================================ */
+
+  /* Lower-left repost-avatar zone (4:5 + 1:1) */
+  --ig-avatar-zone-w:        220px;
+  --ig-avatar-zone-h:        270px;
+
+  /* Lower-right audio-mute zone (always ~square) */
+  --ig-audio-zone-w:         220px;
+  --ig-audio-zone-h:         220px;
+
+  /* Reel-safe horizontal margin — text must live INSIDE this band
+     so a 4:5 → 9:16 auto-conversion never clips a character.
+     4:5  →  (1080 − 1080×9/16) / 2 ≈ 160px each side
+     1:1  →  (1080 − 1080×9/16) / 2 ≈ 236px each side  */
+  --ig-reel-safe-x-4x5:      160px;
+  --ig-reel-safe-x-1x1:      236px;
+  --ig-reel-safe-x-9x16:     0px;       /* already 9:16, no crop */
+
+  /* Bottom safe-anchor — the lowest a text/CTA block may sit on top
+     of the canvas without intruding into the avatar zone. Equals
+     avatar-zone-h plus a 40px breathing buffer. */
+  --ig-bottom-safe:          310px;
 }
 
 /* ============================================================

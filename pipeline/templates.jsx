@@ -36,6 +36,40 @@ function pad(size) {
 }
 
 // ─────────────────────────────────────────────────────────────
+// IG UI SAFE ZONES
+// Mirrors the CSS variables in otl-tokens.css. Keep readable text
+// inside the reel-safe horizontal band, and out of the lower-left
+// repost-avatar zone and lower-right audio-mute zone.
+//
+// reelX  → minimum horizontal padding for any text element (px from
+//          each edge). Text outside this band will clip when IG
+//          auto-converts a carousel into a 9:16 reel.
+// bottomSafe → minimum bottom anchor (px from canvas bottom) for any
+//          headline/body/CTA block. Below this the repost-avatar
+//          circle covers it.
+// avatar/audio → the actual no-go rectangles (w × h, anchored to
+//          their respective lower corners). Useful when you need to
+//          visually verify or to shift purely-decorative elements.
+// ─────────────────────────────────────────────────────────────
+function safeZones(size) {
+  // Avatar + audio zones are roughly the same on every IG canvas size;
+  // only the reel-safe horizontal band changes (1:1 has more crop
+  // because 1:1 → 9:16 trims more from the sides than 4:5 → 9:16).
+  const reelX =
+    size === "9:16" ? 0 :
+    size === "1:1"  ? 236 :
+                      160; // 4:5 default
+  return {
+    reelX,
+    bottomSafe: 310,        // lower-left avatar height + buffer
+    avatarW:    220,
+    avatarH:    270,
+    audioW:     220,
+    audioH:     220,
+  };
+}
+
+// ─────────────────────────────────────────────────────────────
 // World palette — dark world = white text on dark, light world = dark text on light
 // ─────────────────────────────────────────────────────────────
 function worldPalette(world, overlayOpacity) {
@@ -929,6 +963,7 @@ function SplashSlide({ campaign, photo, headline, subhead, size = "4:5", world =
 function HookSlide({ campaign, photo, headline, curiosity, variant = "a", size = "4:5", accent, headlineFontScale = 1, photoEffect, subheadStyle = "solid" }) {
   const { cls } = SIZES[size];
   const p = pad(size);
+  const safe = safeZones(size);
 
   // At 1080px wide displayed on mobile (~390pt logical), 1px ≈ 0.36pt.
   // Headlines need 130px+ to land at ~47pt on screen — stop-scroll territory.
@@ -963,9 +998,13 @@ function HookSlide({ campaign, photo, headline, curiosity, variant = "a", size =
         <OTLLockup variant="white" size={32} />
       </div>
 
-      {/* Headline block — bottom of frame */}
+      {/* Headline block — anchored above the IG repost-avatar zone (lower-left)
+          and inside the reel-safe horizontal band. */}
       <div style={{
-        position: "absolute", left: p.x, right: p.x, bottom: p.y, zIndex: 10,
+        position: "absolute",
+        left: safe.reelX, right: safe.reelX,
+        bottom: safe.bottomSafe,
+        zIndex: 10,
         display: "flex", flexDirection: "column", gap: 18
       }}>
         {curiosity && (
@@ -1013,6 +1052,7 @@ function HookSlide({ campaign, photo, headline, curiosity, variant = "a", size =
 function ValueSlide({ campaign, photo, headline, body, nugget, slideNum, slideLabel, variant = "b", size = "4:5", accent, headlineFontScale = 1, subheadStyle = "solid", layout = "headline", stat, statLabel, listItems, quote, attribution }) {
   const { cls } = SIZES[size];
   const p = pad(size);
+  const safe = safeZones(size);
   const accentColor = accent || ACCENT_SLOTS[0].accent;
   const badge = slideLabel || (slideNum != null ? `${String(slideNum).padStart(2, "0")}` : null);
   const fsNugget = size === "9:16" ? 52 : size === "4:5" ? 46 : 40;
@@ -1024,11 +1064,14 @@ function ValueSlide({ campaign, photo, headline, body, nugget, slideNum, slideLa
       <div style={{ position: "absolute", inset: 0, zIndex: 0, background: "linear-gradient(145deg, #0e0e0e 0%, #070707 100%)" }}></div>
       <div style={{ position: "absolute", inset: 0, zIndex: 0, pointerEvents: "none", background: `radial-gradient(ellipse 55% 55% at 0% 100%, ${accentColor}18 0%, transparent 68%)` }}></div>
       <div className="tpl-grain tpl-grain--heavy"></div>
+      {/* Ghost slide-number watermark — moved out of the IG audio-mute
+          zone (lower-right) to the upper-right so the mute button
+          doesn't sit on top of it. */}
       {slideNumDisplay && (
-        <div style={{ position: "absolute", right: -15, bottom: -25, zIndex: 1, fontFamily: "var(--font-display)", fontWeight: 400, fontSize: size === "4:5" ? 560 : 640, lineHeight: 1, color: "rgba(255,255,255,0.055)", userSelect: "none", letterSpacing: -15 }}>{slideNumDisplay}</div>
+        <div style={{ position: "absolute", right: -15, top: -120, zIndex: 1, fontFamily: "var(--font-display)", fontWeight: 400, fontSize: size === "4:5" ? 560 : 640, lineHeight: 1, color: "rgba(255,255,255,0.055)", userSelect: "none", letterSpacing: -15 }}>{slideNumDisplay}</div>
       )}
       <div style={{ position: "absolute", top: 0, left: 0, bottom: 0, width: 8, background: accentColor, zIndex: 5, boxShadow: `6px 0 32px ${accentColor}55` }}></div>
-      <div style={{ position: "absolute", top: p.y, left: p.x + 24, right: p.x, zIndex: 10, display: "flex", justifyContent: "space-between", alignItems: "flex-start" }}>
+      <div style={{ position: "absolute", top: p.y, left: safe.reelX, right: safe.reelX, zIndex: 10, display: "flex", justifyContent: "space-between", alignItems: "flex-start" }}>
         <OTLLockup variant="white" size={28} />
         {badge && <span style={{ fontFamily: "Inter, Helvetica, sans-serif", fontWeight: 800, fontSize: 11, letterSpacing: 4, textTransform: "uppercase", color: accentColor }}>{badge}</span>}
       </div>
@@ -1043,7 +1086,7 @@ function ValueSlide({ campaign, photo, headline, body, nugget, slideNum, slideLa
     return (
       <div className={`tpl ${cls}`} data-template="value-slide" data-layout="stat">
         {frame}
-        <div style={{ position: "absolute", left: p.x + 24, right: p.x, zIndex: 10, top: p.y + 100, display: "flex", flexDirection: "column" }}>
+        <div style={{ position: "absolute", left: safe.reelX, right: safe.reelX, zIndex: 10, top: p.y + 100, display: "flex", flexDirection: "column" }}>
           {statLabel && (
             <p style={{ fontFamily: "Inter, Helvetica, sans-serif", fontWeight: 600, fontSize: fsStatLabel, letterSpacing: 5, textTransform: "uppercase", color: "rgba(255,255,255,0.45)", margin: 0, marginBottom: 4 }}>{statLabel}</p>
           )}
@@ -1067,7 +1110,7 @@ function ValueSlide({ campaign, photo, headline, body, nugget, slideNum, slideLa
     return (
       <div className={`tpl ${cls}`} data-template="value-slide" data-layout="list">
         {frame}
-        <div style={{ position: "absolute", left: p.x + 24, right: p.x, zIndex: 10, top: p.y + 100, bottom: p.y }}>
+        <div style={{ position: "absolute", left: safe.reelX, right: safe.reelX, zIndex: 10, top: p.y + 100, bottom: safe.bottomSafe }}>
           {headline && (
             <h2 style={{ fontFamily: "Inter, Helvetica, sans-serif", fontWeight: 800, fontSize: fsListTitle, lineHeight: 1.0, color: "#fff", textTransform: "uppercase", margin: 0, marginBottom: 32, letterSpacing: -0.5 }}>{headline}</h2>
           )}
@@ -1095,7 +1138,7 @@ function ValueSlide({ campaign, photo, headline, body, nugget, slideNum, slideLa
     return (
       <div className={`tpl ${cls}`} data-template="value-slide" data-layout="quote">
         {frame}
-        <div style={{ position: "absolute", left: p.x + 24, right: p.x, zIndex: 10, top: "50%", transform: "translateY(-52%)", display: "flex", flexDirection: "column", gap: 20 }}>
+        <div style={{ position: "absolute", left: safe.reelX, right: safe.reelX, zIndex: 10, top: "44%", transform: "translateY(-52%)", display: "flex", flexDirection: "column", gap: 20 }}>
           <div style={{ fontFamily: "var(--font-display)", fontSize: fsQuoteMark, lineHeight: 0.55, color: accentColor, opacity: 0.45, userSelect: "none" }}>"</div>
           <p style={{ fontFamily: "Inter, Helvetica, sans-serif", fontWeight: 500, fontStyle: "italic", fontSize: fsQuote, color: "#fff", margin: 0, lineHeight: 1.32, maxWidth: "94%" }}>{quote || headline}</p>
           {attribution && (
@@ -1114,7 +1157,7 @@ function ValueSlide({ campaign, photo, headline, body, nugget, slideNum, slideLa
   return (
     <div className={`tpl ${cls}`} data-template="value-slide" data-layout="headline">
       {frame}
-      <div style={{ position: "absolute", left: p.x + 24, right: p.x, zIndex: 10, top: "50%", transform: "translateY(-50%)", paddingBottom: nugget ? "15%" : 0 }}>
+      <div style={{ position: "absolute", left: safe.reelX, right: safe.reelX, zIndex: 10, top: "44%", transform: "translateY(-50%)", paddingBottom: nugget ? "15%" : 0 }}>
         <h1 style={{ fontFamily: "var(--font-display)", fontWeight: 400, fontSize: fsTypeDom, lineHeight: 0.88, color: "#fff", textTransform: "uppercase", margin: 0 }}>
           {(headline || campaign.statement).split("\n").map((l, i) => {
             if (i === 0) return <React.Fragment key={i}>{l}</React.Fragment>;
@@ -1128,7 +1171,7 @@ function ValueSlide({ campaign, photo, headline, body, nugget, slideNum, slideLa
         </h1>
       </div>
       {nugget && (
-        <div style={{ position: "absolute", bottom: p.y, left: p.x + 24, right: p.x, zIndex: 10 }}>
+        <div style={{ position: "absolute", bottom: safe.bottomSafe, left: safe.reelX, right: safe.reelX, zIndex: 10 }}>
           <div style={{ width: 48, height: 3, background: accentColor, marginBottom: 16 }}></div>
           <p style={{ fontFamily: "Inter, Helvetica, sans-serif", fontWeight: 700, fontSize: fsNugget, color: "rgba(255,255,255,0.92)", margin: 0, lineHeight: 1.2, textTransform: "uppercase", letterSpacing: 0.5 }}>{nugget}</p>
         </div>
@@ -1311,6 +1354,7 @@ function CompareSlide({ campaign, photoLeft, photoRight, labelLeft, labelRight, 
 function CarouselCTA({ campaign, photo, headline, subhead, variant = "a", size = "4:5", accent, headlineFontScale = 1, cta, photoEffect }) {
   const { cls } = SIZES[size];
   const p = pad(size);
+  const safe = safeZones(size);
   const accentColor = accent || ACCENT_SLOTS[0].accent;
   const ctaAction = cta?.action || "Book a Free Intro";
   const ctaDetail = cta?.detail || "Link in bio · @crossfitotl";
@@ -1346,9 +1390,13 @@ function CarouselCTA({ campaign, photo, headline, subhead, variant = "a", size =
         <OTLLockup variant="white" size={28} />
       </div>
 
-      {/* FOLLOW FOR MORE block — takes over lower 50% */}
+      {/* FOLLOW FOR MORE block — anchored above the IG repost-avatar zone
+          (lower-left) and inside the reel-safe horizontal band. */}
       <div style={{
-        position: "absolute", bottom: p.y, left: p.x, right: p.x, zIndex: 10,
+        position: "absolute",
+        bottom: safe.bottomSafe,
+        left: safe.reelX, right: safe.reelX,
+        zIndex: 10,
         display: "flex", flexDirection: "column", gap: 20
       }}>
         {/* FOLLOW FOR MORE */}
