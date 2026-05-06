@@ -66,7 +66,38 @@ function safeZones(size) {
     avatarH:    270,
     audioW:     220,
     audioH:     220,
+    contentW:   1080 - 2 * reelX,  // available text width inside reel-safe band
   };
+}
+
+// ─────────────────────────────────────────────────────────────
+// AUTO-FIT FONT SIZER
+// Heuristic by character-count — fast, deterministic, no DOM measurement.
+// Why heuristic instead of measure-and-shrink JS? Templates render via
+// Puppeteer with networkidle + fonts.ready gates. A useLayoutEffect
+// shrink loop adds timing fragility and async hazards. The heuristic
+// is robust enough for our cases (and the codebase already uses similar
+// patterns in BoldStatement and SplashSlide).
+//
+// Returns a font-size (px) such that the longest single line of `text`
+// fits inside `maxWidth` at the given font's avg-glyph width ratio.
+// Caller multiplies by any user-supplied scale (e.g. headlineFontScale).
+//
+//   text       string, may contain "\n" — sized to the longest line
+//   maxWidth   px, available content width (e.g. safe.contentW)
+//   idealSize  the design-target size (returned if text fits)
+//   charRatio  avg glyph width in ems. Bebas Neue ≈ 0.42 (uppercase/digits).
+//              Inter 800 caps ≈ 0.62. Inter 700 caps ≈ 0.60.
+//   minSize    floor — never shrink below this even if it overflows
+// ─────────────────────────────────────────────────────────────
+function autoFitFontSize(text, maxWidth, idealSize, charRatio = 0.42, minSize = 60) {
+  if (!text) return idealSize;
+  const lines = String(text).split("\n");
+  const maxLen = Math.max(...lines.map(l => l.length));
+  if (maxLen === 0) return idealSize;
+  const fitSize = Math.floor(maxWidth / (maxLen * charRatio));
+  if (fitSize >= idealSize) return idealSize;
+  return Math.max(minSize, fitSize);
 }
 
 // ─────────────────────────────────────────────────────────────
@@ -967,10 +998,12 @@ function HookSlide({ campaign, photo, headline, curiosity, variant = "a", size =
 
   // At 1080px wide displayed on mobile (~390pt logical), 1px ≈ 0.36pt.
   // Headlines need 130px+ to land at ~47pt on screen — stop-scroll territory.
-  const fsH = (size === "9:16" ? 160 : size === "4:5" ? 138 : 118) * headlineFontScale;
+  // Auto-fit so long single-line headlines don't overflow the reel-safe band.
+  const hl = headline || campaign.statement;
+  const idealH = size === "9:16" ? 160 : size === "4:5" ? 138 : 118;
+  const fsH = autoFitFontSize(hl, safe.contentW, idealH, 0.42, 70) * headlineFontScale;
   // Curiosity text: ~48px ≈ 17pt — minimum legible on mobile
   const fsCuriosity = size === "9:16" ? 38 : size === "4:5" ? 34 : 28;
-  const hl = headline || campaign.statement;
   const accentColor = accent || ACCENT_SLOTS[0].accent;
 
   return (
@@ -1080,7 +1113,15 @@ function ValueSlide({ campaign, photo, headline, body, nugget, slideNum, slideLa
 
   // ── layout: stat ──────────────────────────────────────────
   if (layout === "stat") {
-    const fsStat      = size === "9:16" ? 520 : size === "4:5" ? 480 : 400;
+    // Auto-fit the giant stat string to the reel-safe band.
+    // Long stats like "10,000" at idealStat=480 overflow 760px content
+    // width. autoFitFontSize scales font-size down by character count.
+    // Bebas Neue digits run ~0.48 em wide (verified via Range measurement
+    // on rendered HTML — uppercase letters average ~0.42, but digits
+    // and commas push the average up for numeric stats). Floor at 120px
+    // stays visually impactful.
+    const idealStat   = size === "9:16" ? 520 : size === "4:5" ? 480 : 400;
+    const fsStat      = autoFitFontSize(stat || headline || '', safe.contentW, idealStat, 0.48, 120);
     const fsStatLabel = size === "9:16" ? 30  : size === "4:5" ? 26  : 22;
     const fsStatBody  = size === "9:16" ? 46  : size === "4:5" ? 42  : 36;
     return (
@@ -1102,7 +1143,10 @@ function ValueSlide({ campaign, photo, headline, body, nugget, slideNum, slideLa
 
   // ── layout: list ──────────────────────────────────────────
   if (layout === "list") {
-    const fsListTitle = size === "9:16" ? 68 : size === "4:5" ? 60 : 50;
+    // List title (Inter 800 uppercase) auto-fit so long titles like
+    // "WHAT WE'RE ACTUALLY FIGHTING" don't overflow the reel-safe band.
+    const idealListTitle = size === "9:16" ? 68 : size === "4:5" ? 60 : 50;
+    const fsListTitle    = autoFitFontSize(headline || '', safe.contentW, idealListTitle, 0.62, 32);
     const fsListNum   = size === "9:16" ? 88 : size === "4:5" ? 76 : 64;
     const fsListItem  = size === "9:16" ? 50 : size === "4:5" ? 44 : 38;
     const fsListBody  = size === "9:16" ? 34 : size === "4:5" ? 30 : 26;
@@ -1153,7 +1197,10 @@ function ValueSlide({ campaign, photo, headline, body, nugget, slideNum, slideLa
   }
 
   // ── layout: headline (default) ────────────────────────────
-  const fsTypeDom = (size === "9:16" ? 138 : size === "4:5" ? 118 : 100) * headlineFontScale;
+  // Auto-fit display headline to reel-safe band before applying user scale.
+  // Catches long single-line statements like "ELITE IS NOT WHAT YOU THINK".
+  const idealTypeDom = size === "9:16" ? 138 : size === "4:5" ? 118 : 100;
+  const fsTypeDom = autoFitFontSize(headline || campaign.statement || '', safe.contentW, idealTypeDom, 0.42, 60) * headlineFontScale;
   return (
     <div className={`tpl ${cls}`} data-template="value-slide" data-layout="headline">
       {frame}
