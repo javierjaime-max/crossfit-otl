@@ -3,6 +3,10 @@
     {
       "path": "/api/publish-scheduled-otl",
       "schedule": "*/5 * * * *"
+    },
+    {
+      "path": "/api/cron-photo-intake",
+      "schedule": "0 * * * *"
     }
   ]
 }
