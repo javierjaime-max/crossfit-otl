@@ -1,31 +1,33 @@
 /**
- * CrossFit OTL — Vercel cron: photo intake
+ * CrossFit OTL — photo intake (Vercel serverless function)
  *
  * Replaces the legacy launchd job on the Mac mini (com.otl.intake.plist).
  *
  * Pipeline:
  *   iCloud Shared Album  →  Claude Haiku Vision triage  →  Cloudinary library
  *
- * Runs hourly via vercel.json. Each invocation:
- *   1. Lists Cloudinary library to build a set of existing public_ids (dedup).
- *   2. Pulls the iCloud shared album stream.
- *   3. For each new photo (cap MAX_PER_RUN), downloads the largest derivative,
- *      triages with Claude Haiku, and (if quality >= MIN_QUALITY) uploads to
- *      Cloudinary with the same public_id pattern as pipeline/intake.js.
+ * Stateless: dedup is Cloudinary-as-source-of-truth. Each iCloud photo's GUID
+ * maps deterministically to a Cloudinary public_id (`crossfit-otl/library/otl_*`);
+ * any existing match is skipped. New photos are downloaded, triaged with Claude
+ * Haiku Vision, and (if quality >= MIN_QUALITY) uploaded to Cloudinary with the
+ * same tag/context schema as the legacy pipeline/intake.js.
  *
- * Source-of-truth state lives in Cloudinary itself (public_id + context),
- * NOT in a filesystem photo-intake-log.json — this function is stateless.
+ * No npm SDKs — talks to Anthropic and Cloudinary over plain HTTPS to keep
+ * the project's dependency surface minimal (matches publish-scheduled-otl.ts).
  *
- * Required env vars (all set in Vercel Project Settings):
+ * Required env vars (Production target on Vercel):
  *   ICLOUD_ALBUM_TOKEN
  *   ANTHROPIC_API_KEY
  *   CLOUDINARY_CLOUD_NAME, CLOUDINARY_API_KEY, CLOUDINARY_API_SECRET
  *   CRON_SECRET  (Bearer-token auth on this route)
+ *
+ * Invocation:
+ *   curl -H "Authorization: Bearer $CRON_SECRET" \
+ *        https://crossfit-otl.com/api/cron-photo-intake
  */
 
 import type { VercelRequest, VercelResponse } from "@vercel/node";
-import Anthropic from "@anthropic-ai/sdk";
-import { v2 as cloudinary } from "cloudinary";
+import { createHash } from "node:crypto";
 
 // Vercel Hobby plan caps serverless functions at 60s
 export const config = { maxDuration: 60 };
@@ -35,7 +37,7 @@ export const config = { maxDuration: 60 };
 const CLOUDINARY_FOLDER = "crossfit-otl/library";
 const PUBLIC_ID_PREFIX = "otl_";
 const MIN_QUALITY = 3;
-const MAX_PER_RUN = 20; // tight cap to stay under 60s wall clock; cron is hourly
+const MAX_PER_RUN = 20; // tight cap to stay under 60s wall clock
 
 // ── iCloud Shared Album ────────────────────────────────────────
 
@@ -117,10 +119,13 @@ function resolveDownloadUrl(
   return `${loc.scheme}://${item.url_location}${item.url_path}`;
 }
 
-async function downloadPhoto(url: string): Promise<Buffer> {
+async function downloadPhoto(url: string): Promise<{ buffer: Buffer; mimeType: "image/jpeg" | "image/png" }> {
   const res = await fetch(url);
   if (!res.ok) throw new Error(`Download failed: ${res.status}`);
-  return Buffer.from(await res.arrayBuffer());
+  const buffer = Buffer.from(await res.arrayBuffer());
+  const lower = url.toLowerCase();
+  const mimeType: "image/jpeg" | "image/png" = lower.includes(".png") ? "image/png" : "image/jpeg";
+  return { buffer, mimeType };
 }
 
 // ── Public-ID derivation (matches pipeline/intake.js) ─────────
@@ -129,32 +134,131 @@ function publicIdFromGuid(guid: string): string {
   return `${PUBLIC_ID_PREFIX}${guid.replace(/[^a-z0-9]/gi, "_").slice(0, 40)}`;
 }
 
-// ── Cloudinary dedup (list existing public_ids in folder) ─────
+// ── Cloudinary REST (no SDK) ──────────────────────────────────
 
-async function existingPublicIds(): Promise<Set<string>> {
+interface CloudinaryConfig {
+  cloudName: string;
+  apiKey: string;
+  apiSecret: string;
+}
+
+interface CloudinaryResource {
+  public_id: string;
+  secure_url?: string;
+}
+
+interface CloudinaryListResponse {
+  resources: CloudinaryResource[];
+  next_cursor?: string;
+}
+
+async function listCloudinaryPublicIds(cfg: CloudinaryConfig): Promise<Set<string>> {
   const ids = new Set<string>();
+  const auth = "Basic " + Buffer.from(`${cfg.apiKey}:${cfg.apiSecret}`).toString("base64");
   let cursor: string | undefined;
-  // Paginate through Cloudinary admin API
   do {
-    const result = (await cloudinary.api.resources({
+    const params = new URLSearchParams({
       type: "upload",
       prefix: `${CLOUDINARY_FOLDER}/${PUBLIC_ID_PREFIX}`,
-      max_results: 500,
-      next_cursor: cursor,
-    })) as { resources: Array<{ public_id: string }>; next_cursor?: string };
-    for (const r of result.resources) {
-      // public_id comes back as "crossfit-otl/library/otl_abc..." — strip folder
+      max_results: "500",
+    });
+    if (cursor) params.set("next_cursor", cursor);
+
+    const url = `https://api.cloudinary.com/v1_1/${cfg.cloudName}/resources/image?${params}`;
+    const res = await fetch(url, { headers: { Authorization: auth } });
+    if (!res.ok) throw new Error(`Cloudinary list ${res.status}: ${await res.text()}`);
+    const json = (await res.json()) as CloudinaryListResponse;
+
+    for (const r of json.resources) {
       const id = r.public_id.startsWith(`${CLOUDINARY_FOLDER}/`)
         ? r.public_id.slice(CLOUDINARY_FOLDER.length + 1)
         : r.public_id;
       ids.add(id);
     }
-    cursor = result.next_cursor;
+    cursor = json.next_cursor;
   } while (cursor);
   return ids;
 }
 
-// ── Claude Haiku Vision Triage ────────────────────────────────
+interface UploadMeta {
+  guid: string;
+  publicId: string;
+  theme: string;
+  tags: string[];
+  mood: string;
+  quality: number;
+  description: string;
+}
+
+interface CloudinaryUploadResponse {
+  secure_url: string;
+  public_id: string;
+}
+
+// Computes Cloudinary's signed-upload signature: SHA-1 of (alphabetized k=v joined by &) + api_secret
+function signParams(params: Record<string, string>, apiSecret: string): string {
+  const ordered = Object.keys(params)
+    .sort()
+    .map((k) => `${k}=${params[k]}`)
+    .join("&");
+  return createHash("sha1").update(ordered + apiSecret).digest("hex");
+}
+
+async function uploadToCloudinary(
+  cfg: CloudinaryConfig,
+  imageBuffer: Buffer,
+  mimeType: string,
+  meta: UploadMeta
+): Promise<CloudinaryUploadResponse> {
+  const allTags = [
+    `theme:${meta.theme}`,
+    `mood:${meta.mood}`,
+    `quality:${meta.quality}`,
+    "source:icloud-album",
+    ...meta.tags.map((t) => t.replace(/\s+/g, "-")),
+  ];
+
+  // Cloudinary expects context as `key=value|key=value` and tags comma-separated
+  const contextStr = [
+    `theme=${meta.theme}`,
+    `mood=${meta.mood}`,
+    `quality=${meta.quality}`,
+    `description=${meta.description.replace(/[|=]/g, " ")}`,
+    `source=icloud-album`,
+    `icloud_guid=${meta.guid}`,
+  ].join("|");
+
+  const tagsStr = allTags.join(",");
+  const timestamp = Math.floor(Date.now() / 1000).toString();
+
+  // Params that must be signed (everything except file, api_key, signature, resource_type, file_type)
+  const signed: Record<string, string> = {
+    context: contextStr,
+    folder: CLOUDINARY_FOLDER,
+    overwrite: "false",
+    public_id: meta.publicId,
+    tags: tagsStr,
+    timestamp,
+  };
+  const signature = signParams(signed, cfg.apiSecret);
+
+  const form = new FormData();
+  for (const [k, v] of Object.entries(signed)) form.append(k, v);
+  form.append("api_key", cfg.apiKey);
+  form.append("signature", signature);
+  // Buffer's TS type carries `ArrayBufferLike` which BlobPart rejects under strict TS;
+  // copy into a plain Uint8Array (with a real ArrayBuffer) before handing to Blob.
+  const u8 = new Uint8Array(imageBuffer.byteLength);
+  u8.set(imageBuffer);
+  form.append("file", new Blob([u8], { type: mimeType }), `${meta.publicId}.${mimeType === "image/png" ? "png" : "jpg"}`);
+
+  const url = `https://api.cloudinary.com/v1_1/${cfg.cloudName}/image/upload`;
+  const res = await fetch(url, { method: "POST", body: form });
+  if (!res.ok) throw new Error(`Cloudinary upload ${res.status}: ${await res.text()}`);
+  return (await res.json()) as CloudinaryUploadResponse;
+}
+
+// ── Anthropic Messages API (no SDK) ───────────────────────────
 
 const TRIAGE_PROMPT = `You are triaging photos for use in CrossFit OTL's Instagram carousels.
 CrossFit OTL is a CrossFit affiliate gym in North Richland Hills, TX.
@@ -186,13 +290,17 @@ interface TriageResult {
   reject_reason?: string;
 }
 
+interface AnthropicMessagesResponse {
+  content: Array<{ type: string; text?: string }>;
+}
+
 async function triagePhoto(
-  anthropicClient: Anthropic,
+  apiKey: string,
   imageBuffer: Buffer,
   mimeType: "image/jpeg" | "image/png"
 ): Promise<TriageResult> {
   const b64 = imageBuffer.toString("base64");
-  const response = await anthropicClient.messages.create({
+  const body = {
     model: "claude-haiku-4-5-20251001",
     max_tokens: 400,
     messages: [
@@ -204,62 +312,27 @@ async function triagePhoto(
         ],
       },
     ],
+  };
+
+  const res = await fetch("https://api.anthropic.com/v1/messages", {
+    method: "POST",
+    headers: {
+      "x-api-key": apiKey,
+      "anthropic-version": "2023-06-01",
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(body),
   });
-  const block = response.content[0];
-  if (block.type !== "text") throw new Error("Unexpected non-text response from Claude");
+  if (!res.ok) throw new Error(`Anthropic ${res.status}: ${await res.text()}`);
+
+  const json = (await res.json()) as AnthropicMessagesResponse;
+  const block = json.content.find((c) => c.type === "text");
+  if (!block?.text) throw new Error("No text block in Anthropic response");
   const raw = block.text.trim();
   const start = raw.indexOf("{");
   const end = raw.lastIndexOf("}");
   if (start === -1) throw new Error("No JSON in triage response: " + raw.slice(0, 100));
   return JSON.parse(raw.slice(start, end + 1)) as TriageResult;
-}
-
-// ── Cloudinary upload ─────────────────────────────────────────
-
-interface UploadMeta {
-  guid: string;
-  publicId: string;
-  theme: string;
-  tags: string[];
-  mood: string;
-  quality: number;
-  description: string;
-}
-
-async function uploadToCloudinary(imageBuffer: Buffer, meta: UploadMeta): Promise<{ secure_url: string; public_id: string }> {
-  const allTags = [
-    `theme:${meta.theme}`,
-    `mood:${meta.mood}`,
-    `quality:${meta.quality}`,
-    "source:icloud-album",
-    ...meta.tags.map((t) => t.replace(/\s+/g, "-")),
-  ];
-
-  return await new Promise((resolve, reject) => {
-    const stream = cloudinary.uploader.upload_stream(
-      {
-        folder: CLOUDINARY_FOLDER,
-        public_id: meta.publicId,
-        tags: allTags,
-        context: {
-          theme: meta.theme,
-          mood: meta.mood,
-          quality: String(meta.quality),
-          description: meta.description,
-          source: "icloud-album",
-          icloud_guid: meta.guid,
-        },
-        resource_type: "image",
-        overwrite: false,
-      },
-      (err, result) => {
-        if (err) return reject(err);
-        if (!result) return reject(new Error("Cloudinary upload returned no result"));
-        resolve({ secure_url: result.secure_url, public_id: result.public_id });
-      }
-    );
-    stream.end(imageBuffer);
-  });
 }
 
 // ── Handler ───────────────────────────────────────────────────
@@ -304,8 +377,11 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     });
   }
 
-  cloudinary.config({ cloud_name: cloudName, api_key: cloudKey, api_secret: cloudSecret });
-  const anthropicClient = new Anthropic({ apiKey: anthropicKey });
+  const cfg: CloudinaryConfig = {
+    cloudName,
+    apiKey: cloudKey,
+    apiSecret: cloudSecret,
+  };
 
   const startedAt = Date.now();
   const summary = {
@@ -321,8 +397,8 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
   };
 
   try {
-    // 1. Build dedup set
-    const existing = await existingPublicIds();
+    // 1. Build dedup set from Cloudinary
+    const existing = await listCloudinaryPublicIds(cfg);
 
     // 2. Fetch iCloud stream
     const { data: stream, host } = await fetchStream(`p15-${ICLOUD_BASE}`, albumToken);
@@ -344,8 +420,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     const guids = toProcess.map((p) => p.photoGuid);
     const { items: assetItems, locations } = await fetchAssetUrls(host, albumToken, guids);
 
-    // 5. Process sequentially (Vercel Hobby has a small CPU/memory budget; concurrency
-    //    on Anthropic + Cloudinary doesn't dramatically change wall clock here)
+    // 5. Process sequentially
     for (const photo of toProcess) {
       const guid = photo.photoGuid;
       const publicId = publicIdFromGuid(guid);
@@ -363,11 +438,9 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
           summary.results.push({ guid, status: "error", error: "no download url" });
           continue;
         }
-        const ext = downloadUrl.toLowerCase().includes(".png") ? "png" : "jpg";
-        const mimeType: "image/jpeg" | "image/png" = ext === "png" ? "image/png" : "image/jpeg";
 
-        const buffer = await downloadPhoto(downloadUrl);
-        const triage = await triagePhoto(anthropicClient, buffer, mimeType);
+        const { buffer, mimeType } = await downloadPhoto(downloadUrl);
+        const triage = await triagePhoto(anthropicKey, buffer, mimeType);
 
         summary.new_processed++;
 
@@ -383,7 +456,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
           continue;
         }
 
-        const uploaded = await uploadToCloudinary(buffer, {
+        const uploaded = await uploadToCloudinary(cfg, buffer, mimeType, {
           guid,
           publicId,
           theme: triage.theme,
