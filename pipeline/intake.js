@@ -121,7 +121,7 @@ Evaluate this photo for Instagram carousel use. Return JSON only — no markdown
 {
   "quality": <1-5>,
   "theme": "<workout|community|coaching|event|kids|lifestyle|other>",
-  "tags": ["<specific tags — use any that apply: barbell, pull-ups, kettlebell, running, box-jump, rope-climb, rowing, group, celebration, coach, intensity, sweat, chalk, kids-class, team, murph, competition, outdoor, indoor, whiteboard>"],
+  "tags": ["<specific tags — use any that apply: barbell, pull-ups, kettlebell, running, box-jump, rope-climb, rope-jump, rowing, group, celebration, coach, intensity, sweat, chalk, kids-class, team, murph, competition, outdoor, indoor, whiteboard>"],
   "mood": "<intense|joyful|determined|focused|celebratory|candid|instructional>",
   "description": "<one sentence — what is literally happening in this photo>",
   "reject_reason": "<only include if quality < 3 — why it fails: blurry, too dark, poor composition, not gym-related, personal/sensitive, etc.>"

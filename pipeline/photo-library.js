@@ -3,6 +3,9 @@
 // Falls back to local static pool if Cloudinary returns nothing.
 
 import { v2 as cloudinary } from 'cloudinary';
+import fs from 'node:fs';
+import path from 'node:path';
+import { fileURLToPath } from 'node:url';
 
 const FOLDER = 'crossfit-otl/library';
 
@@ -36,9 +39,9 @@ function contentToTagChain(headline, theme, campaign) {
   if (/barbell|squat|clean|snatch|lift/.test(text))   return ['barbell', 'intensity'];
   if (/kettlebell|kb/.test(text))                     return ['kettlebell', 'intensity'];
   if (/row|erg/.test(text))                           return ['rowing', 'intensity'];
-  if (/rope/.test(text))                              return ['rope-climb', 'intensity'];
+  if (/rope/.test(text))                              return ['rope-climb', 'rope-jump', 'gymnastics'];
   if (/run|sprint|mile/.test(text))                   return ['running', 'intensity'];
-  if (/kids|youth|teen|children/.test(text))          return ['kids-class'];
+  if (/kids|youth|teen|children/.test(text))          return ['kids-class', 'team', 'group', 'community'];
   if (/coach|teach|technique/.test(text))             return ['coach', 'intensity'];
   if (/community|together|family|people/.test(text))  return ['group', 'community'];
   if (/celebrat|finish|done|pr|record/.test(text))    return ['celebration', 'group'];
@@ -47,7 +50,7 @@ function contentToTagChain(headline, theme, campaign) {
   if (theme === 'community')  return ['group', 'community', 'intensity'];
   if (theme === 'coaching')   return ['coach', 'intensity'];
   if (theme === 'event')      return ['team', 'group'];
-  if (theme === 'kids')       return ['kids-class'];
+  if (theme === 'kids')       return ['kids-class', 'team', 'group', 'community'];
 
   // Default: intensity — any hard-effort shot
   return ['intensity', 'barbell', 'group'];
@@ -118,13 +121,30 @@ export function buildPhotoUrl(rawUrl, slot = 'value', effect = 'none') {
   return rawUrl.replace('/upload/', `/upload/${chain}/`);
 }
 
-// Pick a photo not already used in this post/session
-function pickUnused(resources, usedUrls) {
-  if (!resources?.length) return null;
-  const unused = resources.filter(r => !usedUrls.has(r.secure_url));
-  if (unused.length) return unused[Math.floor(Math.random() * unused.length)];
-  // All results already used — fall back to any random result
-  return resources[Math.floor(Math.random() * resources.length)];
+// LRU log path — co-located with this module
+const __dirname_local = path.dirname(fileURLToPath(import.meta.url));
+const USAGE_LOG = path.join(__dirname_local, 'photo-usage-log.json');
+
+function readUsage() {
+  try { return JSON.parse(fs.readFileSync(USAGE_LOG, 'utf8')); } catch { return {}; }
+}
+function writeUsage(map) {
+  fs.writeFileSync(USAGE_LOG, JSON.stringify(map, null, 2));
+}
+
+// Pick the least-recently-used photo not already used in this session
+function pickLeastRecentlyUsed(qualified, usedUrls) {
+  const candidates = qualified.filter(p => !usedUrls.has(p.secure_url));
+  if (!candidates.length) return null;
+  const usage = readUsage();
+  const scored = candidates.map(p => ({ p, last: usage[p.secure_url] || '' }));
+  scored.sort((a, b) => a.last.localeCompare(b.last));
+  const bottomCount = Math.max(3, Math.ceil(scored.length * 0.3));
+  const pool = scored.slice(0, bottomCount);
+  const choice = pool[Math.floor(Math.random() * pool.length)].p;
+  usage[choice.secure_url] = new Date().toISOString();
+  writeUsage(usage);
+  return choice;
 }
 
 export async function getPhotoForSlide({ headline, theme, campaign, minQuality = 3, usedUrls = new Set(), slot = 'value', effect = 'none' }) {
@@ -146,7 +166,7 @@ export async function getPhotoForSlide({ headline, theme, campaign, minQuality =
         return q >= minQuality;
       });
 
-      const photo = pickUnused(qualified, usedUrls);
+      const photo = pickLeastRecentlyUsed(qualified, usedUrls);
       if (photo) {
         usedUrls.add(photo.secure_url);
         return buildPhotoUrl(photo.secure_url, slot, effect);
@@ -159,7 +179,7 @@ export async function getPhotoForSlide({ headline, theme, campaign, minQuality =
       .max_results(50)
       .execute();
 
-    const fallback = pickUnused(fallbackResult.resources || [], usedUrls);
+    const fallback = pickLeastRecentlyUsed(fallbackResult.resources || [], usedUrls);
     if (fallback) {
       usedUrls.add(fallback.secure_url);
       return buildPhotoUrl(fallback.secure_url, slot, effect);
@@ -171,7 +191,7 @@ export async function getPhotoForSlide({ headline, theme, campaign, minQuality =
       .max_results(50)
       .execute();
 
-    const any = pickUnused(anyResult.resources || [], usedUrls);
+    const any = pickLeastRecentlyUsed(anyResult.resources || [], usedUrls);
     if (any) {
       usedUrls.add(any.secure_url);
       return buildPhotoUrl(any.secure_url, slot, effect);
