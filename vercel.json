@@ -2,11 +2,11 @@
   "crons": [
     {
       "path": "/api/publish-scheduled-otl",
-      "schedule": "*/5 * * * *"
+      "schedule": "0 9 * * *"
     },
     {
       "path": "/api/cron-photo-intake",
-      "schedule": "0 * * * *"
+      "schedule": "0 10 * * *"
     }
   ]
 }
