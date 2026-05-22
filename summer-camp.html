@@ -13,7 +13,7 @@
 <meta property="og:title" content="Summer Camps 2026 | CrossFit OTL">
 <meta property="og:description" content="Two weeks. Real coaches. Kids Camp (Ages 5–10, July 13) + Teen Athlete Camp (Ages 12+, July 20). Limited spots.">
 <meta property="og:url" content="https://crossfit-otl.com/summer-camp.html">
-<meta property="og:image" content="https://crossfit-otl.com/photos/otl_storefront-4.jpg">
+<meta property="og:image" content="https://crossfit-otl.com/photos/A7401132.JPG">
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -82,24 +82,33 @@ button { cursor: pointer; border: none; background: none; font-family: inherit; 
 
 /* ========== HERO ========== */
 .hero {
-  min-height: 52vh;
+  min-height: 72vh;
   display: flex;
   align-items: flex-end;
   padding: 0 2rem 5rem;
-  background: linear-gradient(180deg, #0a0a0a 0%, #0d1a2e 60%, #0a0a0a 100%);
   position: relative;
   overflow: hidden;
+}
+.hero-bg {
+  position: absolute;
+  inset: 0;
+  background-image: url('photos/A7401132.JPG');
+  background-size: cover;
+  background-position: center 30%;
+  filter: brightness(0.45);
+  z-index: 0;
 }
 .hero::before {
   content: '';
   position: absolute;
   inset: 0;
-  background: radial-gradient(ellipse at 50% 0%, rgba(0,53,102,0.4) 0%, transparent 70%);
+  background: linear-gradient(180deg, rgba(10,10,10,0.3) 0%, rgba(10,10,10,0.5) 50%, rgba(10,10,10,0.97) 100%);
+  z-index: 1;
   pointer-events: none;
 }
 .hero-content {
   position: relative;
-  z-index: 1;
+  z-index: 2;
   max-width: 900px;
   padding-top: 120px;
 }
@@ -126,6 +135,22 @@ button { cursor: pointer; border: none; background: none; font-family: inherit; 
   max-width: 560px;
   line-height: 1.7;
 }
+
+/* ========== PHOTO BREAK ========== */
+.photo-break {
+  width: 100%;
+  height: 320px;
+  overflow: hidden;
+  position: relative;
+}
+.photo-break img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center 40%;
+  filter: brightness(0.7);
+}
+@media (max-width: 768px) { .photo-break { height: 220px; } }
 
 /* ========== SECTION ========== */
 .section {
@@ -177,6 +202,23 @@ button { cursor: pointer; border: none; background: none; font-family: inherit; 
 .camp-card:hover {
   border-color: rgba(126,184,255,0.25);
   transform: translateY(-4px);
+}
+.camp-card-photo {
+  width: 100%;
+  height: 240px;
+  overflow: hidden;
+}
+.camp-card-photo img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+  filter: brightness(0.85);
+}
+.camp-card:hover .camp-card-photo img {
+  transform: scale(1.04);
+  filter: brightness(1);
 }
 .camp-card-header {
   padding: 2.5rem 2.5rem 0;
@@ -351,6 +393,7 @@ button { cursor: pointer; border: none; background: none; font-family: inherit; 
 
 <!-- ========== HERO ========== -->
 <section class="hero">
+  <div class="hero-bg"></div>
   <div class="hero-content">
     <p class="hero-eyebrow">CrossFit OTL &nbsp;·&nbsp; North Richland Hills, TX &nbsp;·&nbsp; July 2026</p>
     <h1 class="hero-title">SUMMER<br>CAMPS <em>2026</em></h1>
@@ -360,6 +403,11 @@ button { cursor: pointer; border: none; background: none; font-family: inherit; 
 
 <!-- ========== URGENCY BAR ========== -->
 <div class="urgency-bar">Spots are limited &nbsp;·&nbsp; Both camps fill fast &nbsp;·&nbsp; Secure yours today</div>
+
+<!-- ========== PHOTO BREAK ========== -->
+<div class="photo-break">
+  <img src="photos/A7401003.JPG" alt="CrossFit OTL Kids Summer Camp in action" loading="lazy">
+</div>
 
 <!-- ========== CAMPS ========== -->
 <section class="section">
@@ -372,6 +420,9 @@ button { cursor: pointer; border: none; background: none; font-family: inherit; 
 
       <!-- KIDS CAMP -->
       <div class="camp-card">
+        <div class="camp-card-photo">
+          <img src="photos/A7402986.JPG" alt="CrossFit Kids Summer Camp — CrossFit OTL" loading="lazy">
+        </div>
         <div class="camp-card-header">
           <span class="camp-tag">Ages 5–10</span>
           <h3 class="camp-name">CROSSFIT KIDS<br>SUMMER CAMP</h3>
@@ -411,6 +462,9 @@ button { cursor: pointer; border: none; background: none; font-family: inherit; 
 
       <!-- TEEN CAMP -->
       <div class="camp-card">
+        <div class="camp-card-photo">
+          <img src="photos/A7404648.JPG" alt="OTL Teen Athlete Development Camp — CrossFit OTL" loading="lazy">
+        </div>
         <div class="camp-card-header">
           <span class="camp-tag">Ages 12+</span>
           <h3 class="camp-name">OTL TEEN ATHLETE<br>DEVELOPMENT CAMP</h3>
