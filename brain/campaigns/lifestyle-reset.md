@@ -109,7 +109,7 @@ Both are legitimate. Lifestyle Reset is for people who want the guided version.
 
 - Lifestyle Reset proposal page: `crossfit-otl-pricing/lifestyle-reset-proposal.html` (Vercel)
 - Member results: Lanita M. (InBody data on file)
-- CTA destination: Direct DM or consultation booking
+- CTA destination: Free consultation booking (free 30-min consultation + InBody 270 scan — this is the entry point into the Reset, not direct enrollment)
 
 ---
 
