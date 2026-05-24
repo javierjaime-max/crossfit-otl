@@ -12,7 +12,7 @@
     },
     "thursday": {
       "track": "campaign",
-      "pool": "rotation"
+      "campaign": "free-consultation"
     },
     "friday": {
       "track": "educational"
@@ -31,8 +31,7 @@
     "crossfit-is-the-cure",
     "this-is-crossfit",
     "the-crossfit-effect",
-    "share-your-stories",
-    "free-consultation"
+    "share-your-stories"
   ],
   "rotationIndex": 17
 }
