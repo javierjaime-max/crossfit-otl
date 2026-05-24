@@ -101,3 +101,11 @@ try {
   console.error('\n✗ Generation failed:', e.message);
   process.exit(1);
 }
+
+// Push staged posts to Cloudinary + Supabase
+try {
+  execSync(`node "${resolve(__dirname, 'push-staged.js')}"`, { cwd: __dirname, stdio: 'inherit' });
+} catch (e) {
+  console.error('\n✗ push-staged failed:', e.message);
+  process.exit(1);
+}
