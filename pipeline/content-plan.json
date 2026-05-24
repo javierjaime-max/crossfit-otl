@@ -1,29 +1,16 @@
 {
   "weekly": {
-    "monday": {
-      "track": "educational"
-    },
     "tuesday": {
       "track": "campaign",
       "pool": "rotation"
-    },
-    "wednesday": {
-      "track": "educational"
     },
     "thursday": {
       "track": "campaign",
       "campaign": "free-consultation"
     },
-    "friday": {
-      "track": "educational"
-    },
     "saturday": {
       "track": "campaign",
       "campaign": "lifestyle-reset"
-    },
-    "sunday": {
-      "track": "campaign",
-      "campaign": "join-our-culture"
     }
   },
   "campaignRotation": [
@@ -33,5 +20,5 @@
     "the-crossfit-effect",
     "share-your-stories"
   ],
-  "rotationIndex": 17
+  "rotationIndex": 9
 }

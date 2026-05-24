@@ -94,6 +94,12 @@ while (current <= endDate) {
     const day     = dayName(current);
     const dayPlan = plan.weekly[day];
 
+    if (!dayPlan) {
+      // No post scheduled for this day — skip
+      current = addDays(current, 1);
+      continue;
+    }
+
     let entry;
     if (dayPlan.track === 'educational') {
       entry = {

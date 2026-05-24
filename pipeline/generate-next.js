@@ -66,9 +66,8 @@ const targetDate = addDays(todayStr(), daysOut);
 const entry      = calendar[targetDate];
 
 if (!entry) {
-  console.error(`✗ No calendar entry for ${targetDate}`);
-  console.error('  Run: node extend-calendar.js   to extend the calendar');
-  process.exit(1);
+  console.log(`✓ No post scheduled for ${targetDate} — skipping`);
+  process.exit(0);
 }
 
 if (postExistsForDate(targetDate)) {
