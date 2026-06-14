@@ -1460,7 +1460,7 @@ button { cursor: pointer; border: none; background: none; font-family: inherit; 
 <section class="hero">
   <div class="hero-fallback"></div>
   <video class="hero-video" autoplay muted loop playsinline poster="photos/otl_storefront-4.jpg">
-    <source src="photos/DJI_20241019075505_0049_D.mov" type="video/mp4">
+    <source src="photos/hero.mp4" type="video/mp4">
   </video>
   <div class="hero-overlay"></div>
   <div class="hero-content">
@@ -1864,11 +1864,7 @@ button { cursor: pointer; border: none; background: none; font-family: inherit; 
 // ---- Speed up hero video ----
 const heroVideo = document.querySelector('.hero-video');
 if (heroVideo) {
-  heroVideo.currentTime = 40;
   heroVideo.playbackRate = 1.5;
-  heroVideo.addEventListener('timeupdate', () => {
-    if (heroVideo.currentTime >= 55.3) heroVideo.currentTime = 40;
-  });
 }
 
 const nav = document.getElementById('nav');
