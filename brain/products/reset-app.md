@@ -37,7 +37,7 @@ The Reset sells as nutrition to most buyers, but it's a high-touch drift-prevent
 3. **Meeting notes with full history** — replaces MS Form #2. Visible to both coach and client. Deanie is "situationally aware when people walk in the door about any prior conversations" — and so is the client.
 4. **Meeting recorder → transcript → summary** — Pocket-style: record the consult, transcribe, summarize, send summary to coach + client, accumulate on the client record. (We already run mlx-whisper + Claude classification for voice memos — same pattern.)
 5. **In-app messaging** — replace iMessage as the conversation channel. Structural change is easy; this one is a *behavioral* change and needs deliberate adoption push.
-6. **Scheduling** — book/manage consults, integrated with the PushPress calendar.
+6. **Scheduling** — book/manage consults in-app. (PushPress is OTL's membership management tool and stays independent — out of scope for this app, per Javier 2026-07-03.)
 7. **Macros** — set and manage macro targets per client.
 8. **Wearable integration (Apple Watch / Garmin / Apple Health)** — step counts + calorie expenditure feed a deficit calculator: target 1 lb fat/week → 500 cal/day deficit → given average daily expenditure, recommend the calorie/macro goal. Explicitly "not a deal breaker" — do not let this block v1.
 
@@ -55,7 +55,7 @@ Same stack as everything else in the fleet — zero new operational surface:
 | Phase | Ships | Kills |
 |---|---|---|
 | **1 — Client record** | Profile, goals, in-app consultation questionnaire, meeting notes with history, macro targets. Coach view + basic client view. | Both Microsoft Forms and the Excel "database" on day one. |
-| **2 — Communication** | In-app messaging, scheduling (PushPress integration or deep-link), client notifications. | iMessage as system-of-record. |
+| **2 — Communication** | In-app messaging, in-app consult scheduling, client notifications. | iMessage as system-of-record. |
 | **3 — Recorder** | Record consult → transcript → Claude summary → emailed to coach + client → stored on client record. | Manual note-taking entirely. |
 | **4 — Wearables** | Apple Health / Garmin data → expenditure averages → deficit/surplus calculator → macro recommendations. | The last Trainerize dependency. |
 
@@ -64,6 +64,5 @@ Same stack as everything else in the fleet — zero new operational surface:
 ## Open Decisions
 
 - **Wearables approach:** PWA cannot read HealthKit. Options: (a) aggregator API (Terra/Spike — subscription cost, fastest), (b) thin native iOS wrapper (Capacitor) with HealthKit — more build, no per-user fees, (c) manual weekly entry as stopgap. Decide at Phase 4, not before.
-- **PushPress:** check API/webhook availability vs. simple deep-linking into their booking flow.
 - **App name/brand:** unnamed. It is the OTL client app — bigger than just the Reset if PT/membership clients use it later.
 - **Repo:** proposed `GitHub/otl-reset-app/` (own repo, own Vercel project), pending confirmation.
