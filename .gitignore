@@ -1,0 +1,8 @@
+.vercel
+.DS_Store
+node_modules/
+pipeline/.env
+pipeline/output/
+pipeline/_*render*.html
+ffmpeg2pass-*.log
+photos/hero.webm

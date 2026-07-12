@@ -67,6 +67,7 @@ function findStagedPosts() {
 
   for (const dateDir of readdirSync(OUTPUT_DIR).sort()) {
     const datePath = join(OUTPUT_DIR, dateDir);
+    if (!dateDir.match(/^\d{4}-\d{2}-\d{2}$/)) continue; // skip .DS_Store etc
     for (const slugDir of readdirSync(datePath)) {
       const postPath = join(datePath, slugDir);
       const meta = readMeta(postPath);

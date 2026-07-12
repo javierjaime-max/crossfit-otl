@@ -1,0 +1,781 @@
+{
+  "ingested": {
+    "B2C789A5-C7EA-49FD-9A01-F6B8FB28951A": {
+      "date": "2026-05-01T12:42:58.430Z",
+      "quality": 4,
+      "theme": "community",
+      "tags": [
+        "coach",
+        "celebration",
+        "candid",
+        "team",
+        "indoor"
+      ],
+      "mood": "joyful",
+      "description": "A coach and young athlete pose together in the CrossFit OTL gym, both smiling and making celebratory hand gestures.",
+      "cloudinaryUrl": "https://res.cloudinary.com/dlaxxk5h6/image/upload/v1777639377/crossfit-otl/library/otl_B2C789A5_C7EA_49FD_9A01_F6B8FB28951A.jpg",
+      "cloudinaryId": "crossfit-otl/library/otl_B2C789A5_C7EA_49FD_9A01_F6B8FB28951A"
+    },
+    "348F9D32-D7D9-4560-8C3D-9E8BE4F45E11": {
+      "date": "2026-05-01T12:43:01.083Z",
+      "quality": 4,
+      "theme": "lifestyle",
+      "tags": [
+        "running",
+        "outdoor",
+        "intensity",
+        "determined"
+      ],
+      "mood": "determined",
+      "description": "A shirtless male athlete runs along a concrete path with a focused, determined expression, demonstrating cardio fitness in an outdoor setting.",
+      "cloudinaryUrl": "https://res.cloudinary.com/dlaxxk5h6/image/upload/v1777639380/crossfit-otl/library/otl_348F9D32_D7D9_4560_8C3D_9E8BE4F45E11.jpg",
+      "cloudinaryId": "crossfit-otl/library/otl_348F9D32_D7D9_4560_8C3D_9E8BE4F45E11"
+    },
+    "F44E4356-6054-4910-82CC-952996EF9043": {
+      "date": "2026-05-01T12:43:03.343Z",
+      "quality": 5,
+      "theme": "workout",
+      "tags": [
+        "barbell",
+        "intensity",
+        "focused",
+        "indoor"
+      ],
+      "mood": "intense",
+      "description": "A female athlete performs a barbell front squat with heavy weight in a modern CrossFit gym, demonstrating strength and determination.",
+      "cloudinaryUrl": "https://res.cloudinary.com/dlaxxk5h6/image/upload/v1777639382/crossfit-otl/library/otl_F44E4356_6054_4910_82CC_952996EF9043.jpg",
+      "cloudinaryId": "crossfit-otl/library/otl_F44E4356_6054_4910_82CC_952996EF9043"
+    },
+    "045B9CFD-CE9C-4807-AE69-31A3F6177B1D": {
+      "date": "2026-05-01T12:43:05.521Z",
+      "quality": 4,
+      "theme": "workout",
+      "tags": [
+        "rope-jump",
+        "intensity",
+        "indoor",
+        "focused"
+      ],
+      "mood": "intense",
+      "description": "A male athlete performs double-unders with a jump rope in the CrossFit OTL gym, demonstrating focused intensity during a workout.",
+      "cloudinaryUrl": "https://res.cloudinary.com/dlaxxk5h6/image/upload/v1777639385/crossfit-otl/library/otl_045B9CFD_CE9C_4807_AE69_31A3F6177B1D.jpg",
+      "cloudinaryId": "crossfit-otl/library/otl_045B9CFD_CE9C_4807_AE69_31A3F6177B1D"
+    },
+    "C3C9EEFD-0F47-4024-942D-551FB0D9B43E": {
+      "date": "2026-05-01T12:43:07.848Z",
+      "quality": 4,
+      "theme": "workout",
+      "tags": [
+        "kettlebell",
+        "intensity",
+        "focused",
+        "indoor"
+      ],
+      "mood": "focused",
+      "description": "A male athlete performs a kettlebell exercise with concentrated form while another gym member works out in the background at CrossFit OTL.",
+      "cloudinaryUrl": "https://res.cloudinary.com/dlaxxk5h6/image/upload/v1777639387/crossfit-otl/library/otl_C3C9EEFD_0F47_4024_942D_551FB0D9B43E.jpg",
+      "cloudinaryId": "crossfit-otl/library/otl_C3C9EEFD_0F47_4024_942D_551FB0D9B43E"
+    },
+    "8D059B77-97EA-4B5A-9D0C-C876DB7CC9D9": {
+      "date": "2026-05-01T12:43:10.313Z",
+      "quality": 4,
+      "theme": "workout",
+      "tags": [
+        "group",
+        "rowing",
+        "indoor",
+        "coaching",
+        "intensity",
+        "whiteboard"
+      ],
+      "mood": "focused",
+      "description": "A CrossFit class is gathered around rowing machines during a group workout session, with an instructor providing guidance near a whiteboard workout plan.",
+      "cloudinaryUrl": "https://res.cloudinary.com/dlaxxk5h6/image/upload/v1777639389/crossfit-otl/library/otl_8D059B77_97EA_4B5A_9D0C_C876DB7CC9D9.jpg",
+      "cloudinaryId": "crossfit-otl/library/otl_8D059B77_97EA_4B5A_9D0C_C876DB7CC9D9"
+    },
+    "0E41918E-EAEB-4CBE-B60D-FD1B923DE35E": {
+      "date": "2026-05-01T12:43:12.576Z",
+      "quality": 4,
+      "theme": "workout",
+      "tags": [
+        "kettlebell",
+        "intensity",
+        "focused",
+        "indoor"
+      ],
+      "mood": "intense",
+      "description": "A male athlete performs a kettlebell swing with focused intensity while another athlete works in the background during a CrossFit class.",
+      "cloudinaryUrl": "https://res.cloudinary.com/dlaxxk5h6/image/upload/v1777639392/crossfit-otl/library/otl_0E41918E_EAEB_4CBE_B60D_FD1B923DE35E.jpg",
+      "cloudinaryId": "crossfit-otl/library/otl_0E41918E_EAEB_4CBE_B60D_FD1B923DE35E"
+    },
+    "45AC8195-A3BD-45D9-AF3B-D0C9B7A22C25": {
+      "date": "2026-05-01T12:43:14.379Z",
+      "quality": 4,
+      "theme": "workout",
+      "tags": [
+        "rowing",
+        "group",
+        "focused",
+        "indoor"
+      ],
+      "mood": "focused",
+      "description": "Two athletes performing rowing machine intervals during a group fitness class in a well-lit gym facility.",
+      "cloudinaryUrl": "https://res.cloudinary.com/dlaxxk5h6/image/upload/v1777639393/crossfit-otl/library/otl_45AC8195_A3BD_45D9_AF3B_D0C9B7A22C25.jpg",
+      "cloudinaryId": "crossfit-otl/library/otl_45AC8195_A3BD_45D9_AF3B_D0C9B7A22C25"
+    },
+    "1C5253D8-419A-4190-A062-870F6EB1037B": {
+      "date": "2026-05-01T12:43:16.447Z",
+      "quality": 4,
+      "theme": "workout",
+      "tags": [
+        "rowing",
+        "indoor",
+        "intense",
+        "focused"
+      ],
+      "mood": "focused",
+      "description": "A female athlete performs a rowing machine exercise with focused intensity during a CrossFit class session.",
+      "cloudinaryUrl": "https://res.cloudinary.com/dlaxxk5h6/image/upload/v1777639396/crossfit-otl/library/otl_1C5253D8_419A_4190_A062_870F6EB1037B.jpg",
+      "cloudinaryId": "crossfit-otl/library/otl_1C5253D8_419A_4190_A062_870F6EB1037B"
+    },
+    "93195CCE-5F95-44C8-A5A0-A3E7C7E0DF2E": {
+      "date": "2026-05-01T12:43:18.782Z",
+      "quality": 4,
+      "theme": "workout",
+      "tags": [
+        "pull-ups",
+        "gymnastics",
+        "indoor",
+        "intensity",
+        "focused"
+      ],
+      "mood": "intense",
+      "description": "A male athlete performs a high-rep pull-up movement on gymnastics rings in a well-equipped CrossFit gym.",
+      "cloudinaryUrl": "https://res.cloudinary.com/dlaxxk5h6/image/upload/v1777639398/crossfit-otl/library/otl_93195CCE_5F95_44C8_A5A0_A3E7C7E0DF2E.jpg",
+      "cloudinaryId": "crossfit-otl/library/otl_93195CCE_5F95_44C8_A5A0_A3E7C7E0DF2E"
+    },
+    "FE457D05-FF31-40E9-A417-1D050921B418": {
+      "date": "2026-05-01T12:43:20.909Z",
+      "quality": 4,
+      "theme": "coaching",
+      "tags": [
+        "coach",
+        "instructional",
+        "indoor",
+        "candid"
+      ],
+      "mood": "instructional",
+      "description": "A coach reviews notes with a member during a training session in the gym.",
+      "cloudinaryUrl": "https://res.cloudinary.com/dlaxxk5h6/image/upload/v1777639400/crossfit-otl/library/otl_FE457D05_FF31_40E9_A417_1D050921B418.jpg",
+      "cloudinaryId": "crossfit-otl/library/otl_FE457D05_FF31_40E9_A417_1D050921B418"
+    },
+    "489B9F47-5903-4CB7-A5B7-258536E4A787": {
+      "date": "2026-05-01T12:43:23.213Z",
+      "quality": 4,
+      "theme": "workout",
+      "tags": [
+        "running",
+        "indoor",
+        "intensity",
+        "group"
+      ],
+      "mood": "intense",
+      "description": "An adult and child jump rope together indoors in a gym setting, demonstrating a partner or family workout moment.",
+      "cloudinaryUrl": "https://res.cloudinary.com/dlaxxk5h6/image/upload/v1777639402/crossfit-otl/library/otl_489B9F47_5903_4CB7_A5B7_258536E4A787.jpg",
+      "cloudinaryId": "crossfit-otl/library/otl_489B9F47_5903_4CB7_A5B7_258536E4A787"
+    },
+    "766CFA0B-A56E-4C91-8DB7-B2DDF5426CB2": {
+      "date": "2026-05-01T12:43:25.568Z",
+      "quality": 3,
+      "theme": "workout",
+      "tags": [
+        "intensity",
+        "sweat",
+        "indoor",
+        "focused"
+      ],
+      "mood": "determined",
+      "description": "A bearded male athlete in a maroon performance shirt stands in the gym looking focused, appearing to be between sets or during a workout.",
+      "cloudinaryUrl": "https://res.cloudinary.com/dlaxxk5h6/image/upload/v1777639405/crossfit-otl/library/otl_766CFA0B_A56E_4C91_8DB7_B2DDF5426CB2.jpg",
+      "cloudinaryId": "crossfit-otl/library/otl_766CFA0B_A56E_4C91_8DB7_B2DDF5426CB2"
+    },
+    "38758AAE-87A0-483A-B06B-EED4DE115D69": {
+      "date": "2026-05-01T12:43:28.135Z",
+      "quality": 4,
+      "theme": "workout",
+      "tags": [
+        "rope-climb",
+        "intensity",
+        "focused",
+        "indoor"
+      ],
+      "mood": "determined",
+      "description": "A athlete in a ROGUE shirt performs a double-under or rope exercise with intense focus in a well-lit gym setting.",
+      "cloudinaryUrl": "https://res.cloudinary.com/dlaxxk5h6/image/upload/v1777639407/crossfit-otl/library/otl_38758AAE_87A0_483A_B06B_EED4DE115D69.jpg",
+      "cloudinaryId": "crossfit-otl/library/otl_38758AAE_87A0_483A_B06B_EED4DE115D69"
+    },
+    "FA9BC7A0-F60D-4944-9F0A-7F5C738F7477": {
+      "date": "2026-05-01T12:43:30.583Z",
+      "quality": 4,
+      "theme": "workout",
+      "tags": [
+        "intensity",
+        "focused",
+        "indoor"
+      ],
+      "mood": "determined",
+      "description": "A fit athlete in an olive tank top is captured from behind during an intense workout moment, with blurred gym members visible in the background.",
+      "cloudinaryUrl": "https://res.cloudinary.com/dlaxxk5h6/image/upload/v1777639410/crossfit-otl/library/otl_FA9BC7A0_F60D_4944_9F0A_7F5C738F7477.jpg",
+      "cloudinaryId": "crossfit-otl/library/otl_FA9BC7A0_F60D_4944_9F0A_7F5C738F7477"
+    },
+    "46A9DFC7-FBF5-4050-8995-FC43AFC94445": {
+      "date": "2026-05-01T12:43:32.714Z",
+      "quality": 4,
+      "theme": "workout",
+      "tags": [
+        "kettlebell",
+        "intensity",
+        "group",
+        "indoor",
+        "focused"
+      ],
+      "mood": "intense",
+      "description": "A shirtless athlete performs a kettlebell exercise in a focused plank position while other gym members work out in the background at CrossFit OTL.",
+      "cloudinaryUrl": "https://res.cloudinary.com/dlaxxk5h6/image/upload/v1777639412/crossfit-otl/library/otl_46A9DFC7_FBF5_4050_8995_FC43AFC94445.jpg",
+      "cloudinaryId": "crossfit-otl/library/otl_46A9DFC7_FBF5_4050_8995_FC43AFC94445"
+    },
+    "94EA512E-7B44-47A9-981B-75A62FACAB6D": {
+      "date": "2026-05-01T12:43:35.114Z",
+      "quality": 4,
+      "theme": "workout",
+      "tags": [
+        "barbell",
+        "intensity",
+        "indoor",
+        "determined",
+        "sweat"
+      ],
+      "mood": "intense",
+      "description": "A female athlete performs an overhead press with a loaded barbell in the gym, demonstrating focused intensity during a weightlifting movement.",
+      "cloudinaryUrl": "https://res.cloudinary.com/dlaxxk5h6/image/upload/v1777639414/crossfit-otl/library/otl_94EA512E_7B44_47A9_981B_75A62FACAB6D.jpg",
+      "cloudinaryId": "crossfit-otl/library/otl_94EA512E_7B44_47A9_981B_75A62FACAB6D"
+    },
+    "51833B1B-D2B7-462B-9344-20A0F31B0752": {
+      "date": "2026-05-01T12:43:37.457Z",
+      "quality": 4,
+      "theme": "coaching",
+      "tags": [
+        "coach",
+        "indoor",
+        "focused",
+        "candid"
+      ],
+      "mood": "focused",
+      "description": "A coach in CrossFit OTL apparel walks through the gym with a focused expression, appearing to assess or instruct during a training session.",
+      "cloudinaryUrl": "https://res.cloudinary.com/dlaxxk5h6/image/upload/v1777639416/crossfit-otl/library/otl_51833B1B_D2B7_462B_9344_20A0F31B0752.jpg",
+      "cloudinaryId": "crossfit-otl/library/otl_51833B1B_D2B7_462B_9344_20A0F31B0752"
+    },
+    "905BA52C-E558-47BA-BED8-0B05FCB786DF": {
+      "date": "2026-05-01T12:43:40.053Z",
+      "quality": 4,
+      "theme": "workout",
+      "tags": [
+        "rowing",
+        "intensity",
+        "focus",
+        "indoor",
+        "sweat"
+      ],
+      "mood": "determined",
+      "description": "A male athlete intensely focuses while rowing on an Echo Bike/Rogue assault bike machine in the gym.",
+      "cloudinaryUrl": "https://res.cloudinary.com/dlaxxk5h6/image/upload/v1777639419/crossfit-otl/library/otl_905BA52C_E558_47BA_BED8_0B05FCB786DF.jpg",
+      "cloudinaryId": "crossfit-otl/library/otl_905BA52C_E558_47BA_BED8_0B05FCB786DF"
+    },
+    "843C1216-8058-4A95-BDBC-464FA3E45D43": {
+      "date": "2026-05-01T12:43:42.696Z",
+      "quality": 4,
+      "theme": "workout",
+      "tags": [
+        "barbell",
+        "group",
+        "intensity",
+        "indoor",
+        "murph"
+      ],
+      "mood": "intense",
+      "description": "A female athlete performs a barbell shoulder press during a group CrossFit workout while other gym members train in the background.",
+      "cloudinaryUrl": "https://res.cloudinary.com/dlaxxk5h6/image/upload/v1777639421/crossfit-otl/library/otl_843C1216_8058_4A95_BDBC_464FA3E45D43.jpg",
+      "cloudinaryId": "crossfit-otl/library/otl_843C1216_8058_4A95_BDBC_464FA3E45D43"
+    },
+    "AD08AE15-10BE-4E50-8956-0EC19A2E802E": {
+      "date": "2026-05-01T12:43:44.714Z",
+      "quality": 4,
+      "theme": "workout",
+      "tags": [
+        "barbell",
+        "indoor",
+        "intensity",
+        "focused"
+      ],
+      "mood": "focused",
+      "description": "Close-up of a loaded barbell plate with spring collars ready for a lift, with gym members visible but blurred in the background.",
+      "cloudinaryUrl": "https://res.cloudinary.com/dlaxxk5h6/image/upload/v1777639424/crossfit-otl/library/otl_AD08AE15_10BE_4E50_8956_0EC19A2E802E.jpg",
+      "cloudinaryId": "crossfit-otl/library/otl_AD08AE15_10BE_4E50_8956_0EC19A2E802E"
+    },
+    "8319755F-4C68-4ED1-8F78-C8BF109FC025": {
+      "date": "2026-05-01T12:43:47.231Z",
+      "quality": 4,
+      "theme": "workout",
+      "tags": [
+        "medicine-ball",
+        "indoor",
+        "intensity",
+        "focused"
+      ],
+      "mood": "focused",
+      "description": "A close-up of a black medicine ball marked with the number 14 during a workout session, with blurred gym members and bright ceiling lights in the background.",
+      "cloudinaryUrl": "https://res.cloudinary.com/dlaxxk5h6/image/upload/v1777639426/crossfit-otl/library/otl_8319755F_4C68_4ED1_8F78_C8BF109FC025.jpg",
+      "cloudinaryId": "crossfit-otl/library/otl_8319755F_4C68_4ED1_8F78_C8BF109FC025"
+    },
+    "2DB1048A-ACFE-41EC-8BBE-EC5F12B70DC7": {
+      "date": "2026-05-01T12:43:49.423Z",
+      "quality": 4,
+      "theme": "workout",
+      "tags": [
+        "intensity",
+        "focused",
+        "indoor",
+        "candid"
+      ],
+      "mood": "determined",
+      "description": "A female athlete with a headband and wrist wraps performs an exercise with focused intensity in a well-lit CrossFit gym.",
+      "cloudinaryUrl": "https://res.cloudinary.com/dlaxxk5h6/image/upload/v1777639428/crossfit-otl/library/otl_2DB1048A_ACFE_41EC_8BBE_EC5F12B70DC7.jpg",
+      "cloudinaryId": "crossfit-otl/library/otl_2DB1048A_ACFE_41EC_8BBE_EC5F12B70DC7"
+    },
+    "F8D48EAB-F6C5-4380-81A0-BF0ECE9B83F7": {
+      "date": "2026-05-01T12:43:51.631Z",
+      "quality": 4,
+      "theme": "workout",
+      "tags": [
+        "barbell",
+        "intensity",
+        "focused",
+        "group",
+        "indoor"
+      ],
+      "mood": "determined",
+      "description": "A female athlete performs a barbell squat with focused intensity while other gym members train in the background during a group CrossFit session.",
+      "cloudinaryUrl": "https://res.cloudinary.com/dlaxxk5h6/image/upload/v1777639431/crossfit-otl/library/otl_F8D48EAB_F6C5_4380_81A0_BF0ECE9B83F7.jpg",
+      "cloudinaryId": "crossfit-otl/library/otl_F8D48EAB_F6C5_4380_81A0_BF0ECE9B83F7"
+    },
+    "8C24D75F-924E-43DD-856A-FE9D11D988DA": {
+      "date": "2026-05-01T12:43:54.337Z",
+      "quality": 4,
+      "theme": "workout",
+      "tags": [
+        "barbell",
+        "intensity",
+        "focused",
+        "indoor"
+      ],
+      "mood": "determined",
+      "description": "A focused athlete in the middle of a deadlift setup, gripping the barbell with proper form in the gym.",
+      "cloudinaryUrl": "https://res.cloudinary.com/dlaxxk5h6/image/upload/v1777639433/crossfit-otl/library/otl_8C24D75F_924E_43DD_856A_FE9D11D988DA.jpg",
+      "cloudinaryId": "crossfit-otl/library/otl_8C24D75F_924E_43DD_856A_FE9D11D988DA"
+    },
+    "DFAEB0D8-CCD9-430D-876B-0738CC409A8F": {
+      "date": "2026-05-01T12:43:56.897Z",
+      "quality": 4,
+      "theme": "workout",
+      "tags": [
+        "barbell",
+        "group",
+        "intensity",
+        "focused",
+        "indoor"
+      ],
+      "mood": "intense",
+      "description": "A female athlete in the foreground performs a barbell deadlift with focused intensity while multiple other gym members work out simultaneously in the background during a group class.",
+      "cloudinaryUrl": "https://res.cloudinary.com/dlaxxk5h6/image/upload/v1777639436/crossfit-otl/library/otl_DFAEB0D8_CCD9_430D_876B_0738CC409A8F.jpg",
+      "cloudinaryId": "crossfit-otl/library/otl_DFAEB0D8_CCD9_430D_876B_0738CC409A8F"
+    },
+    "D46A49B2-2C0E-4DAF-80D3-3C04C0D1AB2E": {
+      "date": "2026-05-01T12:43:59.049Z",
+      "quality": 4,
+      "theme": "community",
+      "tags": [
+        "group",
+        "team",
+        "indoor",
+        "candid"
+      ],
+      "mood": "joyful",
+      "description": "Five male athletes pose together in the CrossFit OTL gym after a workout, smiling at the camera in a casual group photo.",
+      "cloudinaryUrl": "https://res.cloudinary.com/dlaxxk5h6/image/upload/v1777639438/crossfit-otl/library/otl_D46A49B2_2C0E_4DAF_80D3_3C04C0D1AB2E.jpg",
+      "cloudinaryId": "crossfit-otl/library/otl_D46A49B2_2C0E_4DAF_80D3_3C04C0D1AB2E"
+    },
+    "24C0C2DE-0B58-4DDB-A1C0-CCA300AD0740": {
+      "date": "2026-05-01T12:44:00.893Z",
+      "quality": 4,
+      "theme": "workout",
+      "tags": [
+        "kettlebell",
+        "intensity",
+        "focused",
+        "indoor"
+      ],
+      "mood": "determined",
+      "description": "A male athlete performs a kettlebell overhead press movement in the gym, demonstrating controlled form and strength.",
+      "cloudinaryUrl": "https://res.cloudinary.com/dlaxxk5h6/image/upload/v1777639440/crossfit-otl/library/otl_24C0C2DE_0B58_4DDB_A1C0_CCA300AD0740.jpg",
+      "cloudinaryId": "crossfit-otl/library/otl_24C0C2DE_0B58_4DDB_A1C0_CCA300AD0740"
+    },
+    "C0F97B91-B7BA-4AD1-884F-8F5A5D8D01E7": {
+      "date": "2026-05-01T12:44:03.046Z",
+      "quality": 4,
+      "theme": "workout",
+      "tags": [
+        "kettlebell",
+        "intensity",
+        "indoor"
+      ],
+      "mood": "focused",
+      "description": "Close-up macro shot of a kettlebell being held, highlighting the grip and handle detail with shallow depth of field.",
+      "cloudinaryUrl": "https://res.cloudinary.com/dlaxxk5h6/image/upload/v1777639442/crossfit-otl/library/otl_C0F97B91_B7BA_4AD1_884F_8F5A5D8D01E7.jpg",
+      "cloudinaryId": "crossfit-otl/library/otl_C0F97B91_B7BA_4AD1_884F_8F5A5D8D01E7"
+    },
+    "FE457751-1635-4775-999E-570DD80F99AE": {
+      "date": "2026-05-01T12:44:07.549Z",
+      "quality": 4,
+      "theme": "workout",
+      "tags": [
+        "rowing",
+        "intensity",
+        "indoor",
+        "focused"
+      ],
+      "mood": "determined",
+      "description": "A male athlete with intense focus rows on an air bike machine in the CrossFit OTL gym facility.",
+      "cloudinaryUrl": "https://res.cloudinary.com/dlaxxk5h6/image/upload/v1777639446/crossfit-otl/library/otl_FE457751_1635_4775_999E_570DD80F99AE.jpg",
+      "cloudinaryId": "crossfit-otl/library/otl_FE457751_1635_4775_999E_570DD80F99AE"
+    },
+    "8A7E2491-0C6B-4C01-98D0-FDDE6247DA8F": {
+      "date": "2026-05-01T12:44:09.904Z",
+      "quality": 4,
+      "theme": "workout",
+      "tags": [
+        "rowing",
+        "intensity",
+        "sweat",
+        "indoor",
+        "focused"
+      ],
+      "mood": "determined",
+      "description": "A female athlete mid-row on a rowing machine, showing focused intensity and effort during her workout.",
+      "cloudinaryUrl": "https://res.cloudinary.com/dlaxxk5h6/image/upload/v1777639449/crossfit-otl/library/otl_8A7E2491_0C6B_4C01_98D0_FDDE6247DA8F.jpg",
+      "cloudinaryId": "crossfit-otl/library/otl_8A7E2491_0C6B_4C01_98D0_FDDE6247DA8F"
+    },
+    "71BAE5A3-5E65-45FC-98C7-2FA962779D0A": {
+      "date": "2026-05-01T12:44:12.469Z",
+      "quality": 5,
+      "theme": "community",
+      "tags": [
+        "group",
+        "celebration",
+        "indoor",
+        "team",
+        "candid"
+      ],
+      "mood": "celebratory",
+      "description": "Two smiling female athletes celebrate together in the gym with their arms around each other, radiating joy and camaraderie in front of the rig and other community members.",
+      "cloudinaryUrl": "https://res.cloudinary.com/dlaxxk5h6/image/upload/v1777639451/crossfit-otl/library/otl_71BAE5A3_5E65_45FC_98C7_2FA962779D0A.jpg",
+      "cloudinaryId": "crossfit-otl/library/otl_71BAE5A3_5E65_45FC_98C7_2FA962779D0A"
+    },
+    "157CBB4D-15FC-460A-8171-3971B86E7604": {
+      "date": "2026-05-01T12:44:14.310Z",
+      "quality": 4,
+      "theme": "community",
+      "tags": [
+        "kettlebell",
+        "group",
+        "celebration",
+        "indoor",
+        "team"
+      ],
+      "mood": "joyful",
+      "description": "Two smiling members pose together in the gym while holding kettlebells, representing community and camaraderie at CrossFit OTL.",
+      "cloudinaryUrl": "https://res.cloudinary.com/dlaxxk5h6/image/upload/v1777639453/crossfit-otl/library/otl_157CBB4D_15FC_460A_8171_3971B86E7604.jpg",
+      "cloudinaryId": "crossfit-otl/library/otl_157CBB4D_15FC_460A_8171_3971B86E7604"
+    },
+    "E43FC048-E458-43FF-A40E-9ADB081D3C3D": {
+      "date": "2026-05-01T12:44:16.525Z",
+      "quality": 5,
+      "theme": "community",
+      "tags": [
+        "group",
+        "celebration",
+        "indoor",
+        "team",
+        "joyful"
+      ],
+      "mood": "celebratory",
+      "description": "Two athletes celebrate together with big smiles and peace signs in the CrossFit gym, with other members visible in the background.",
+      "cloudinaryUrl": "https://res.cloudinary.com/dlaxxk5h6/image/upload/v1777639456/crossfit-otl/library/otl_E43FC048_E458_43FF_A40E_9ADB081D3C3D.jpg",
+      "cloudinaryId": "crossfit-otl/library/otl_E43FC048_E458_43FF_A40E_9ADB081D3C3D"
+    },
+    "1401A8ED-D201-40C6-B547-CEF78A83575A": {
+      "date": "2026-05-01T12:44:18.915Z",
+      "quality": 4,
+      "theme": "community",
+      "tags": [
+        "group",
+        "celebration",
+        "coach",
+        "candid",
+        "indoor"
+      ],
+      "mood": "joyful",
+      "description": "Two smiling men pose together at CrossFit OTL, one wearing an Iron Nickel event shirt and the other in a CrossFit OTL branded shirt.",
+      "cloudinaryUrl": "https://res.cloudinary.com/dlaxxk5h6/image/upload/v1777639458/crossfit-otl/library/otl_1401A8ED_D201_40C6_B547_CEF78A83575A.jpg",
+      "cloudinaryId": "crossfit-otl/library/otl_1401A8ED_D201_40C6_B547_CEF78A83575A"
+    },
+    "06D893F8-A0B7-4ED6-9842-5A6A38AF8753": {
+      "date": "2026-05-01T12:44:20.617Z",
+      "quality": 4,
+      "theme": "community",
+      "tags": [
+        "group",
+        "candid",
+        "indoor",
+        "team"
+      ],
+      "mood": "candid",
+      "description": "Two bearded men in red shirts pose together indoors at what appears to be a CrossFit gym, with one wearing a red bandana.",
+      "cloudinaryUrl": "https://res.cloudinary.com/dlaxxk5h6/image/upload/v1777639460/crossfit-otl/library/otl_06D893F8_A0B7_4ED6_9842_5A6A38AF8753.jpg",
+      "cloudinaryId": "crossfit-otl/library/otl_06D893F8_A0B7_4ED6_9842_5A6A38AF8753"
+    },
+    "A91EFCF9-38EB-4801-996A-2320281478B6": {
+      "date": "2026-05-01T12:44:22.908Z",
+      "quality": 5,
+      "theme": "event",
+      "tags": [
+        "group",
+        "celebration",
+        "team",
+        "community",
+        "indoor"
+      ],
+      "mood": "celebratory",
+      "description": "A large group of CrossFit OTL members and their families celebrate together in the gym, dressed in red and blue team colors with festive accessories.",
+      "cloudinaryUrl": "https://res.cloudinary.com/dlaxxk5h6/image/upload/v1777639462/crossfit-otl/library/otl_A91EFCF9_38EB_4801_996A_2320281478B6.jpg",
+      "cloudinaryId": "crossfit-otl/library/otl_A91EFCF9_38EB_4801_996A_2320281478B6"
+    },
+    "AF564372-1CC0-43A2-9E31-7BD366AD3BA2": {
+      "date": "2026-05-01T12:44:24.842Z",
+      "quality": 4,
+      "theme": "workout",
+      "tags": [
+        "intensity",
+        "focused",
+        "indoor",
+        "whiteboard"
+      ],
+      "mood": "determined",
+      "description": "A female athlete reaches upward toward a whiteboard displaying workout information while maintaining focus during training.",
+      "cloudinaryUrl": "https://res.cloudinary.com/dlaxxk5h6/image/upload/v1777639464/crossfit-otl/library/otl_AF564372_1CC0_43A2_9E31_7BD366AD3BA2.jpg",
+      "cloudinaryId": "crossfit-otl/library/otl_AF564372_1CC0_43A2_9E31_7BD366AD3BA2"
+    },
+    "9B1090B7-1645-425B-9ACE-7AD3F3F87B8C": {
+      "date": "2026-05-01T12:44:26.972Z",
+      "quality": 4,
+      "theme": "workout",
+      "tags": [
+        "medicine-ball",
+        "intensity",
+        "indoor",
+        "group",
+        "candid"
+      ],
+      "mood": "intense",
+      "description": "Athlete performing a medicine ball slam exercise with focused intensity during a group workout session at the gym.",
+      "cloudinaryUrl": "https://res.cloudinary.com/dlaxxk5h6/image/upload/v1777639466/crossfit-otl/library/otl_9B1090B7_1645_425B_9ACE_7AD3F3F87B8C.jpg",
+      "cloudinaryId": "crossfit-otl/library/otl_9B1090B7_1645_425B_9ACE_7AD3F3F87B8C"
+    },
+    "ABC79DA4-55C2-4A2A-996C-87D5F02093D6": {
+      "date": "2026-05-01T12:44:29.354Z",
+      "quality": 4,
+      "theme": "community",
+      "tags": [
+        "group",
+        "celebration",
+        "team",
+        "indoor"
+      ],
+      "mood": "celebratory",
+      "description": "Two athletes in matching red shirts give thumbs up to the camera after a workout in the gym.",
+      "cloudinaryUrl": "https://res.cloudinary.com/dlaxxk5h6/image/upload/v1777639468/crossfit-otl/library/otl_ABC79DA4_55C2_4A2A_996C_87D5F02093D6.jpg",
+      "cloudinaryId": "crossfit-otl/library/otl_ABC79DA4_55C2_4A2A_996C_87D5F02093D6"
+    },
+    "71006DF0-ECC6-402C-854F-E173227DECF5": {
+      "date": "2026-05-01T12:44:33.237Z",
+      "quality": 4,
+      "theme": "community",
+      "tags": [
+        "group",
+        "celebration",
+        "team",
+        "event",
+        "indoor"
+      ],
+      "mood": "celebratory",
+      "description": "A team of six people wearing matching CrossFit OTL shirts pose together in the gym during what appears to be an opening or team celebration event.",
+      "cloudinaryUrl": "https://res.cloudinary.com/dlaxxk5h6/image/upload/v1777637951/crossfit-otl/library/otl_71006DF0_ECC6_402C_854F_E173227DECF5.jpg",
+      "cloudinaryId": "crossfit-otl/library/otl_71006DF0_ECC6_402C_854F_E173227DECF5"
+    },
+    "183EA94D-C372-4274-925F-F246225B2632": {
+      "date": "2026-05-01T12:44:35.270Z",
+      "quality": 4,
+      "theme": "workout",
+      "tags": [
+        "intensity",
+        "group",
+        "indoor",
+        "candid"
+      ],
+      "mood": "intense",
+      "description": "A male athlete in a blue shirt and compression gear looks upward with intensity during what appears to be a group workout session, with other participants visible in the background.",
+      "cloudinaryUrl": "https://res.cloudinary.com/dlaxxk5h6/image/upload/v1777639474/crossfit-otl/library/otl_183EA94D_C372_4274_925F_F246225B2632.jpg",
+      "cloudinaryId": "crossfit-otl/library/otl_183EA94D_C372_4274_925F_F246225B2632"
+    },
+    "A3C7A621-4962-4156-B10C-CFB9B9998093": {
+      "date": "2026-05-01T12:44:37.348Z",
+      "quality": 4,
+      "theme": "workout",
+      "tags": [
+        "pull-ups",
+        "intensity",
+        "indoor",
+        "competition"
+      ],
+      "mood": "intense",
+      "description": "An athlete performs a pull-up on a bar rig with focused intensity while spectators watch in the background at an indoor gym facility.",
+      "cloudinaryUrl": "https://res.cloudinary.com/dlaxxk5h6/image/upload/v1777639476/crossfit-otl/library/otl_A3C7A621_4962_4156_B10C_CFB9B9998093.jpg",
+      "cloudinaryId": "crossfit-otl/library/otl_A3C7A621_4962_4156_B10C_CFB9B9998093"
+    },
+    "04282A35-D57D-4C6B-92A0-76718E20CC0A": {
+      "date": "2026-05-01T12:44:39.701Z",
+      "quality": 3,
+      "theme": "event",
+      "tags": [
+        "group",
+        "community",
+        "indoor",
+        "candid"
+      ],
+      "mood": "candid",
+      "description": "A member wearing a CrossFit OTL-branded tank top stands among other gym members in what appears to be an indoor event or competition setting.",
+      "cloudinaryUrl": "https://res.cloudinary.com/dlaxxk5h6/image/upload/v1777639479/crossfit-otl/library/otl_04282A35_D57D_4C6B_92A0_76718E20CC0A.jpg",
+      "cloudinaryId": "crossfit-otl/library/otl_04282A35_D57D_4C6B_92A0_76718E20CC0A"
+    },
+    "A2A2EC9A-ACDF-40C5-BB06-54390A5735D2": {
+      "date": "2026-05-01T12:44:41.712Z",
+      "quality": 3,
+      "theme": "event",
+      "tags": [
+        "celebration",
+        "community",
+        "group",
+        "indoor",
+        "team"
+      ],
+      "mood": "celebratory",
+      "description": "A packed CrossFit OTL community event with members wearing red and blue, decorated with matching balloon clusters hanging from the ceiling.",
+      "cloudinaryUrl": "https://res.cloudinary.com/dlaxxk5h6/image/upload/v1777639481/crossfit-otl/library/otl_A2A2EC9A_ACDF_40C5_BB06_54390A5735D2.jpg",
+      "cloudinaryId": "crossfit-otl/library/otl_A2A2EC9A_ACDF_40C5_BB06_54390A5735D2"
+    },
+    "1B9B1231-F90F-4AF0-870A-B7865EBE2289": {
+      "date": "2026-05-01T12:44:43.507Z",
+      "quality": 4,
+      "theme": "workout",
+      "tags": [
+        "pull-ups",
+        "intensity",
+        "focused",
+        "indoor"
+      ],
+      "mood": "determined",
+      "description": "A female athlete performs pull-ups on rings with focused intensity during a training session.",
+      "cloudinaryUrl": "https://res.cloudinary.com/dlaxxk5h6/image/upload/v1777639483/crossfit-otl/library/otl_1B9B1231_F90F_4AF0_870A_B7865EBE2289.jpg",
+      "cloudinaryId": "crossfit-otl/library/otl_1B9B1231_F90F_4AF0_870A_B7865EBE2289"
+    },
+    "7E8108B7-73D3-42D6-8AE2-F3A1646AC3F7": {
+      "date": "2026-05-01T12:44:45.744Z",
+      "quality": 4,
+      "theme": "workout",
+      "tags": [
+        "kettlebell",
+        "intensity",
+        "sweat",
+        "indoor",
+        "competition"
+      ],
+      "mood": "intense",
+      "description": "A male athlete performing a kettlebell overhead press with focus and determination during what appears to be a competition or event at the gym.",
+      "cloudinaryUrl": "https://res.cloudinary.com/dlaxxk5h6/image/upload/v1777639485/crossfit-otl/library/otl_7E8108B7_73D3_42D6_8AE2_F3A1646AC3F7.jpg",
+      "cloudinaryId": "crossfit-otl/library/otl_7E8108B7_73D3_42D6_8AE2_F3A1646AC3F7"
+    },
+    "B1CB29FA-126A-4569-93DF-691F21A81D1A": {
+      "date": "2026-05-01T12:44:48.203Z",
+      "quality": 4,
+      "theme": "workout",
+      "tags": [
+        "barbell",
+        "intensity",
+        "focused",
+        "indoor"
+      ],
+      "mood": "intense",
+      "description": "A female athlete performs a barbell exercise with focused determination while other gym members train in the background during a group class.",
+      "cloudinaryUrl": "https://res.cloudinary.com/dlaxxk5h6/image/upload/v1777639487/crossfit-otl/library/otl_B1CB29FA_126A_4569_93DF_691F21A81D1A.jpg",
+      "cloudinaryId": "crossfit-otl/library/otl_B1CB29FA_126A_4569_93DF_691F21A81D1A"
+    },
+    "A095CA2C-9DF1-43FF-A698-9C8607550CA7": {
+      "date": "2026-05-01T12:44:51.161Z",
+      "quality": 4,
+      "theme": "kids",
+      "tags": [
+        "barbell",
+        "kids-class",
+        "intensity",
+        "competition",
+        "indoor"
+      ],
+      "mood": "determined",
+      "description": "A young athlete with competition face paint performs an overhead barbell lift during what appears to be a CrossFit kids competition event.",
+      "cloudinaryUrl": "https://res.cloudinary.com/dlaxxk5h6/image/upload/v1777639490/crossfit-otl/library/otl_A095CA2C_9DF1_43FF_A698_9C8607550CA7.jpg",
+      "cloudinaryId": "crossfit-otl/library/otl_A095CA2C_9DF1_43FF_A698_9C8607550CA7"
+    },
+    "783851B1-26A5-4973-BB07-B0AF76733E2D": {
+      "date": "2026-05-01T12:44:53.147Z",
+      "quality": 4,
+      "theme": "workout",
+      "tags": [
+        "intensity",
+        "sweat",
+        "indoor",
+        "candid"
+      ],
+      "mood": "intense",
+      "description": "An athlete performs an overhead movement with arms fully extended, displaying effort and intensity during a workout.",
+      "cloudinaryUrl": "https://res.cloudinary.com/dlaxxk5h6/image/upload/v1777639492/crossfit-otl/library/otl_783851B1_26A5_4973_BB07_B0AF76733E2D.jpg",
+      "cloudinaryId": "crossfit-otl/library/otl_783851B1_26A5_4973_BB07_B0AF76733E2D"
+    }
+  },
+  "skipped": {
+    "C7B13D36-F3F1-44A9-A9A7-8754F06291A6": {
+      "date": "2026-05-01T12:44:31.516Z",
+      "quality": 2,
+      "reason": "Poor composition with awkward framing; athlete's face is obscured by equipment; cluttered background with 'wanted' posters is distracting; image appears candid/unpolished rather than professional; not ideal for brand representation on Instagram carousel."
+    }
+  },
+  "lastRun": "2026-05-01T12:44:53.147Z"
+}
