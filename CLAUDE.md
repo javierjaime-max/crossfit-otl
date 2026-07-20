@@ -235,7 +235,7 @@ pipeline/output/
 | Repo | Location | What It Is |
 |---|---|---|
 | `crossfit-otl-pricing/` | `GitHub/crossfit-otl-pricing/` | Pricing + consultation pages (Vercel) |
-| `ccft-study-app/` | `GitHub/ccft-study-app/` | CCFT study tool |
+| `ccft-study-app/` | `GitHub/ccft-study-app/` | DECOMMISSIONED 2026-07-19 — replaced by NotebookLM; Vercel delete + repo archive pending |
 
 ---
 
