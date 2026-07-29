@@ -1,7 +1,7 @@
 ---
 type: brain/coaching
 source: voice memo 2026-01-11_2139_cedar-breaks-dr-53
-last-updated: 2026-06-18
+last-updated: 2026-07-15
 tags:
   - otl
   - otl/brain
@@ -10,6 +10,15 @@ tags:
 ---
 
 # CrossFit OTL — Class Management and Weekly Workout Planning
+
+## Daily Class Schedule
+
+Monday–Thursday and Saturday–Sunday:
+5AM · 6AM · 7AM · 8:30–9:30AM · Noon · 4PM · 5PM · 6–7PM
+
+**Friday exception:** 4–5PM only. No 5PM or 6PM class on Fridays.
+
+---
 
 This is Javier's thinking process when reviewing the weekly programming before it runs. It covers space allocation between adults and teens, stimulus management, equipment constraints, and the coach's role in preparation.
 
