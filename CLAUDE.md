@@ -11,8 +11,8 @@ CrossFit OTL is one ship in the Fit4 Associates portfolio. This repo contains th
 - **Location:** North Richland Hills, TX (DFW Mid-Cities)
 - **Opened:** February 2022 (30 founding members from garage gym)
 - **Current size:** ~120+ members (adults + teens + kids + PT)
-- **Price:** $180/4 weeks flat — no tiers, no upsells
-- **Programs:** CrossFit classes, CrossFit Kids/Teens, personal training
+- **Price:** **Unlimited $180 / 4 weeks** · **12 sessions $145 / 4 weeks**. Development Time is an Unlimited-only benefit. **Never put membership pricing in the new member packet or /welcome.**
+- **Programs:** CrossFit classes, CrossFit Kids/Teens, Development Time (Unlimited only), personal training, nutrition coaching, The Lifestyle Reset (12 wk), InBody scan ($35, open to anyone)
 - **Corporate structure:** Fit4 Associates Inc. (S Corp) — CrossFit OTL is a DBA
 - **Instagram:** @crossfitotl (IG User ID: 17841448179180217)
 - **Programming:** CAP (CrossFit Affiliate Programming) — James Hobart
@@ -22,18 +22,28 @@ CrossFit OTL is one ship in the Fit4 Associates portfolio. This repo contains th
 
 ## Coaching Team
 
+**11 coaches. Family first, couples together, then staff by floor activity.**
+
 | Coach | Role | Cert |
 |-------|------|------|
-| Javier Jaime | Founder / Head Coach | L2, on path to L3 |
-| Deanie Jaime | Co-Founder / GM | L2 |
-| Isabel Butler | Coach / CrossFit Kids Lead | L2, on path to L3 |
-| Nicholas Jaime | Coach | L2 |
-| Clay Butler | Coach | L2 |
-| Lamar DeOreo | Coach | L2 |
+| Javier Jaime | Founder / Coach | **L3** (earned Jul 2026) |
+| Deanie Jaime | Co-Founder / General Manager | L2 |
+| Isabel Butler | Co-Founder / Coach | L2, L3 candidate |
+| Clay Butler | Coach | L2 · USAW-L1 · ATG |
+| Nicholas Jaime | Co-Founder / Coach | L2 |
 | Ava Jaime | Coach | L1 |
+| Lamar DeOreo | Coach | L2 |
+| Christi Chaka | Coach (5AM) | L2 |
 | Maci Osborn | Coach | L1 |
+| Kasey Price | Coach / Kids | L1 |
 | Nichole Ward | Coach | L1 |
-| Christi Chaka | Coach | L2 (recent) |
+
+**Hard rules for any coach-facing copy (GP, 2026-08-04):**
+- Javier is **not** the head coach; CrossFit OTL does not name one.
+- **"Certified CrossFit Trainer" means L3 and only L3.** L1/L2 holders "hold a CrossFit Level 1/2" or are "credentialed by CrossFit."
+- **Never rank coaches against each other**, and **never list side businesses** in bios.
+- Isabel and Nicholas **started CrossFit as kids** — they did not start the kids program.
+- **Never write bare "OTL."** It is **CrossFit OTL**; full identity **CrossFit OTL — On The Line Fitness**.
 
 Full detail in `brain/people.md`.
 
@@ -49,6 +59,9 @@ Full detail in `brain/people.md`.
 | `brain/origin-story.md` | How OTL was built — Javier's story, the garage years |
 | `brain/philosophy.md` | OTL values, voice, what we do and don't do |
 | `brain/campaigns/` | All active campaign briefs (see campaigns section below) |
+| `brain/ops/member-experience.md` | Committed Club, programs, front of house, naming + voice rules |
+| `brain/ops/safety-and-emergency.md` | AED, the 911 address, first aid, kids flooring, barbell drops |
+| `brain/ops/facility.md` | Space, equipment, **authoritative membership pricing** |
 
 Architecture decision (2026-04-27): Ship brains live in GitHub repos as markdown. The Obsidian Vault is for personal content only — no ship brain content goes there.
 
@@ -77,6 +90,8 @@ Public-facing static HTML at crossfit-otl.com. No build step.
 | File | What It Is |
 |---|---|
 | `index.html` | Full site — single page, all sections inline |
+| `welcome.html` | **New member welcome page** at `/welcome` (rewrite in vercel.json). Same file prints the 15-page PDF packet via its `@media print` block — edit once, page and PDF stay in sync. Source of the PDF also mirrored at `Fit4/CrossFit OTL/Marketing/new-member-packet/`. |
+| `welcome-img/` | Images for the welcome page |
 | `photos/` | Site photos |
 | `robots.txt` | SEO |
 | `sitemap.xml` | SEO sitemap |
