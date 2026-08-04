@@ -1,7 +1,7 @@
 ---
 type: brain/coaching
 source: voice memo 2026-01-11_2139_cedar-breaks-dr-53
-last-updated: 2026-07-15
+last-updated: 2026-08-04
 tags:
   - otl
   - otl/brain
@@ -108,3 +108,16 @@ Adults and teens work out simultaneously, on opposite sides of the gym. For teen
 This is intentional and not logistical — see `philosophy.md` for the design reasoning.
 
 The class management challenge is the direct operational result of this design: every day, two different programs for two different populations need to coexist in the same space without equipment conflicts or traffic conflicts.
+
+
+---
+
+## Class structure and closing block (GP correction, 2026-08-04)
+
+The five parts of the hour: **Briefing → Warm-Up → Skill or Strength → The Workout (WOD) → Cool-Down & Recovery.**
+
+⚠️ **We do NOT call the closing block "circle time."** It is an **intentional time at the end of every workout for cool-down stretching and recovery**. During it the coach also gives **announcements** and a **preview of tomorrow's workout**.
+
+**"For time" workouts — the release rule:** when a workout is scored "for time," people finish at different times. **Nobody puts equipment away until everyone has finished AND the coach tells the class** they may put it away.
+
+**Starting/finishing on time is NOT a "rule."** The GP explicitly rejected calling it "the 5AM rule." Classes start and finish on time because the next class is waiting — frame it as **common courtesy**, never as an enforced policy.

@@ -1,0 +1,1047 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="Welcome to CrossFit OTL — On The Line Fitness in North Richland Hills, TX. Your guide to getting started: how class works, who's coaching you, the schedule, house rules, and what to expect in your first ninety days.">
+<meta name="robots" content="noindex, follow">
+<title>Welcome | CrossFit OTL — On The Line Fitness</title>
+<style>
+  :root{ color-scheme: light; }
+  @media screen{ .page{ scroll-margin-top:3.2rem; } }
+  @page { size: 8.5in 11in; margin: 0; }
+
+  :root{
+    --navy:#003566;
+    --navy-deep:#002140;
+    --blue:#7eb8ff;
+    --ink:#14181d;
+    --grey:#5b636c;
+    --line:#d9dee4;
+    --paper:#ffffff;
+  }
+
+  *{ box-sizing:border-box; -webkit-print-color-adjust:exact; print-color-adjust:exact; }
+
+  html,body{ margin:0; padding:0; }
+
+  body{
+    font-family:"Helvetica Neue", Helvetica, Arial, sans-serif;
+    color:var(--ink);
+    font-size:10.5pt;
+    line-height:1.55;
+  }
+
+  /* ---------- SCREEN: one flowing page ---------- */
+  .page{
+    position:relative;
+    background:var(--paper);
+    border-bottom:1px solid var(--line);
+  }
+  .pad{
+    max-width:52rem; margin:0 auto;
+    padding:3.25rem 1.5rem 3rem 1.5rem;
+    display:flex; flex-direction:column;
+  }
+  .pfoot{ display:none; }
+
+  /* ---------- PRINT: fixed 8.5x11 pages (drives the PDF) ---------- */
+  @media print{
+    .page{
+      width:8.5in; height:11in;
+      overflow:hidden;
+      page-break-after:always;
+      border-bottom:none;
+    }
+    .page:last-child{ page-break-after:auto; }
+    .pad{
+      max-width:none; margin:0;
+      padding:0.85in 0.9in 0.58in 0.9in; height:100%;
+    }
+    .pfoot{ display:flex; }
+    .webnav, .webtop{ display:none !important; }
+  }
+
+  /* ---------- type ---------- */
+  h1{
+    font-size:27pt; line-height:1.05; margin:0 0 6pt 0;
+    letter-spacing:-0.6pt; color:var(--navy); font-weight:800;
+  }
+  h2{
+    font-size:13pt; margin:0 0 4pt 0; color:var(--navy); font-weight:800;
+    letter-spacing:-0.2pt;
+  }
+  h3{ font-size:10.5pt; margin:0 0 2pt 0; font-weight:800; color:var(--ink); }
+  p{ margin:0 0 9pt 0; }
+  .lead{ font-size:12pt; line-height:1.5; color:var(--ink); }
+  .eyebrow{
+    font-size:8pt; letter-spacing:2.4pt; text-transform:uppercase;
+    color:var(--blue); font-weight:800; margin:0 0 10pt 0;
+  }
+  .eyebrow.dark{ color:var(--navy); }
+  .rule{ width:54pt; height:4pt; background:var(--blue); margin:0 0 20pt 0; }
+  .muted{ color:var(--grey); }
+  strong{ font-weight:800; }
+  em{ font-style:italic; }
+
+  .pull{
+    border-left:4pt solid var(--blue);
+    padding:2pt 0 2pt 14pt;
+    font-size:12pt; line-height:1.45; color:var(--navy);
+    font-weight:600; margin:14pt 0 16pt 0;
+  }
+
+  /* ---------- on the line block ---------- */
+  .otl{
+    background:var(--navy); color:#fff; border-radius:4pt;
+    padding:16pt 20pt 15pt 20pt; margin:16pt 0 18pt 0;
+  }
+  .otl-pre{
+    font-size:8pt; letter-spacing:2.4pt; text-transform:uppercase;
+    color:var(--blue); font-weight:800; margin-bottom:9pt;
+  }
+  .otl-name{
+    font-size:23pt; font-weight:800; color:#8fa9c6; line-height:1;
+    letter-spacing:-0.4pt; margin-bottom:11pt;
+  }
+  .otl-name .k{ color:#fff; font-size:33pt; letter-spacing:-1pt; }
+  .otl-name .fit{ font-size:16pt; color:#6d88a6; }
+  .otl-ask{
+    font-size:13pt; font-weight:800; color:var(--blue);
+    margin-bottom:9pt; letter-spacing:-0.2pt;
+  }
+  .otl-list{ font-size:12pt; line-height:1.45; color:#e4eefb; font-weight:600; }
+  .otl-a{
+    font-size:30pt; font-weight:800; letter-spacing:-1pt;
+    color:#fff; margin-top:8pt; line-height:1;
+  }
+
+  /* ---------- cover ---------- */
+  .cover{ background:var(--navy-deep); color:#fff; }
+  .cover img.bg{
+    position:absolute; inset:0; width:100%; height:100%;
+    object-fit:cover; opacity:0.38;
+  }
+  .cover .scrim{
+    position:absolute; inset:0;
+    background:linear-gradient(180deg, rgba(0,21,40,.55) 0%, rgba(0,21,40,.35) 45%, rgba(0,21,40,.96) 100%);
+  }
+  .cover .inner{
+    position:relative; min-height:min(88vh, 40rem);
+    max-width:52rem; margin:0 auto;
+    padding:3.5rem 1.5rem 2.5rem 1.5rem;
+    display:flex; flex-direction:column; justify-content:space-between; gap:2.5rem;
+  }
+  @media print{
+    .cover .inner{
+      height:100%; min-height:0; max-width:none; margin:0; gap:0;
+      padding:1.1in 0.9in 0.9in 0.9in;
+    }
+  }
+  .wordmark{ font-size:15pt; font-weight:800; letter-spacing:5pt; color:#fff; }
+  .wordmark span{ color:var(--blue); }
+  .cover h1{
+    color:#fff; font-size:56pt; line-height:0.95; letter-spacing:-2pt;
+    margin:0 0 14pt 0; text-transform:uppercase;
+  }
+  .cover .sub{ font-size:13.5pt; color:#dbe7f5; max-width:5in; line-height:1.4; }
+  .cover .foot{ font-size:9.5pt; color:#a9c2dc; letter-spacing:.4pt; }
+  .cover .foot b{ color:#fff; }
+
+  /* ---------- section head band ---------- */
+  .band{
+    background:var(--navy); color:#fff;
+    margin:-3.25rem -1.5rem 1.75rem -1.5rem;
+    padding:2.5rem 1.5rem 2rem 1.5rem;
+  }
+  @media print{
+    .band{ margin:-0.85in -0.9in 24pt -0.9in; padding:0.6in 0.9in 0.5in 0.9in; }
+  }
+  .band h1{ color:#fff; }
+  .band .eyebrow{ color:var(--blue); }
+  .band p{ color:#cfe0f2; margin:0; max-width:5.6in; }
+
+  /* ---------- lists ---------- */
+  ul.check{ list-style:none; margin:0 0 10pt 0; padding:0; }
+  ul.check li{
+    position:relative; padding-left:20pt; margin-bottom:8pt;
+  }
+  ul.check li:before{
+    content:""; position:absolute; left:0; top:6pt;
+    width:8pt; height:8pt; background:var(--blue); border-radius:1pt;
+  }
+
+  ol.steps{ list-style:none; counter-reset:s; margin:0; padding:0; }
+  ol.steps li{
+    counter-increment:s; position:relative; padding-left:34pt; margin-bottom:12pt;
+  }
+  ol.steps li:before{
+    content:counter(s); position:absolute; left:0; top:-1pt;
+    width:22pt; height:22pt; border-radius:50%;
+    background:var(--navy); color:#fff;
+    font-size:11pt; font-weight:800; text-align:center; line-height:22pt;
+  }
+
+  /* ---------- grids ---------- */
+  .grid2{ display:grid; grid-template-columns:1fr 1fr; gap:16pt 22pt; }
+  .grid3{ display:grid; grid-template-columns:1fr 1fr 1fr; gap:14pt 16pt; }
+  .grid4{ display:grid; grid-template-columns:1fr 1fr 1fr 1fr; gap:12pt 14pt; }
+
+  .card{
+    border:1pt solid var(--line); border-radius:3pt;
+    padding:12pt 13pt;
+  }
+  .card h3{ color:var(--navy); }
+  .card p{ margin:0; font-size:9.5pt; line-height:1.45; }
+
+  .coach{
+    border-top:2.5pt solid var(--navy); padding-top:7pt;
+  }
+  .secline{
+    font-size:8pt; letter-spacing:2.4pt; text-transform:uppercase;
+    color:var(--navy); font-weight:800;
+    border-bottom:1pt solid var(--line); padding-bottom:5pt; margin-bottom:12pt;
+  }
+  .coach .nm{ font-size:12pt; font-weight:800; color:var(--ink); line-height:1.2; }
+  .coach .rl{ font-size:8.5pt; letter-spacing:1.2pt; text-transform:uppercase; color:var(--blue); font-weight:800; margin:2pt 0 5pt 0; }
+  .coach p{ font-size:8.5pt; line-height:1.4; margin:0; color:var(--grey); }
+  .coach .cert{ display:inline-block; margin-top:4pt; font-size:8pt; font-weight:800; letter-spacing:.8pt; color:var(--navy); background:#eaf2fc; padding:2pt 6pt; border-radius:2pt; }
+
+  /* ---------- tables ---------- */
+  table{ width:100%; border-collapse:collapse; font-size:9.5pt; }
+  th{
+    background:var(--navy); color:#fff; text-align:left;
+    padding:7pt 9pt; font-size:8.5pt; letter-spacing:1pt; text-transform:uppercase; font-weight:800;
+  }
+  td{ padding:6.5pt 9pt; border-bottom:1pt solid var(--line); vertical-align:top; }
+  tr:nth-child(even) td{ background:#f7f9fc; }
+  td.t{ font-weight:800; color:var(--navy); white-space:nowrap; }
+
+  /* ---------- milestone ---------- */
+  .mile{ display:flex; gap:14pt; margin-bottom:13pt; align-items:flex-start; }
+  .mile .when{
+    flex:0 0 78pt; background:var(--navy); color:#fff;
+    text-align:center; padding:7pt 4pt; border-radius:3pt;
+  }
+  .mile .when b{ display:block; font-size:14pt; line-height:1.05; }
+  .mile .when span{ font-size:7.5pt; letter-spacing:1.2pt; text-transform:uppercase; color:var(--blue); }
+  .mile .what{ flex:1; }
+  .mile .what h3{ margin-bottom:1pt; color:var(--navy); }
+  .mile .what p{ margin:0; font-size:9.5pt; line-height:1.45; }
+
+  /* ---------- images ---------- */
+  .photo{ width:100%; border-radius:3pt; object-fit:cover; display:block; }
+  .photo.h14{ height:1.15in; }
+  .photo.h16{ height:1.6in; }
+  .photo.h2in{ height:2in; }
+  .photo.h25{ height:2.5in; }
+  .photo.h3in{ height:3in; }
+  .photo.foot{ margin-top:auto; }
+  .bleed{
+    margin:0 -0.9in; width:8.5in; display:block; object-fit:cover;
+  }
+
+  /* ---------- emergency ---------- */
+  .alert{
+    display:flex; gap:14pt; align-items:flex-start;
+    border:1pt solid #f0d5d0; background:#fdf7f6;
+    border-left:4pt solid #c0392b; border-radius:3pt;
+    padding:13pt 15pt; margin-bottom:14pt;
+  }
+  .alert-k{
+    flex:0 0 24pt; height:24pt; border-radius:50%;
+    background:#c0392b; color:#fff; font-weight:800; font-size:12pt;
+    text-align:center; line-height:24pt;
+  }
+  .alert h3{ color:#c0392b; }
+  .addr{
+    font-size:15pt; font-weight:800; color:var(--ink);
+    line-height:1.25; margin-top:5pt; letter-spacing:-0.3pt;
+  }
+
+  /* ---------- footer ---------- */
+  .pfoot{
+    margin-top:auto; padding-top:12pt; border-top:1pt solid var(--line);
+    display:flex; justify-content:space-between;
+    font-size:7.5pt; letter-spacing:1.2pt; text-transform:uppercase; color:#9aa3ad;
+  }
+
+  /* ---------- back cover ---------- */
+  .back{ background:var(--navy-deep); color:#fff; }
+  .back .inner{
+    position:relative; min-height:min(80vh, 36rem);
+    max-width:52rem; margin:0 auto;
+    padding:3.5rem 1.5rem;
+    display:flex; flex-direction:column; justify-content:space-between; gap:2.5rem;
+  }
+  @media print{
+    .back .inner{ height:100%; min-height:0; max-width:none; margin:0; gap:0; padding:1.1in 0.9in; }
+  }
+  .back h1{ color:#fff; font-size:46pt; text-transform:uppercase; letter-spacing:-1.5pt; line-height:0.98; }
+  .back .cts{ display:grid; grid-template-columns:1fr 1fr; gap:22pt; font-size:10.5pt; color:#dbe7f5; }
+  .back .cts b{ display:block; color:var(--blue); font-size:8pt; letter-spacing:2pt; text-transform:uppercase; margin-bottom:5pt; }
+  .back img.bg{ position:absolute; inset:0; width:100%; height:100%; object-fit:cover; opacity:0.22; }
+  .back .scrim{ position:absolute; inset:0; background:linear-gradient(180deg, rgba(0,21,40,.9), rgba(0,21,40,.97)); }
+  /* ---------- responsive ---------- */
+  @media screen{
+    body{ font-size:1rem; line-height:1.65; background:var(--paper); }
+    h1{ font-size:clamp(1.9rem, 5vw, 2.6rem); margin-bottom:.5rem; }
+    h2{ font-size:1.2rem; }
+    .lead{ font-size:1.12rem; }
+    .cover h1{ font-size:clamp(3rem, 12vw, 5rem); }
+    .cover .sub{ font-size:1.1rem; max-width:34rem; }
+    .back h1{ font-size:clamp(2.4rem, 9vw, 4rem); }
+    .photo.h14, .photo.h16, .photo.h2in, .photo.h25{ height:clamp(11rem, 34vw, 18rem); }
+    .otl-name{ font-size:clamp(1.5rem, 6vw, 2.1rem); }
+    .otl-name .k{ font-size:clamp(2.1rem, 8vw, 3rem); }
+    .otl-a{ font-size:clamp(2rem, 8vw, 2.8rem); }
+    table{ font-size:.95rem; }
+    .tablewrap{ overflow-x:auto; -webkit-overflow-scrolling:touch; }
+  }
+  @media screen and (max-width: 46rem){
+    .grid2, .grid3, .grid4{ grid-template-columns:1fr; gap:1rem; }
+    .grid2 .card[style]{ grid-column:auto !important; }
+    .mile{ flex-direction:column; gap:.6rem; }
+    .mile .when{ flex:0 0 auto; align-self:flex-start; padding:5pt 14pt; }
+    .back .cts{ grid-template-columns:1fr; gap:1.25rem; }
+  }
+
+  /* ---------- web nav ---------- */
+  .webtop{
+    position:sticky; top:0; z-index:50;
+    background:rgba(0,33,64,.97);
+    display:flex; align-items:center; justify-content:space-between;
+    gap:1rem; padding:.7rem 1.25rem;
+    font-size:.78rem; letter-spacing:.18em; text-transform:uppercase; font-weight:800;
+  }
+  .webtop a{ color:var(--blue); text-decoration:none; }
+  .webtop .bm{ color:#fff; letter-spacing:.28em; }
+  .webnav{ background:#f4f7fb; border-bottom:1px solid var(--line); }
+  .webnav ul{
+    max-width:52rem; margin:0 auto; padding:1.25rem 1.5rem;
+    list-style:none; display:grid; grid-template-columns:repeat(auto-fit,minmax(13rem,1fr)); gap:.45rem 1.25rem;
+  }
+  .webnav a{ color:var(--navy); text-decoration:none; font-weight:700; font-size:.95rem; }
+  .webnav a:hover{ text-decoration:underline; }
+
+
+  /* ---------- screen overrides that must win ---------- */
+  @media screen{
+    .pfoot{ display:none !important; }
+    .back h1{ font-size:clamp(2.3rem, 8.5vw, 4rem) !important; line-height:1.02; }
+    .cover h1{ font-size:clamp(2.8rem, 11vw, 5rem) !important; }
+    .band h1{ font-size:clamp(1.9rem, 5.5vw, 2.6rem) !important; }
+    .otl-a{ font-size:clamp(2rem, 8vw, 2.8rem) !important; }
+    .back .cts{ font-size:1rem; }
+    .back .cts, .back .cts div{ overflow-wrap:anywhere; word-break:break-word; }
+    .cover .foot{ font-size:.9rem; overflow-wrap:anywhere; }
+    .wordmark{ font-size:1rem; letter-spacing:.3em; }
+    img, table{ max-width:100%; }
+    body{ overflow-x:hidden; }
+  }
+  @media screen and (max-width: 46rem){
+    .grid2, .grid3, .grid4{ grid-template-columns:1fr !important; }
+    .cover .foot b{ display:block; margin-bottom:.25rem; }
+  }
+</style>
+</head>
+<body>
+<div class="webtop">
+  <span class="bm">CROSSFIT&nbsp;OTL</span>
+  <a href="https://crossfit-otl.com">crossfit-otl.com &rsaquo;</a>
+</div>
+
+<!-- ============ 1. COVER ============ -->
+<div class="page cover" id="cover">
+  <img class="bg" src="welcome-img/A7401523.jpg" alt="">
+  <div class="scrim"></div>
+  <div class="inner">
+    <div class="wordmark">CROSSFIT <span>OTL</span></div>
+    <div>
+      <div class="eyebrow">Your Guide to Getting Started</div>
+      <h1>Welcome</h1>
+      <div class="sub"><b style="color:#fff;">We are CrossFit OTL — On The Line Fitness.</b><br>Everything you need for your first ninety days: how class works, who's coaching you, and what's actually coming.</div>
+    </div>
+    <div class="foot">
+      <b>NORTH RICHLAND HILLS, TEXAS</b> &nbsp;·&nbsp; 9155 Blvd 26, Suite 270 &nbsp;·&nbsp; crossfit-otl.com
+    </div>
+  </div>
+</div>
+
+<nav class="webnav" aria-label="Contents">
+  <ul>
+    <li><a href="#welcome">Welcome</a></li>
+    <li><a href="#why">Why we exist</a></li>
+    <li><a href="#methodology">What is CrossFit?</a></li>
+    <li><a href="#coaches">Your coaches</a></li>
+    <li><a href="#class">How a class runs</a></li>
+    <li><a href="#first90">Your first 90 days</a></li>
+    <li><a href="#schedule">Class schedule</a></li>
+    <li><a href="#house-rules">House rules</a></li>
+    <li><a href="#emergency">In an emergency</a></li>
+    <li><a href="#programs">Programs</a></li>
+    <li><a href="#kids">Kids & teens</a></li>
+    <li><a href="#get-started">Set yourself up</a></li>
+    <li><a href="#front-of-house">Fuel, gear & partners</a></li>
+  </ul>
+</nav>
+
+<!-- ============ 2. WELCOME LETTER ============ -->
+<div class="page" id="welcome">
+  <div class="pad">
+    <div class="eyebrow dark">From the Jaime Family</div>
+    <h1>You're in.</h1>
+    <div class="rule"></div>
+
+    <p class="lead">Walking through the door was the hard part. Most people who think about doing this never do it — they talk themselves out of it, or someone talks them out of it for them. You didn't. That already separates you.</p>
+
+    <p>We started this in a garage. Four or five women training in a driveway, a set of barbells, some rubber floor, and a pull-up rig. Then the homeschool boys came at 9am. Then the kids at 4pm. In February 2022 we opened the doors on Blvd 26, and thirty of those garage people came with us.</p>
+
+    <p>We are a family business in the plainest sense of the phrase. Isabel and her husband Clay coach here. Nicholas and his wife Ava coach here. Deanie's twin sister Lamar coaches here. We built this gym around our own kids' futures, and we run it the way we'd want a gym run for our own family — because it is one.</p>
+
+    <p>Here's what we ask of you: <strong>show up, ask questions, and tell your coach the truth</strong> — about your history, your injuries, your sleep, what you ate. We can work with anything you tell us. We can't work with what you hide.</p>
+
+    <p>Here's what we owe you in return: a coach who knows your name and your goal before you walk in, programming that scales to exactly where you are today, and an honest answer every time you ask for one.</p>
+
+    <div class="otl">
+      <div class="otl-pre">We are CrossFit OTL</div>
+      <div class="otl-name"><span class="k">O</span>n <span class="k">T</span>he <span class="k">L</span>ine <span class="fit">Fitness</span></div>
+      <div class="otl-ask">So what's on the line?</div>
+      <div class="otl-list">Your health. Your freedom. Your energy. The years you get.<br>Whether your kids grow up watching this or not. Your family.</div>
+      <div class="otl-a">Everything.</div>
+    </div>
+
+    <p style="margin-bottom:2pt;">Let's get to work,</p>
+    <p style="margin:0;"><strong>The Jaime Family</strong><br>
+    <span class="muted" style="font-size:9.5pt;">Javier &amp; Deanie · Isabel &amp; Clay · Nicholas &amp; Ava</span></p>
+
+    <div class="pfoot"><span>CrossFit OTL — New Member Packet</span><span>02</span></div>
+  </div>
+</div>
+
+<!-- ============ 3. WHAT WE'RE ACTUALLY DOING ============ -->
+<div class="page" id="why">
+  <div class="pad">
+    <div class="band">
+      <div class="eyebrow">Why We Exist</div>
+      <h1>This was built around<br>life change.</h1>
+      <p>Because that is exactly what CrossFit did for the Jaime family first — and then for everyone who walked in after them.</p>
+    </div>
+
+    <p>Javier found CrossFit in 2012 and it changed him. Then it changed Deanie. Then Isabel and Nicholas. Then the handful of neighbors training in their garage. This gym exists because that ripple kept going — and you are the next person in it.</p>
+
+    <p>What did the changing is ordinary and repeatable: movements you already use — squatting, picking things up, pressing overhead, carrying, running — done well, done at an intensity that's right for <em>you</em>, and repeated until your body adapts.</p>
+
+    <p>Every workout we program scales. The 62-year-old grandmother and the former college athlete do the same workout on the same day with different loads, different reps, and different movements. Same stimulus. Same hour. Same room.</p>
+
+    <h2 style="margin-top:14pt;">What you can expect from us</h2>
+    <div class="rule" style="margin-bottom:12pt;"></div>
+    <ul class="check">
+      <li><strong>Coaching, not supervision.</strong> Every class is led by a credentialed coach who watches your reps and corrects them. All eleven of our coaches hold a CrossFit Level 1 or higher — seven at Level 2 or above, including a Certified CrossFit Trainer (CF-L3).</li>
+      <li><strong>Programming with a reason behind it.</strong> We run CrossFit Affiliate Programming with clear Beginner, Intermediate, and RX tracks built into every session. You'll always know which one is yours.</li>
+      <li><strong>The whole picture.</strong> Training is one input. Nutrition, sleep, and consistency are the others. We coach all of it, because three out of four doesn't work.</li>
+      <li><strong>Objective progress.</strong> InBody scans, benchmark workouts, and lifting numbers. Not vibes.</li>
+      <li><strong>A room where your family belongs.</strong> Kids and teens train while adults train — same building, same hour, year-round.</li>
+    </ul>
+
+    <h2 style="margin-top:6pt;">What we won't do</h2>
+    <div class="rule" style="margin-bottom:12pt;"></div>
+    <p style="margin-bottom:0;">We won't promise you quick results, because there aren't any worth having. We won't compete with a big-box gym on price — different product. And we won't tell you this is easy. It isn't. That's the entire point.</p>
+
+    <div class="pfoot"><span>Why We Exist</span><span>03</span></div>
+  </div>
+</div>
+
+<!-- ============ WHAT IS CROSSFIT ============ -->
+<div class="page" id="methodology">
+  <div class="pad">
+    <div class="eyebrow dark">The Methodology</div>
+    <h1>So what <em style="font-style:normal; color:var(--blue);">is</em> CrossFit?</h1>
+    <div class="rule"></div>
+
+    <p class="lead" style="margin-bottom:14pt;">CrossFit's own definition is one line: <strong>constantly varied functional movements performed at high intensity.</strong> Every word in it is doing work.</p>
+
+    <div class="grid3" style="margin-bottom:16pt;">
+      <div class="card">
+        <h3>Constantly varied</h3>
+        <p>The workout changes every day on purpose. Your body adapts to what it can predict — so we don't let it predict. Broad, general readiness beats a narrow specialty.</p>
+      </div>
+      <div class="card">
+        <h3>Functional movements</h3>
+        <p>Movements that move large loads long distances, quickly — and that mirror what real life asks of you: stand up, pick it up, put it overhead, carry it, go.</p>
+      </div>
+      <div class="card">
+        <h3>High intensity</h3>
+        <p>Intensity is relative to <em>you</em>, and it's where results come from. Your intensity on day one and on day four hundred are different numbers doing the same job.</p>
+      </div>
+    </div>
+
+    <p>The goal is <strong>work capacity across broad time and modal domains</strong> — being good across short and long efforts, across lifting and gymnastics and cardio, rather than excellent at one thing and helpless at the rest. That's a deliberate bet that life doesn't tell you in advance what it's going to demand.</p>
+
+    <h2 style="margin-top:12pt;">Go learn it yourself — don't just ask us</h2>
+    <div class="rule" style="width:40pt; height:3pt; margin-bottom:12pt;"></div>
+    <p style="margin-bottom:11pt;">We will answer any question you have, any time. But the members who understand <em>why</em> we program the way we do stop needing to ask — and they train better for it. All of this is public and most of it is free.</p>
+
+    <div class="grid2" style="gap:11pt 22pt;">
+      <div class="card">
+        <h3>The CrossFit Level 1 Training Guide</h3>
+        <p>The actual textbook, free to download at <strong>crossfit.com</strong>. Mechanics, the nine foundational movements, nutrition, programming, and scaling. Almost no members read it. The ones who do change how they train.</p>
+      </div>
+      <div class="card">
+        <h3>The CrossFit Journal</h3>
+        <p>The archive of foundational articles — including "What Is Fitness?" (2002), which lays out the ten general physical skills, the three metabolic pathways, and the sickness-to-fitness continuum this gym is built on.</p>
+      </div>
+      <div class="card">
+        <h3>crossfit.com and the CrossFit YouTube channel</h3>
+        <p>Daily programming, movement standards, and demo videos for every lift and gymnastics skill we run. Good place to review a movement the night before.</p>
+      </div>
+      <div class="card">
+        <h3>Take the Level 1 course yourself</h3>
+        <p>You do not have to want to coach. Some of our strongest members took the L1 purely to understand the why. Talk to Javier or any of the staff — every one of us has been through it, and we will tell you honestly whether it's worth your weekend.</p>
+      </div>
+    </div>
+
+    <div class="pfoot"><span>The Methodology</span><span>04</span></div>
+  </div>
+</div>
+
+<!-- ============ 4. COACHES ============ -->
+<div class="page" id="coaches">
+  <div class="pad">
+    <div class="eyebrow dark">Your Coaches</div>
+    <h1>Who's on the floor.</h1>
+    <div class="rule"></div>
+    <p style="margin-bottom:14pt;">Every one of us is credentialed by CrossFit, and most of us are related — this gym was founded by a family and is still coached by one. Isabel and Nicholas started CrossFit as kids, so they know these movements and this methodology as well as coaches twelve years in. Ask any of us anything.</p>
+
+    <div class="secline">The Family</div>
+    <div class="grid2" style="gap:9pt 24pt;">
+      <div class="coach">
+        <div class="nm">Javier Jaime</div>
+        <div class="rl">Founder / Coach</div>
+        <p>Coached at a YMCA at 25, found CrossFit in 2012, ran the garage gym for six years before CrossFit OTL opened. Earned his Level 3 in July 2026.</p>
+        <span class="cert">CF-L3</span>
+      </div>
+      <div class="coach">
+        <div class="nm">Deanie Jaime</div>
+        <div class="rl">Co-Founder / General Manager</div>
+        <p>A former VP of Human Resources in healthcare before this. If something about your membership needs sorting out, she is who to see.</p>
+        <span class="cert">CF-L2</span>
+      </div>
+      <div class="coach">
+        <div class="nm">Isabel Butler</div>
+        <div class="rl">Co-Founder / Coach</div>
+        <p>Started CrossFit as a kid herself. Assistant-coached CrossFit Kids from age 14 and earned her L1 at 17.</p>
+        <span class="cert">CF-L2 · L3 CANDIDATE</span>
+      </div>
+      <div class="coach">
+        <div class="nm">Clay Butler</div>
+        <div class="rl">Coach</div>
+        <p>Married to Isabel. Also credentialed in Olympic weightlifting and the ATG "knees over toes" system — talk to him about barbell positions and joint health.</p>
+        <span class="cert">CF-L2 · USAW-L1 · ATG</span>
+      </div>
+      <div class="coach">
+        <div class="nm">Nicholas Jaime</div>
+        <div class="rl">Co-Founder / Coach</div>
+        <p>Started CrossFit as a kid and earned his L1 at 17. Coaches mechanics and positions closely — if something is not clicking for you, go find him.</p>
+        <span class="cert">CF-L2</span>
+      </div>
+      <div class="coach">
+        <div class="nm">Ava Jaime</div>
+        <div class="rl">Coach</div>
+        <p>Married to Nicholas. Coaches adult and youth classes, and is working toward her Level 2.</p>
+        <span class="cert">CF-L1</span>
+      </div>
+      <div class="coach">
+        <div class="nm">Lamar DeOreo</div>
+        <div class="rl">Coach</div>
+        <p>Deanie's twin sister and one of the original garage-gym crew — in this since the driveway boot-camp days.</p>
+        <span class="cert">CF-L2</span>
+      </div>
+    </div>
+
+    <div class="secline" style="margin-top:11pt;">Coaching Staff</div>
+    <div class="grid4" style="gap:11pt 14pt;">
+      <div class="coach">
+        <div class="nm">Christi Chaka</div>
+        <div class="rl">Coach</div>
+        <p>Coaches the 5AM class. A full-time teacher, here before her school day starts.</p>
+        <span class="cert">CF-L2</span>
+      </div>
+      <div class="coach">
+        <div class="nm">Maci Osborn</div>
+        <div class="rl">Coach</div>
+        <p>Came up through our youth program, then interned. Now coaches teens and adults.</p>
+        <span class="cert">CF-L1</span>
+      </div>
+      <div class="coach">
+        <div class="nm">Kasey Price</div>
+        <div class="rl">Kids Coach</div>
+        <p>A member for three years with her family before she started coaching.</p>
+        <span class="cert">CF-L1</span>
+      </div>
+      <div class="coach">
+        <div class="nm">Nichole Ward</div>
+        <div class="rl">Coach</div>
+        <p>A full-time teacher who coaches adult and youth classes as she can.</p>
+        <span class="cert">CF-L1</span>
+      </div>
+    </div>
+
+    <div class="pfoot"><span>Your Coaches</span><span>05</span></div>
+  </div>
+</div>
+
+<!-- ============ 5. HOW CLASS WORKS ============ -->
+<div class="page" id="class">
+  <div class="pad">
+    <div class="band">
+      <div class="eyebrow">The Hour</div>
+      <h1>How a class runs.</h1>
+      <p>Sixty minutes, five parts, every time. Arrive ten minutes early for your first few.</p>
+    </div>
+
+    <ol class="steps">
+      <li>
+        <h3>Briefing</h3>
+        <p>Your coach walks the whole class through the day: what the workout is, <strong>what it's supposed to feel like</strong>, the target time or rounds, and how each track scales. If you don't know which track is yours, this is when you ask.</p>
+      </li>
+      <li>
+        <h3>Warm-Up</h3>
+        <p>Coach-led and specific to the day's movements. Not filler — it's how we get your joints and nervous system ready for what's coming.</p>
+      </li>
+      <li>
+        <h3>Skill or Strength</h3>
+        <p>Technique work, or a strength piece under a barbell. Some days this <em>is</em> the hour. Weight goes up over months, not weeks.</p>
+      </li>
+      <li>
+        <h3>The Workout (WOD)</h3>
+        <p>The conditioning piece. Your coach is moving the whole time — correcting positions, adjusting loads, and holding people to the intended pace. On "for time" workouts, the class stays until the last athlete finishes.</p>
+      </li>
+      <li>
+        <h3>Cool-Down &amp; Recovery</h3>
+        <p>Every workout ends with intentional cool-down stretching and recovery work — it's part of the session, not an optional add-on. Your coach also uses this time for announcements and a preview of tomorrow's workout, so you know what you're walking into.</p>
+      </li>
+    </ol>
+
+    <h2 style="margin-top:6pt;">Three things new members always ask</h2>
+    <div class="rule" style="margin-bottom:12pt;"></div>
+    <div class="grid3">
+      <div class="card">
+        <h3>"What if I'm last?"</h3>
+        <p>Someone is. Nobody cares, and the class stays with you. On "for time" workouts nothing gets torn down until every person is finished and the coach releases the class.</p>
+      </div>
+      <div class="card">
+        <h3>"What if I can't do the movement?"</h3>
+        <p>Then you do the version you can do. That's what scaling is. Your coach will hand it to you before you have to ask.</p>
+      </div>
+      <div class="card">
+        <h3>"Do I need to be fit first?"</h3>
+        <p>No. That's like showering before the shower. Come as you are — we start where you are.</p>
+      </div>
+    </div>
+
+    <div class="pfoot"><span>How Class Works</span><span>06</span></div>
+  </div>
+</div>
+
+<!-- ============ 6. FIRST 90 DAYS ============ -->
+<div class="page" id="first90">
+  <div class="pad">
+    <div class="eyebrow dark">Read This One Twice</div>
+    <h1>Your first ninety days.</h1>
+    <div class="rule"></div>
+    <p style="margin-bottom:14pt;">Most gyms won't tell you this. People quit CrossFit at predictable moments, for predictable reasons. None of it is a sign that it isn't working. We're telling you now so that when it happens, you recognize it instead of believing it.</p>
+
+    <div class="mile">
+      <div class="when"><b>WK 1</b><span>Soreness</span></div>
+      <div class="what">
+        <h3>You will be sore in places you didn't know existed.</h3>
+        <p>Not because CrossFit is uniquely brutal, but because in a coached class you work harder than you ever would alone, using muscles you haven't used in years. This is the single most common week to quit. It passes. Come back sore — moving helps.</p>
+      </div>
+    </div>
+
+    <div class="mile">
+      <div class="when"><b>WK 4</b><span>Ego</span></div>
+      <div class="what">
+        <h3>Someone you didn't expect will out-lift you.</h3>
+        <p>A grandmother. A stay-at-home mom. Someone half your size. It stings, and it's the most reliable proof that this room is doing something. They started before you did. That's the whole difference.</p>
+      </div>
+    </div>
+
+    <div class="mile">
+      <div class="when"><b>WK 4</b><span>Impatience</span></div>
+      <div class="what">
+        <h3>Thirty days won't show you what you came for.</h3>
+        <p>This is a long-adaptation program. The scale is a lagging indicator and a bad one. Track your lifts, your reps, and your InBody instead — those move first, and they move honestly.</p>
+      </div>
+    </div>
+
+    <div class="mile">
+      <div class="when"><b>MO 3</b><span>The Fade</span></div>
+      <div class="what">
+        <h3>The urgency that got you here wears off.</h3>
+        <p>Ten classes the first month, five the second, none the third — and you never actually decided to quit. This is how it ends for most people. The fix is a standing appointment: pick your days now, put them on the calendar, and treat them like work.</p>
+      </div>
+    </div>
+
+    <div class="pull" style="margin-top:4pt;">Make it past three months and the odds flip hard in your favor. Six months becomes likely. A year becomes probable. Three months is the gate — everything we do in your first ninety days is aimed at getting you through it.</div>
+
+    <h2>The Committed Club</h2>
+    <div class="rule" style="width:40pt; height:3pt; margin-bottom:10pt;"></div>
+    <p style="margin-bottom:7pt;">Attend fifteen or more classes in a month and the app puts you in that month's Committed Club. You get that month's sticker. Keep stacking them and gear comes at the milestones — twelve months, twenty-four months, and beyond. Sit with what that actually means: fifteen classes a month, every month, for a year. Then two.</p>
+    <p style="margin-bottom:7pt;">We track it because it is the single best predictor we have of two things: <strong>who is rooted in this community and isn't going anywhere</strong>, and <strong>who is going to set personal records and measurably improve their fitness and health</strong>. It isn't a guarantee — nothing here is. It's the strongest signal we've found, and the people in the club month after month are the ones whose lives visibly change.</p>
+    <p style="margin-bottom:0;">The other thing that happens: if you're open to it, you'll make real friends here. Some of ours got married — Isabel and Clay met on this floor. Others just ended up standing in each other's weddings.</p>
+
+    <div class="pfoot"><span>Your First 90 Days</span><span>07</span></div>
+  </div>
+</div>
+
+<!-- ============ 7. SCHEDULE ============ -->
+<div class="page" id="schedule">
+  <div class="pad">
+    <div class="band">
+      <div class="eyebrow">Class Schedule</div>
+      <h1>When we train.</h1>
+      <p>Reserve your spot in the member app. Classes fill — book ahead, and cancel if plans change so someone else can take the slot.</p>
+    </div>
+
+    <div class="tablewrap"><table>
+      <tr>
+        <th style="width:22%">Time</th>
+        <th style="width:46%">Mon – Thu</th>
+        <th style="width:32%">Friday</th>
+      </tr>
+      <tr><td class="t">5:00 AM</td><td>CrossFit</td><td>CrossFit</td></tr>
+      <tr><td class="t">6:00 AM</td><td>CrossFit</td><td>CrossFit</td></tr>
+      <tr><td class="t">7:00 AM</td><td>CrossFit</td><td>CrossFit</td></tr>
+      <tr><td class="t">8:30 AM</td><td>CrossFit</td><td>CrossFit</td></tr>
+      <tr><td class="t">12:00 PM</td><td>CrossFit</td><td>CrossFit</td></tr>
+      <tr><td class="t">4:00 PM</td><td>CrossFit · Kids · Teens</td><td>CrossFit · Kids · Teens</td></tr>
+      <tr><td class="t">5:00 PM</td><td>CrossFit · Teens</td><td>—</td></tr>
+      <tr><td class="t">6:00 PM</td><td>CrossFit · Teens</td><td>—</td></tr>
+    </table></div>
+
+    <div class="tablewrap"><table style="margin-top:16pt;">
+      <tr><th style="width:22%">Saturday</th><th>Class</th></tr>
+      <tr><td class="t">8:30 AM</td><td>CrossFit — the long one. Partner workouts, community day.</td></tr>
+    </table></div>
+
+    <div class="grid2" style="margin-top:22pt;">
+      <div>
+        <h2>Booking &amp; cancellation</h2>
+        <div class="rule" style="margin-bottom:10pt; width:40pt; height:3pt;"></div>
+        <p style="font-size:9.5pt;">Reserve through the member app. Your photo is on file, so every coach knows who you are before you walk in — that's deliberate.</p>
+        <p style="font-size:9.5pt; margin:0;">If you can't make a class you booked, cancel it. Classes have caps and a no-show holds a spot someone else wanted.</p>
+      </div>
+      <div>
+        <h2>Common courtesy</h2>
+        <div class="rule" style="margin-bottom:10pt; width:40pt; height:3pt;"></div>
+        <p style="font-size:9.5pt;">Classes start and finish on time because the next class is waiting. That's not a rule we enforce — it's just how we treat the people coming in behind us. Be on the floor and ready at the top of the hour.</p>
+        <p style="font-size:9.5pt; margin:0;">Late arrivals miss the warm-up. If you're late, find the coach before you jump in.</p>
+      </div>
+    </div>
+
+    <img class="photo h14" style="margin-top:14pt;" src="welcome-img/A7408535.jpg" alt="">
+
+    <div class="pfoot"><span>Class Schedule</span><span>08</span></div>
+  </div>
+</div>
+
+<!-- ============ 8. HOUSE RULES ============ -->
+<div class="page" id="house-rules">
+  <div class="pad">
+    <div class="eyebrow dark">The Floor</div>
+    <h1>House rules.</h1>
+    <div class="rule"></div>
+    <p style="margin-bottom:16pt;">Short list. All of it is about safety, respect for the space, and not making the next class worse.</p>
+
+    <div class="grid2">
+      <div class="card">
+        <h3>Class has priority — 100%</h3>
+        <p>A running class gets first claim on all floor space, all equipment, and the coach's attention. Development Time works around the class, never the other way around.</p>
+      </div>
+      <div class="card">
+        <h3>Wait for the coach's call</h3>
+        <p>On "for time" workouts people finish at different times. Nobody breaks down equipment until everyone is done and <strong>the coach tells the class</strong> to put it away. Then: bars stripped, plates racked by size, dumbbells and kettlebells home, rowers reset.</p>
+      </div>
+      <div class="card">
+        <h3>Wipe it down</h3>
+        <p>Anything you bled, sweat, or chalked on gets cleaned before you leave. Every time.</p>
+      </div>
+      <div class="card">
+        <h3>Chalk stays in the bucket</h3>
+        <p>Use it over the bucket, not over the floor. Small thing, big difference on a rubber floor.</p>
+      </div>
+      <div class="card">
+        <h3>What you may never drop</h3>
+        <p>Never drop an empty barbell. Never drop a bar loaded only with 10-pound plates. Change plates — the small rubber-coated metal ones — are never dropped, and should only be on a bar alongside a larger-diameter rubber plate. Everything else comes down under control.</p>
+      </div>
+      <div class="card">
+        <h3>Scale it and log it</h3>
+        <p>Every score gets logged — RX, intermediate, or beginner, no shame in any of them. Untracked training is a guess.</p>
+      </div>
+      <div class="card">
+        <h3>Kids stay on the brown floor</h3>
+        <p>During any active workout session, children stay on the designated brown wooden floor — never on the black rubber. On the black floor they must be with a parent and must not touch equipment. We are not childcare; parents are responsible for their kids at all times.</p>
+      </div>
+      <div class="card">
+        <h3>Tell your coach about injuries</h3>
+        <p>Before class, not after the workout. Old surgeries, bad shoulders, pregnancy, a rough night of sleep — all of it changes what we program for you that day.</p>
+      </div>
+      <div class="card">
+        <h3>Stay for the cool-down</h3>
+        <p>Recovery is programmed, not optional — and it's when you'll hear announcements and tomorrow's preview. Leaving early means missing both.</p>
+      </div>
+      <div class="card">
+        <h3>Cheer for the last person</h3>
+        <p>Non-negotiable. That person is working harder than anyone still standing.</p>
+      </div>
+    </div>
+
+    <div class="pfoot"><span>House Rules</span><span>09</span></div>
+  </div>
+</div>
+
+<!-- ============ 9. EMERGENCY ============ -->
+<div class="page" id="emergency">
+  <div class="pad">
+    <div class="eyebrow" style="color:#c0392b;">Know This Before You Need It</div>
+    <h1>In an emergency.</h1>
+    <div class="rule" style="background:#c0392b;"></div>
+
+    <p class="lead" style="margin-bottom:18pt;">We've had a member go down on this floor with a heart attack. The people around him did the right things — but nobody could tell the 911 dispatcher where they were. Read this page once, today, so that never happens again.</p>
+
+    <div class="alert">
+      <div class="alert-k">1</div>
+      <div>
+        <h3 style="font-size:12pt; margin-bottom:3pt;">Our address — say it to the dispatcher</h3>
+        <div class="addr">9155 Blvd 26, Suite 270<br>North Richland Hills, TX 76180</div>
+        <p style="margin:8pt 0 0 0; font-size:9.5pt;">It is also <strong>posted on the front door</strong>. Look at it on your way in this week so you know exactly where it is. A dispatcher cannot send anyone until they have an address — that is the single thing that costs the most time.</p>
+      </div>
+    </div>
+
+    <div class="alert">
+      <div class="alert-k">2</div>
+      <div>
+        <h3 style="font-size:12pt; margin-bottom:3pt;">The AED is by the water fountains</h3>
+        <p style="margin:0 0 6pt 0; font-size:9.5pt;">Mounted on the wall, right by the fountains. Walk over and look at it today so you're not hunting for it under pressure. It talks you through every step out loud once it's open — you do not need training to use it, and using it early is what saves people.</p>
+        <p style="margin:0; font-size:9.5pt;"><strong>For everything smaller</strong> — a torn hand, a scrape, a bad shin — ask your coach for the first aid kit. Don't dig for it and don't tough it out; just ask.</p>
+      </div>
+    </div>
+
+    <div class="alert">
+      <div class="alert-k">3</div>
+      <div>
+        <h3 style="font-size:12pt; margin-bottom:3pt;">If someone goes down</h3>
+        <p style="margin:0 0 6pt 0; font-size:9.5pt;">Don't freeze and don't crowd. Three jobs, assigned out loud:</p>
+        <ul class="check" style="margin:0;">
+          <li style="margin-bottom:5pt;"><strong>Someone calls 911</strong> and gives the address above.</li>
+          <li style="margin-bottom:5pt;"><strong>Someone gets the AED</strong> from the water fountains and brings it over.</li>
+          <li style="margin-bottom:0;"><strong>Someone goes outside</strong> to flag the ambulance and walk them in.</li>
+        </ul>
+        <p style="margin:8pt 0 0 0; font-size:9.5pt;">Your coach runs the scene. If you're not doing one of those three jobs, clear the space and keep the floor open.</p>
+      </div>
+    </div>
+
+    <div class="pull" style="border-left-color:#c0392b; color:#8e2f22; margin-top:4pt;">Point out the AED and the door address to the next new person who walks in. That's how this actually gets known — member to member, not from a packet.</div>
+
+    <div class="pfoot"><span>In an Emergency</span><span>10</span></div>
+  </div>
+</div>
+
+<!-- ============ 9. PROGRAMS ============ -->
+<div class="page" id="programs">
+  <div class="pad">
+    <div class="eyebrow dark">Programs</div>
+    <h1>What's available to you.</h1>
+    <div class="rule" style="margin-bottom:14pt;"></div>
+    <p style="margin-bottom:10pt;">Group class is the backbone. Everything else exists to get you into it well, or to get you further once you're in.</p>
+
+    <h2>On-Ramp</h2>
+    <div class="rule" style="width:40pt; height:3pt; margin-bottom:10pt;"></div>
+    <p>If you're new to CrossFit, you start here — one-on-one, not in a group class. Three sessions covering the fundamental movements, how we scale, the vocabulary, and what intensity should feel like. Dropping someone into a class they don't understand is the fastest way to make them quit.</p>
+
+    <h2 style="margin-top:8pt;">Group Class</h2>
+    <div class="rule" style="width:40pt; height:3pt; margin-bottom:10pt;"></div>
+    <p>Unlimited, coach-led, every session scaled three ways. This is where the work happens and where the community lives.</p>
+
+    <h2 style="margin-top:8pt;">Development Time</h2>
+    <div class="rule" style="width:40pt; height:3pt; margin-bottom:10pt;"></div>
+    <p>Included with your Unlimited membership. Development Time is extra time on the floor to build your own strength and skills — a lift you're working on, a movement you're chasing, or accessory work your coach gave you. It's not open gym; it's your time to develop something specific. Use whatever part of the gym a class isn't using, and give the running class first call on space and equipment.</p>
+
+    <h2 style="margin-top:8pt;">The Lifestyle Reset — 12 weeks</h2>
+    <div class="rule" style="width:40pt; height:3pt; margin-bottom:10pt;"></div>
+    <p>What we recommend to most people who walk in wanting a real change rather than a gym membership. Twelve weeks, built around one-on-one attention:</p>
+    <ul class="check">
+      <li>3 on-ramp sessions in week one, then 9 more private sessions across the remaining weeks — 12 total, roughly one a week</li>
+      <li>Unlimited group classes throughout</li>
+      <li>4 InBody scans, one every four weeks, so progress is measured and not guessed at</li>
+      <li>Nutrition consultation plus ongoing coaching and accountability through our tracking app</li>
+    </ul>
+
+    <div class="grid3" style="margin-top:6pt; gap:0 18pt;">
+      <div>
+        <h2>Personal Training</h2>
+        <div class="rule" style="width:40pt; height:3pt; margin-bottom:10pt;"></div>
+        <p style="margin-bottom:0; font-size:9.5pt;">One-on-one sessions for a specific goal, a specific lift, or a return from injury. On its own or alongside group class.</p>
+      </div>
+      <div>
+        <h2>Nutrition Coaching</h2>
+        <div class="rule" style="width:40pt; height:3pt; margin-bottom:10pt;"></div>
+        <p style="margin-bottom:0; font-size:9.5pt;">Habit tracking with regular dialogue with a coach. Training is one hour. Nutrition is the other twenty-three, and it decides most outcomes.</p>
+      </div>
+      <div>
+        <h2>InBody Scan — $35</h2>
+        <div class="rule" style="width:40pt; height:3pt; margin-bottom:10pt;"></div>
+        <p style="margin-bottom:0; font-size:9.5pt;">Available to anyone, any time — you don't have to be in a program. Muscle, fat, and water measured directly, which is everything a bathroom scale can't tell you.</p>
+      </div>
+    </div>
+
+    <div class="pfoot"><span>Programs</span><span>11</span></div>
+  </div>
+</div>
+
+<!-- ============ 10. FAMILY / KIDS ============ -->
+<div class="page" id="kids">
+  <div class="pad">
+    <div class="eyebrow dark">Kids &amp; Teens</div>
+    <h1>Your kid trains<br>while you train.</h1>
+    <div class="rule"></div>
+
+    <p class="lead">Most gyms run kids classes after school as a separate program. We don't, and the reason is the most deliberate design decision in this building.</p>
+
+    <p><strong>Kids and Teens classes run at the same hours as adult classes.</strong> When you're training on one side of the floor, your kid is training on the other. You arrive together, you work at the same time, you leave together.</p>
+
+    <p><strong>And we run them year-round</strong> — same calendar as the adults, not on a sports season.</p>
+
+    <img class="photo h2in" style="margin:12pt 0 14pt 0;" src="welcome-img/A7409330.jpg" alt="">
+
+    <h2>Why it's built this way</h2>
+    <div class="rule" style="width:40pt; height:3pt; margin-bottom:10pt;"></div>
+
+    <p>Kids install their defaults from their families, not from their coaches. A kid whose fitness is tied to football season stops training when the season ends — the training belonged to the team, the coach, and a schedule someone else set. Most of those kids never come back to it as adults. They peaked at seventeen.</p>
+
+    <p>A kid who trains while mom and dad train associates fitness with the family, not the season. When school sports end, nothing changes here. That's the version that holds.</p>
+
+    <p style="margin-bottom:0;">Let athletics shape ability. Let the lifestyle shape the body and the long-term default. Those are two different jobs, and this gym is built to do the second one.</p>
+
+    <div class="pull" style="margin-top:16pt;">The kids who stay through their teens — and who come back as adults — are almost always the kids whose parents were in the room. That's not a coincidence. It's the mechanism.</div>
+
+    <div class="pfoot"><span>Kids &amp; Teens</span><span>12</span></div>
+  </div>
+</div>
+
+<!-- ============ 11. GET CONNECTED ============ -->
+<div class="page" id="get-started">
+  <div class="pad">
+    <div class="band">
+      <div class="eyebrow">Get Connected</div>
+      <h1>Set yourself up.</h1>
+      <p>Do these four things in your first week. It takes about ten minutes total.</p>
+    </div>
+
+    <ol class="steps">
+      <li>
+        <h3>Download the member app and book your classes</h3>
+        <p>Reservations, your workout history, and your logged scores all live here. Book at least your first week of classes now — deciding in the morning is how the 5AM stops happening.</p>
+      </li>
+      <li>
+        <h3>Open the Social tab in the app — and turn notifications on</h3>
+        <p>This is where everything lives: gym announcements, events, member shoutouts, and the day-to-day community conversation. It's all in the app, so check the Social tab like you'd check a feed.</p>
+      </li>
+      <li>
+        <h3>Follow @crossfitotl on Instagram</h3>
+        <p>Events, workouts, member milestones, and the occasional thing your coach said that shouldn't have been recorded.</p>
+      </li>
+      <li>
+        <h3>Get your baseline InBody scan</h3>
+        <p>Do this in your first week, before anything changes. It's the only way to know later whether what you're doing is working — and it measures what a bathroom scale can't.</p>
+      </li>
+    </ol>
+
+    <img class="photo h2in" style="margin-top:auto;" src="welcome-img/A7402946.jpg" alt="">
+
+    <div class="pfoot"><span>Get Connected</span><span>13</span></div>
+  </div>
+</div>
+
+<!-- ============ 13. FRONT OF HOUSE ============ -->
+<div class="page" id="front-of-house">
+  <div class="pad">
+    <div class="eyebrow dark">The Front of House</div>
+    <h1>Fuel, gear, and<br>everything else.</h1>
+    <div class="rule"></div>
+    <p style="margin-bottom:16pt;">What we keep on the shelf, who we trust when your body needs more than training, and how to handle the administrative stuff without guessing.</p>
+
+    <div class="grid2">
+      <div class="card">
+        <h3>Fuel &amp; supplements</h3>
+        <p>Up front we stock <strong>Thorne</strong> supplements, protein, collagen, creatine, <strong>LMNT</strong>, and Proletas protein ice cream bars. Beyond what's on the shelf, you have access to our <strong>full Thorne online dispensary</strong> at <strong>thorne.com/u/Crossfitotl</strong>.</p>
+      </div>
+      <div class="card">
+        <h3>Gear &amp; apparel</h3>
+        <p>Our own CrossFit OTL merch is in the store on crossfit-otl.com, and we partner with apparel and CrossFit gear providers for shoes, grips, belts, and the rest. Ask a coach what's worth buying before you buy it — some of it you don't need yet.</p>
+      </div>
+      <div class="card">
+        <h3>Bring a Friend days</h3>
+        <p>We run them, and we mean it — tell people what changed for you and bring them in. Have your guest sign the waiver <em>before</em> class so they walk straight onto the floor instead of filling out forms.</p>
+      </div>
+      <div class="card">
+        <h3>Pause or cancel</h3>
+        <p>Traveling, injured, or need to step away? The pause and cancellation forms are on crossfit-otl.com. Use them — don't just stop showing up.</p>
+      </div>
+      <div class="card" style="grid-column:1 / -1;">
+        <h3>Recovery &amp; care partners</h3>
+        <p>We sponsor and partner with local providers in <strong>physical therapy, chiropractic care, and recovery services</strong>. If something hurts — or you want to get ahead of it before it does — ask any coach or staff member for a referral. We will point you to people we actually trust, not a search result.</p>
+      </div>
+    </div>
+
+
+    <div class="pfoot"><span>The Front of House</span><span>14</span></div>
+  </div>
+</div>
+
+<!-- ============ 12. BACK COVER ============ -->
+<div class="page back" id="end">
+  <img class="bg" src="welcome-img/A7400511.jpg" alt="">
+  <div class="scrim"></div>
+  <div class="inner">
+    <div class="wordmark">CROSSFIT <span>OTL</span></div>
+
+    <div>
+      <div class="eyebrow">What's On The Line</div>
+      <h1>Everything.<br>Now show up.</h1>
+      <p style="color:#dbe7f5; font-size:12pt; max-width:5.2in; line-height:1.5;">Nothing in this packet matters as much as the next sixty days of attendance. Pick your class times, put them on the calendar, and come even on the days you don't feel like it — <strong style="color:#fff;">especially</strong> on those days. That's the whole method.</p>
+    </div>
+
+    <div>
+      <div class="cts" style="margin-bottom:26pt;">
+        <div>
+          <b>Find Us</b>
+          9155 Blvd 26, Suite 270<br>
+          North Richland Hills, TX 76180
+        </div>
+        <div>
+          <b>Reach Us</b>
+          (817) 662-2788<br>
+          admin@onthelinefitness.com
+        </div>
+        <div>
+          <b>Online</b>
+          crossfit-otl.com<br>
+          facebook.com/crossfitotl
+        </div>
+        <div>
+          <b>Instagram</b>
+          @crossfitotl
+        </div>
+      </div>
+      <div style="font-size:8pt; letter-spacing:1.6pt; text-transform:uppercase; color:#7f9ab5;">
+        CrossFit OTL &nbsp;·&nbsp; A DBA of Fit4 Associates Inc. &nbsp;·&nbsp; Serving the DFW Mid-Cities
+      </div>
+    </div>
+  </div>
+</div>
+
+</body>
+</html>

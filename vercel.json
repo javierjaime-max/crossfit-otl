@@ -8,5 +8,11 @@
       "path": "/api/cron-photo-intake",
       "schedule": "0 10 * * *"
     }
+  ],
+  "rewrites": [
+    {
+      "source": "/welcome",
+      "destination": "/welcome.html"
+    }
   ]
 }
