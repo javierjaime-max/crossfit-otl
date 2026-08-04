@@ -21,7 +21,7 @@ tags:
 
 **Saturday:** **one class, 8:30AM.** That is the entire Saturday schedule — the long one, partner workouts, community day.
 
-**Sunday:** no classes listed (consistent with the published hours on crossfit-otl.com, which show Mon–Thu 5:00–19:00, Fri 5:00–17:00, Sat 8:30–10:00 and no Sunday). NEEDS_JAVIER only if this ever changes.
+**Sunday:** **no classes.** Confirmed by GP 2026-08-04. The gym is closed — do not list Sunday on any schedule.
 
 Kids and Teens run **simultaneously with adult classes** — see `philosophy.md` for why.
 
