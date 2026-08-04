@@ -49,7 +49,7 @@ Development Time comes with **Unlimited only**. Authoritative table + open prici
 | **The Lifestyle Reset (12 weeks)** | Flagship. 3 on-ramp sessions in week one + 9 more private sessions = 12 total. Unlimited group classes. 4 InBody scans (one every 4 weeks). Nutrition consultation + coaching app. |
 | **Personal Training** | One-on-one for a specific goal, lift, or return from injury. Standalone or alongside group class. |
 | **Nutrition Coaching** | Habit tracking with regular coach dialogue. |
-| **InBody Scan** | **$35, available to anyone, any time — no program required.** ⚠️ This was missing from earlier program lists. |
+| **InBody Scan** | **Every new member gets their first scan FREE** — either at their consultation, or afterward by contacting **Javier or Deanie**. **After the first, $35**, open to anyone with no program required. (GP, 2026-08-04.) |
 | **Kids & Teens** | Run at the **same hours as adult classes, year-round**. See `philosophy.md` for the design reasoning. |
 
 ---

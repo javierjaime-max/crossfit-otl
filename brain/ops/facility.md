@@ -77,6 +77,7 @@ The gym is a single large floor divided into functional zones:
 | **Unlimited** | **$180 per 4 weeks** |
 | **12 sessions** (used within the 4-week period) | **$145 per 4 weeks** |
 | **On-Ramp** (3 one-on-one sessions, required for anyone new to CrossFit) | **$270** ✅ confirmed 2026-08-04 |
+| **InBody scan** | **First one FREE for every new member** — at their consultation, or after (they contact Javier or Deanie). **$35 per scan after that**, open to anyone. |
 
 **Development Time is included with Unlimited only.** That is the practical difference between the two tiers beyond session count — a 12-session member does not get Development Time.
 
