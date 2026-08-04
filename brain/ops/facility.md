@@ -76,10 +76,13 @@ The gym is a single large floor divided into functional zones:
 |---|---|
 | **Unlimited** | **$180 per 4 weeks** |
 | **12 sessions** (used within the 4-week period) | **$145 per 4 weeks** |
+| **On-Ramp** (3 one-on-one sessions, required for anyone new to CrossFit) | **$270** ✅ confirmed 2026-08-04 |
 
 **Development Time is included with Unlimited only.** That is the practical difference between the two tiers beyond session count — a 12-session member does not get Development Time.
 
-⚠️ This supersedes the **$170/month** figure in `../coaching/consultation-process.md`. Still **NEEDS_JAVIER**: the **$270 on-ramp** price and the Lifestyle Reset numbers in that file (it states **$1,420 paid upfront** but then describes "a commitment to the full **$1,500**, paid in three installments of $500" — those two do not reconcile).
+**Entry path for someone new:** On-Ramp $270 + first 4 weeks Unlimited $180 = **$450** to start.
+
+⚠️ This supersedes the **$170/month** figure in `../coaching/consultation-process.md`. Still **NEEDS_JAVIER** — the **Lifestyle Reset** numbers in that file: it states **$1,420 paid upfront** but then describes "a commitment to the full **$1,500**, paid in three installments of $500." Those two do not reconcile.
 
 ## Safety fixtures
 
