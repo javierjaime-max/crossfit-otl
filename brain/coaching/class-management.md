@@ -13,10 +13,17 @@ tags:
 
 ## Daily Class Schedule
 
-Monday–Thursday and Saturday–Sunday:
-5AM · 6AM · 7AM · 8:30–9:30AM · Noon · 4PM · 5PM · 6–7PM
+**⚠️ Corrected by GP 2026-08-04.** The prior version of this section wrongly said the full weekday slate also ran Saturday AND Sunday. It does not.
 
-**Friday exception:** 4–5PM only. No 5PM or 6PM class on Fridays.
+**Monday–Thursday:** 5AM · 6AM · 7AM · 8:30–9:30AM · Noon · 4PM · 5PM · 6–7PM
+
+**Friday:** same morning and midday slate, plus **4–5PM only**. **No 5PM or 6PM class on Fridays.**
+
+**Saturday:** **one class, 8:30AM.** That is the entire Saturday schedule — the long one, partner workouts, community day.
+
+**Sunday:** no classes listed (consistent with the published hours on crossfit-otl.com, which show Mon–Thu 5:00–19:00, Fri 5:00–17:00, Sat 8:30–10:00 and no Sunday). NEEDS_JAVIER only if this ever changes.
+
+Kids and Teens run **simultaneously with adult classes** — see `philosophy.md` for why.
 
 ---
 
