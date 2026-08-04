@@ -30,13 +30,22 @@ Captured 2026-08-04 during the new member packet build. Everything here is GP-st
 
 ---
 
+## Membership pricing (GP, 2026-08-04)
+
+- **Unlimited — $180 per 4 weeks**
+- **12 sessions — $145 per 4 weeks** (12 sessions used inside that 4-week period)
+
+Development Time comes with **Unlimited only**. Authoritative table + open pricing questions live in `facility.md`.
+
+⚠️ **Do NOT put membership pricing in the new member packet or the /welcome page** (GP, 2026-08-04). Those are for people who have already joined — pricing happened in the consultation. Pricing lives in the consultation and on the website, not in the welcome material.
+
 ## Programs
 
 | Program | What it is |
 |---|---|
 | **On-Ramp** | 3 one-on-one sessions for anyone new to CrossFit. Fundamentals, scaling, vocabulary, what intensity should feel like. Never drop a beginner straight into a group class. |
 | **Group Class** | Unlimited, coach-led, every session scaled three ways (Beginner / Intermediate / RX). |
-| **Development Time** | **For Unlimited members only. It is NOT open gym.** Extra floor time to build your own strength and skills — a lift you're working, a movement you're chasing, accessory work the coach assigned. Use whatever part of the gym a class isn't using. **Class has priority on all equipment and all space.** ⚠️ Tone note: the GP flagged early copy here as "unnecessarily firm" — state the priority rule plainly and warmly, not as a threat. |
+| **Development Time** | **Included with Unlimited membership only ($180/4wk) — a 12-session member ($145/4wk) does not get it. It is NOT open gym.** Extra floor time to build your own strength and skills — a lift you're working, a movement you're chasing, accessory work the coach assigned. Use whatever part of the gym a class isn't using. **Class has priority on all equipment and all space.** ⚠️ Tone note: the GP flagged early copy here as "unnecessarily firm" — state the priority rule plainly and warmly, not as a threat. |
 | **The Lifestyle Reset (12 weeks)** | Flagship. 3 on-ramp sessions in week one + 9 more private sessions = 12 total. Unlimited group classes. 4 InBody scans (one every 4 weeks). Nutrition consultation + coaching app. |
 | **Personal Training** | One-on-one for a specific goal, lift, or return from injury. Standalone or alongside group class. |
 | **Nutrition Coaching** | Habit tracking with regular coach dialogue. |

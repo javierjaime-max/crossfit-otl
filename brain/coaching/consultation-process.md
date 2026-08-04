@@ -1,7 +1,7 @@
 ---
 type: brain/coaching
 source: voice memo 2025-10-09_2221_cedar-breaks-dr-19-copy-layer-2
-last-updated: 2026-06-18
+last-updated: 2026-08-04
 tags:
   - otl
   - otl/brain
@@ -112,7 +112,7 @@ If they can't pay upfront, offer **three monthly installments**. Be clear: these
 
 If they can't do the Lifestyle Reset, and they're new to CrossFit:
 - 3-day on-ramp: $270
-- Unlimited monthly classes: $170
+- Unlimited monthly classes: ~~$170~~ → **$180 per 4 weeks** (corrected by GP 2026-08-04)
 - Total first month: ~$440
 
 Tell them: if they paid that for two more months at $500 each, they'd get the equivalent of the full package. It's a pathway in.
@@ -145,3 +145,18 @@ For somebody to transform totally, it's not instantaneous. It's a stair-step eff
 Over time, there may be another point where they need to reset again. In that next reset, they establish another higher-level habit. When they come off of it, some stick, some relax. The accumulation of this over years results in a genuinely different person in body — not in 12 weeks, but in 12 years — if they accumulate lifestyle resets on a regular basis.
 
 The point is: instead of selling instantaneous results, OTL is doubling down on the idea that CrossFit is the cure. There is no quick fix. Show up for the next 10 or 12 years and you will be fitter, stronger, healthier. The Lifestyle Reset is the program for people who are struggling with focus, accountability, motivation, knowing what to do — or fighting the mental demons that keep them from making the commitment.
+
+
+---
+
+## ⚠️ Pricing corrections (GP, 2026-08-04)
+
+Authoritative membership pricing now lives in `../ops/facility.md`:
+
+- **Unlimited: $180 per 4 weeks** (supersedes the $170/month figure above)
+- **12 sessions: $145 per 4 weeks**
+- Development Time is an **Unlimited-only** benefit.
+
+**Still unconfirmed in this file — do not publish either until the GP confirms:**
+1. The **$270 three-day on-ramp** price.
+2. The **Lifestyle Reset** figures. This file says **$1,420 upfront**, then describes the installment path as "a commitment to the full **$1,500**, paid in three installments of $500." Those two numbers do not reconcile.

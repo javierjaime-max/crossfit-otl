@@ -70,7 +70,16 @@ The gym is a single large floor divided into functional zones:
 **Full program detail + front-of-house (supplements, merch, partners, Committed Club): see `member-experience.md`.**
 **Safety, AED, address-on-door, kids flooring, barbell drops: see `safety-and-emergency.md`.**
 
-⚠️ **Pricing in this file conflicts with `../coaching/consultation-process.md`** ($180/4wk here vs. $170/mo + $270 on-ramp there). NEEDS_JAVIER — reconcile before either number is published anywhere.
+## Membership pricing — AUTHORITATIVE (GP, 2026-08-04)
+
+| Membership | Price |
+|---|---|
+| **Unlimited** | **$180 per 4 weeks** |
+| **12 sessions** (used within the 4-week period) | **$145 per 4 weeks** |
+
+**Development Time is included with Unlimited only.** That is the practical difference between the two tiers beyond session count — a 12-session member does not get Development Time.
+
+⚠️ This supersedes the **$170/month** figure in `../coaching/consultation-process.md`. Still **NEEDS_JAVIER**: the **$270 on-ramp** price and the Lifestyle Reset numbers in that file (it states **$1,420 paid upfront** but then describes "a commitment to the full **$1,500**, paid in three installments of $500" — those two do not reconcile).
 
 ## Safety fixtures
 
