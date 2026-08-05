@@ -63,6 +63,8 @@ Full detail in `brain/people.md`.
 | `brain/ops/member-experience.md` | Committed Club, programs, front of house, naming + voice rules |
 | `brain/ops/safety-and-emergency.md` | AED, the 911 address, first aid, kids flooring, barbell drops |
 | `brain/ops/facility.md` | Space, equipment, **authoritative membership pricing** |
+| `brain/ops/asop-new-member-onboarding.md` | Where the welcome packet sits in the new member sequence + the On-Ramp floor-walk checklist |
+| `brain/ops/asop-new-member-onboarding-email.md` | Welcome email copy, ready to paste into PushPress |
 
 Architecture decision (2026-04-27): Ship brains live in GitHub repos as markdown. The Obsidian Vault is for personal content only — no ship brain content goes there.
 
