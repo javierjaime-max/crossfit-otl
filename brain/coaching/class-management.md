@@ -17,6 +17,16 @@ tags:
 
 **Monday–Thursday:** 5AM · 6AM · 7AM · 8:30–9:30AM · Noon · 4PM · 5PM · 6–7PM
 
+**Who is in which afternoon class (Deanie correction, 2026-08-04):**
+
+| Slot | Who |
+|---|---|
+| 4:00 PM | CrossFit + **Kids** — **no teens** |
+| 5:00 PM | CrossFit + **Teens** — this is the ONLY teens slot |
+| 6:00 PM | CrossFit **adults only** |
+
+An earlier draft wrongly put teens at 4PM and 6PM and left adults off the 6PM row.
+
 **Friday:** same morning and midday slate, plus **4–5PM only**. **No 5PM or 6PM class on Fridays.**
 
 **Saturday:** **one class, 8:30AM.** That is the entire Saturday schedule — the long one, partner workouts, community day.

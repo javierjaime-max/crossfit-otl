@@ -19,8 +19,9 @@ This atom exists because of a real incident. A member ("Bob") had a **heart atta
 
 **9155 Blvd 26, Suite 270, North Richland Hills, TX 76180**
 
-- It is **posted on the front door**.
-- Every member should be told where it's posted during their first week.
+- It is posted **inside the front door** AND **at eye level on the back door** (eye level for roughly a 5'7"–5'8" person). **Deanie correction 2026-08-04** — an earlier draft named only the front door.
+- **The back door sign matters** on running days and any time a class is working outside in the back.
+- Every member should be told where both are posted during their first week.
 - A dispatcher cannot send anyone until they have an address. This is the single highest-leverage safety fact in the building.
 
 ## AED
@@ -44,14 +45,14 @@ The **coach runs the scene**. Anyone not doing one of those three jobs clears th
 
 ## Kids on the floor — flooring rule
 
-- During **any active workout session**, children must remain on the **designated brown wooden floor**.
-- Children are **not allowed on the black rubber flooring** during active sessions.
-- If a child is on the black floor, they must be **with a parent** and must **not use the equipment**.
+- **Children stay on the designated brown wooden floors, never on the black rubber.** State it flatly — Deanie (2026-08-04) removed the "during any active workout session" qualifier and the "with a parent, no equipment" carve-out, because the qualifiers invited argument.
+- **The only exception is a family-friendly session.**
+- Canonical wording already exists on the **signs hung in the men's and women's bathrooms** — match those.
 - CrossFit OTL is **not childcare**. Parents and guardians are responsible for their child's safety and behavior at all times.
 
 ## Barbell drop policy
 
-- **Never drop an empty barbell.**
+- **Never drop an empty barbell, kettlebell, or dumbbell.** (Deanie, 2026-08-04 — prompted by members dropping kettlebells from shoulder height with too heavy a load.) If a weight is too heavy to set down under control, it is too heavy that day.
 - **Never drop a barbell loaded only with 10-pound plates.**
 - **Change plates** (the small rubber-coated metal plates) are **never dropped**, and should only be on a barbell when accompanied by a **larger-diameter rubber plate**.
 - Everything else comes down under control.

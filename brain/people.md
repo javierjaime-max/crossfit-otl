@@ -29,10 +29,11 @@ tags:
 
 ---
 
-## Deanie Jaime — Co-Founder / General Manager
+## Deanie Jaime — Co-Founder / General Manager / Nutrition Coach
 
 - **Role:** Runs day-to-day gym operations. The general manager.
 - **Background:** Twin sister is Lamar DeOreo (also an OTL coach), who lives across the street. Former VP of Human Resources in healthcare. Left the corporate world to raise the kids. Managed the homeschool curriculum.
+- **Nutrition coaching:** Deanie is one of the gym's two **nutrition coaches** (with Lamar). Clay is qualified but currently has no nutrition clients — do not list him as one (Deanie, 2026-08-04).
 - **Credentials:** CrossFit **L2** ✅ — took L2 with Lamar; a few months before Clay and Nicholas got their L2s.
 - **Fitness origin:** Outdoor boot camp in the driveway → CrossFit (joined after the gym opened, not a member before)
 - **Personality:** "The most excellent manager in the world." Cold-hardened when needed. Said "you're fat" to Javier at the gate — changed the course of history.
@@ -84,7 +85,7 @@ tags:
 
 ---
 
-## Lamar DeOreo — Coach
+## Lamar DeOreo — Coach / Nutrition Coach
 
 - Deanie's twin sister. Lives across the street from Javier and Deanie.
 - Coach at CrossFit OTL.
@@ -130,12 +131,12 @@ tags:
 | Coach | Role | Cert | L3 Path |
 |---|---|---|---|
 | Javier | Founder / Coach | **L3 ✅** (Jul 2026) | Earned |
-| Deanie | Co-Founder / General Manager | L2 ✅ | — |
+| Deanie | Co-Founder / GM / **Nutrition Coach** | L2 ✅ | — |
 | Isabel | Co-Founder / Coach | L2 ✅ | Yes — candidate |
 | Clay | Coach | L2 ✅ · USAW-L1 · ATG | — |
 | Nicholas | Co-Founder / Coach | L2 ✅ | — |
 | Ava | Coach | L1 ✅ | Working toward L2 |
-| Lamar | Coach | L2 ✅ | — |
+| Lamar | Coach / **Nutrition Coach** | L2 ✅ | — |
 | Christi | Coach (5AM) | L2 ✅ | No |
 | Maci | Coach | L1 ✅ | Working toward L2 |
 | Kasey | Coach / Kids | L1 ✅ | Working toward L2 |
@@ -144,6 +145,10 @@ tags:
 ### Ordering rule for any coach roster (GP, 2026-08-04)
 
 Family first, **couples kept together**: Javier & Deanie · Isabel & Clay · Nicholas & Ava · Lamar. Then the rest of the coaching staff in order of floor activity: **Christi** (5AM), **Maci**, then **Kasey** (kids), then **Nichole** (fills in).
+
+### Nutrition coaches (Deanie, 2026-08-04)
+
+The gym's two nutrition coaches are **Deanie** and **Lamar**. **Clay is qualified but currently has no nutrition clients — do not list him** as one until that changes.
 
 ### Language rules for coach bios (GP, 2026-08-04)
 

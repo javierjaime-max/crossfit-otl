@@ -44,7 +44,7 @@ Development Time comes with **Unlimited only**. Authoritative table + open prici
 | Program | What it is |
 |---|---|
 | **On-Ramp** | 3 one-on-one sessions for anyone new to CrossFit. Fundamentals, scaling, vocabulary, what intensity should feel like. Never drop a beginner straight into a group class. |
-| **Group Class** | Unlimited, coach-led, every session scaled three ways (Beginner / Intermediate / RX). |
+| **Group Class** | Coach-led, every session scaled three ways (Beginner / Intermediate / RX). ⚠️ Do **not** open this with the word "Unlimited" — Deanie (2026-08-04) read it as the membership tier and was confused that the 12-session option went unmentioned. Name both options (Unlimited / 12-session) without prices. |
 | **Development Time** | **Included with Unlimited membership only ($180/4wk) — a 12-session member ($145/4wk) does not get it. It is NOT open gym.** Extra floor time to build your own strength and skills — a lift you're working, a movement you're chasing, accessory work the coach assigned. Use whatever part of the gym a class isn't using. **Class has priority on all equipment and all space.** ⚠️ Tone note: the GP flagged early copy here as "unnecessarily firm" — state the priority rule plainly and warmly, not as a threat. |
 | **The Lifestyle Reset (12 weeks)** | Flagship. 3 on-ramp sessions in week one + 9 more private sessions = 12 total. Unlimited group classes. 4 InBody scans (one every 4 weeks). Nutrition consultation + coaching app. |
 | **Personal Training** | One-on-one for a specific goal, lift, or return from injury. Standalone or alongside group class. |
@@ -62,6 +62,12 @@ The five parts: **Briefing → Warm-Up → Skill or Strength → The Workout (WO
 - During that block the coach also delivers **announcements** and a **preview of tomorrow's workout**.
 
 **"For time" workouts:** people finish at different times. **Nobody puts equipment away until everyone is finished AND the coach tells the class** they can put it away.
+
+**Never say "a running class"** (Deanie, 2026-08-04). It reads as a class about running, outdoors, on your feet — she misread it several times. Say **"a class in session."**
+
+**Cleaning standard:** the only non-negotiable is **blood** — it gets cleaned before you move on. Sweat and chalk are a courtesy wipe-down. Do **not** write "every time"; Deanie explicitly struck it.
+
+**Booking:** tell members to cancel in the app so the spot reopens. **Do not** use the guilt framing about caps and "a no-show holds a spot someone else wanted" — Deanie had it removed.
 
 **Starting and finishing on time:** ⚠️ this is **not a "rule"** and must never be written as one. Classes start and finish on time because the next class is waiting — it's **common courtesy**, framed as how we treat the people coming in behind us.
 

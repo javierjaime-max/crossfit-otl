@@ -12,6 +12,7 @@ CrossFit OTL is one ship in the Fit4 Associates portfolio. This repo contains th
 - **Opened:** February 2022 (30 founding members from garage gym)
 - **Current size:** ~120+ members (adults + teens + kids + PT)
 - **Price:** **Unlimited $180 / 4 weeks** · **12 sessions $145 / 4 weeks**. Development Time is an Unlimited-only benefit. **Never put membership pricing in the new member packet or /welcome.**
+- **Afternoon classes:** 4PM = CrossFit + **Kids** (no teens) · 5PM = CrossFit + **Teens** (only teens slot) · 6PM = **adults only**
 - **Programs:** CrossFit classes, CrossFit Kids/Teens, Development Time (Unlimited only), personal training, nutrition coaching, The Lifestyle Reset (12 wk), InBody scan ($35, open to anyone)
 - **Corporate structure:** Fit4 Associates Inc. (S Corp) — CrossFit OTL is a DBA
 - **Instagram:** @crossfitotl (IG User ID: 17841448179180217)
@@ -27,12 +28,12 @@ CrossFit OTL is one ship in the Fit4 Associates portfolio. This repo contains th
 | Coach | Role | Cert |
 |-------|------|------|
 | Javier Jaime | Founder / Coach | **L3** (earned Jul 2026) |
-| Deanie Jaime | Co-Founder / General Manager | L2 |
+| Deanie Jaime | Co-Founder / GM / Nutrition Coach | L2 |
 | Isabel Butler | Co-Founder / Coach | L2, L3 candidate |
 | Clay Butler | Coach | L2 · USAW-L1 · ATG |
 | Nicholas Jaime | Co-Founder / Coach | L2 |
 | Ava Jaime | Coach | L1 |
-| Lamar DeOreo | Coach | L2 |
+| Lamar DeOreo | Coach / Nutrition Coach | L2 |
 | Christi Chaka | Coach (5AM) | L2 |
 | Maci Osborn | Coach | L1 |
 | Kasey Price | Coach / Kids | L1 |
