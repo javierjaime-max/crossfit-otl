@@ -282,7 +282,16 @@
   @media print{
     .back .inner{ height:100%; min-height:0; max-width:none; margin:0; gap:0; padding:1.1in 0.9in; }
   }
-  .back h1{ color:#fff; font-size:46pt; text-transform:uppercase; letter-spacing:-1.5pt; line-height:0.98; }
+  .back h1{ color:#fff; font-size:34pt; text-transform:uppercase; letter-spacing:-1.2pt; line-height:0.98; margin:26pt 0 12pt 0; }
+  .qa{ margin-bottom:4pt; }
+  .qa .q{
+    font-size:21pt; font-weight:600; color:var(--blue);
+    letter-spacing:-0.3pt; line-height:1.15; margin-bottom:6pt;
+  }
+  .qa .a{
+    font-size:62pt; font-weight:800; color:#fff;
+    text-transform:uppercase; letter-spacing:-2.6pt; line-height:0.9;
+  }
   .back .cts{ display:grid; grid-template-columns:1fr 1fr; gap:22pt; font-size:10.5pt; color:#dbe7f5; }
   .back .cts b{ display:block; color:var(--blue); font-size:8pt; letter-spacing:2pt; text-transform:uppercase; margin-bottom:5pt; }
   .back img.bg{ position:absolute; inset:0; width:100%; height:100%; object-fit:cover; opacity:0.22; }
@@ -333,7 +342,9 @@
   /* ---------- screen overrides that must win ---------- */
   @media screen{
     .pfoot{ display:none !important; }
-    .back h1{ font-size:clamp(2.3rem, 8.5vw, 4rem) !important; line-height:1.02; }
+    .back h1{ font-size:clamp(1.9rem, 6.5vw, 3rem) !important; line-height:1.02; margin-top:1.25rem; }
+    .qa .q{ font-size:clamp(1.15rem, 4.2vw, 1.6rem) !important; }
+    .qa .a{ font-size:clamp(3rem, 13vw, 5.5rem) !important; }
     .cover h1{ font-size:clamp(2.8rem, 11vw, 5rem) !important; }
     .band h1{ font-size:clamp(1.9rem, 5.5vw, 2.6rem) !important; }
     .otl-a{ font-size:clamp(2rem, 8vw, 2.8rem) !important; }
@@ -1020,8 +1031,11 @@
     <div class="wordmark">CROSSFIT <span>OTL</span></div>
 
     <div>
-      <div class="eyebrow">What's On The Line?</div>
-      <h1>Everything.<br>Now show up.</h1>
+      <div class="qa">
+        <div class="q">What&rsquo;s on the line?</div>
+        <div class="a">Everything.</div>
+      </div>
+      <h1>Now show up.</h1>
       <p style="color:#dbe7f5; font-size:12pt; max-width:5.2in; line-height:1.5;">Nothing in this packet matters as much as the next sixty days of attendance. Pick your class times, put them on the calendar, and come even on the days you don't feel like it — <strong style="color:#fff;">especially</strong> on those days. That's the whole method.</p>
     </div>
 
