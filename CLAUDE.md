@@ -12,7 +12,7 @@ CrossFit OTL is one ship in the Fit4 Associates portfolio. This repo contains th
 - **Opened:** February 2022 (30 founding members from garage gym)
 - **Current size:** ~120+ members (adults + teens + kids + PT)
 - **Price:** **Unlimited $180 / 4 weeks** · **12 sessions $145 / 4 weeks**. Development Time is an Unlimited-only benefit. **Never put membership pricing in the new member packet or /welcome.**
-- **Afternoon classes:** 4PM = CrossFit + **Kids** (no teens) · 5PM = CrossFit + **Teens** (only teens slot) · 6PM = **adults only**
+- **Youth classes:** **Kids = Tue/Thu 4PM** · **Teens = Mon/Tue/Thu 5PM** (no Wednesday teens). Adult CrossFit runs all weekday slots; 5PM and 6PM are Mon–Thu. Full grid in `brain/coaching/class-management.md`.
 - **Programs:** CrossFit classes, CrossFit Kids/Teens, Development Time (Unlimited only), personal training, nutrition coaching, The Lifestyle Reset (12 wk), InBody scan ($35, open to anyone)
 - **Corporate structure:** Fit4 Associates Inc. (S Corp) — CrossFit OTL is a DBA
 - **Instagram:** @crossfitotl (IG User ID: 17841448179180217)

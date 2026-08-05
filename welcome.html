@@ -217,6 +217,9 @@
   tr:nth-child(even) td{ background:#f7f9fc; }
   td.t{ font-weight:800; color:var(--navy); white-space:nowrap; }
 
+  .sched td{ padding:5pt 9pt; }
+  .sched th{ padding:6pt 9pt; }
+
   /* ---------- milestone ---------- */
   .mile{ display:flex; gap:14pt; margin-bottom:13pt; align-items:flex-start; }
   .mile .when{
@@ -707,28 +710,36 @@
       <p>Reserve your spot in the member app. Classes fill — book ahead, and cancel if plans change so someone else can take the slot.</p>
     </div>
 
-    <div class="tablewrap"><table>
+    <div class="tablewrap sched"><table>
       <tr>
-        <th style="width:22%">Time</th>
-        <th style="width:46%">Mon – Thu</th>
+        <th style="width:24%">CrossFit</th>
+        <th style="width:44%">Mon – Thu</th>
         <th style="width:32%">Friday</th>
       </tr>
-      <tr><td class="t">5:00 AM</td><td>CrossFit</td><td>CrossFit</td></tr>
-      <tr><td class="t">6:00 AM</td><td>CrossFit</td><td>CrossFit</td></tr>
-      <tr><td class="t">7:00 AM</td><td>CrossFit</td><td>CrossFit</td></tr>
-      <tr><td class="t">8:30 AM</td><td>CrossFit</td><td>CrossFit</td></tr>
-      <tr><td class="t">12:00 PM</td><td>CrossFit</td><td>CrossFit</td></tr>
-      <tr><td class="t">4:00 PM</td><td>CrossFit · Kids</td><td>CrossFit · Kids</td></tr>
-      <tr><td class="t">5:00 PM</td><td>CrossFit · Teens</td><td>—</td></tr>
-      <tr><td class="t">6:00 PM</td><td>CrossFit</td><td>—</td></tr>
+      <tr><td class="t">5:00 AM</td><td>Class</td><td>Class</td></tr>
+      <tr><td class="t">6:00 AM</td><td>Class</td><td>Class</td></tr>
+      <tr><td class="t">7:00 AM</td><td>Class</td><td>Class</td></tr>
+      <tr><td class="t">8:30 AM</td><td>Class</td><td>Class</td></tr>
+      <tr><td class="t">12:00 PM</td><td>Class</td><td>Class</td></tr>
+      <tr><td class="t">4:00 PM</td><td>Class</td><td>Class — last one of the week</td></tr>
+      <tr><td class="t">5:00 PM</td><td>Class</td><td>—</td></tr>
+      <tr><td class="t">6:00 PM</td><td>Class</td><td>—</td></tr>
     </table></div>
 
-    <div class="tablewrap"><table style="margin-top:16pt;">
-      <tr><th style="width:22%">Saturday</th><th>Class</th></tr>
+    <div class="tablewrap sched"><table style="margin-top:11pt;">
+      <tr><th style="width:24%">Saturday</th><th>Class</th></tr>
       <tr><td class="t">8:30 AM</td><td>CrossFit — the long one. Partner workouts, community day.</td></tr>
     </table></div>
 
-    <div class="grid2" style="margin-top:22pt;">
+    <div class="tablewrap sched"><table style="margin-top:11pt;">
+      <tr><th style="width:24%">Youth</th><th style="width:32%">Days</th><th>Time</th></tr>
+      <tr><td class="t">CrossFit Kids</td><td>Tuesday &amp; Thursday</td><td>4:00 PM</td></tr>
+      <tr><td class="t">CrossFit Teens</td><td>Monday, Tuesday &amp; Thursday</td><td>5:00 PM</td></tr>
+    </table></div>
+
+    <p style="font-size:9pt; margin:8pt 0 0 0;" class="muted">Youth classes run alongside the adult class in the same hour, on the other side of the floor — see <strong>Kids &amp; Teens</strong> for why.</p>
+
+    <div class="grid2" style="margin-top:16pt;">
       <div>
         <h2>Booking &amp; cancellation</h2>
         <div class="rule" style="margin-bottom:10pt; width:40pt; height:3pt;"></div>
@@ -742,8 +753,6 @@
         <p style="font-size:9.5pt; margin:0;">Late arrivals miss the warm-up. If you're late, find the coach before you jump in.</p>
       </div>
     </div>
-
-    <img class="photo h14" style="margin-top:14pt;" src="welcome-img/A7408535.jpg" alt="">
 
     <div class="pfoot"><span>Class Schedule</span><span>08</span></div>
   </div>

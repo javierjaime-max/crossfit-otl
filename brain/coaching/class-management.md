@@ -17,15 +17,16 @@ tags:
 
 **Monday–Thursday:** 5AM · 6AM · 7AM · 8:30–9:30AM · Noon · 4PM · 5PM · 6–7PM
 
-**Who is in which afternoon class (Deanie correction, 2026-08-04):**
+**Youth class days and times — AUTHORITATIVE (GP, 2026-08-04):**
 
-| Slot | Who |
-|---|---|
-| 4:00 PM | CrossFit + **Kids** — **no teens** |
-| 5:00 PM | CrossFit + **Teens** — this is the ONLY teens slot |
-| 6:00 PM | CrossFit **adults only** |
+| Program | Days | Time |
+|---|---|---|
+| **CrossFit Kids** | **Tuesday & Thursday** | **4:00 PM** |
+| **CrossFit Teens** | **Monday, Tuesday & Thursday** | **5:00 PM** |
 
-An earlier draft wrongly put teens at 4PM and 6PM and left adults off the 6PM row.
+Adult CrossFit runs every weekday slot including 4PM, 5PM (Mon–Thu) and 6PM (Mon–Thu). Youth classes run **alongside** the adult class in the same hour on the other side of the floor — that is the design, see `../philosophy.md`.
+
+⚠️ Two drafts got this wrong in sequence. The first put teens at 4PM AND 6PM and left adults off 6PM. The second corrected teens to "5PM only" but still implied Kids ran every weekday at 4PM and Teens every weekday at 5PM. **Kids are Tue/Thu only. Teens are Mon/Tue/Thu only — there is no Wednesday teens class.** Any schedule that cannot express per-day youth classes is the wrong shape for this gym.
 
 **Friday:** same morning and midday slate, plus **4–5PM only**. **No 5PM or 6PM class on Fridays.**
 
