@@ -58,7 +58,9 @@ Development Time comes with **Unlimited only**. Authoritative table + open prici
 
 ## Class structure — naming matters
 
-The five parts: **Briefing → Warm-Up → Skill or Strength → The Workout (WOD) → Cool-Down & Recovery.**
+The five parts (GP correction, 2026-08-04): **Briefing → General Warm-Up → Specific Warm-Up → The Workout (WOD) → Cool-Down & Recovery.**
+
+⚠️ An earlier draft had "Warm-Up → Skill or Strength" for parts 2 and 3. That was **borrowed from the competitor packet used as a design reference plus generic CrossFit convention — not from how CrossFit OTL actually runs the hour.** The correct names are **General Warm-Up** (not specific to the day; raise temperature and range of motion) and **Specific Warm-Up** (rehearse the day's actual movements at light load; where the coach sets each athlete's weight and scaling). Strength work is part of **The Workout**, not a separate block.
 
 - ⚠️ **We do NOT call it "circle time."** The closing block is **intentional cool-down stretching and recovery** — part of the session, not an optional add-on.
 - During that block the coach also delivers **announcements** and a **preview of tomorrow's workout**.

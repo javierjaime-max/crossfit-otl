@@ -132,7 +132,7 @@ The class management challenge is the direct operational result of this design: 
 
 ## Class structure and closing block (GP correction, 2026-08-04)
 
-The five parts of the hour: **Briefing → Warm-Up → Skill or Strength → The Workout (WOD) → Cool-Down & Recovery.**
+The five parts of the hour: **Briefing → General Warm-Up → Specific Warm-Up → The Workout (WOD) → Cool-Down & Recovery.** (GP correction 2026-08-04 — parts 2 and 3 were previously miswritten as "Warm-Up / Skill or Strength", copied from a template rather than from OTL.)
 
 ⚠️ **We do NOT call the closing block "circle time."** It is an **intentional time at the end of every workout for cool-down stretching and recovery**. During it the coach also gives **announcements** and a **preview of tomorrow's workout**.
 
