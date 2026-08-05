@@ -97,7 +97,7 @@ tags:
 
 - **Homegrown.** Came up as a **member of the youth program**, then became an **intern**, and now coaches **teens and adult classes regularly**.
 - One of the two most active non-family adult coaches (with Christi).
-- **Credentials:** CrossFit **L1** ✅. Working toward L2.
+- **Credentials:** CrossFit **L1** ✅ + **CrossFit Kids Trainer** ✅ (GP, 2026-08-04). Working toward L2.
 
 ---
 
