@@ -98,12 +98,19 @@ The service standard implication: coaches running adult and teen classes simulta
 
 ## New Member Experience
 
-**NEEDS_JAVIER — capture the OTL new member journey:**
+**Confirmed standard (GP voice, 2026-07-28):**
+
+- **InBody body composition scan** is standard new-member onboarding — every new member gets scanned.
+- **Nutrition walk-through** is included: the coach walks the member through their InBody results — three-component weight breakdown (water, dry lean mass, body fat), body fat targets, how lean mass drives BMR, InBody score out of 100. This is not optional; it is a defined service step.
+- **Trainerize white-label app** is set up at onboarding — members are enrolled in the OTL-branded coaching app (Trainerize white-label with OTL's front end) as part of the new-member sequence.
+- InBody scan is also sold as a standalone service ($35, open to non-members).
+- The InBody app is downloaded on the member's phone at onboarding; scans sync globally to their account via the same email/phone used at the gym.
+
+**NEEDS_JAVIER — still unconfirmed:**
 - Is there a free trial class? A consultation first? Both?
 - What happens in the first class — is the coach briefed in advance that someone new is coming?
 - Who handles the sales conversation after a trial?
-- Is there an onboarding sequence (intro to programming, nutrition baseline, InBody scan)?
-- What is the InBody protocol — when do new members get scanned, who reviews the results with them?
+- Is there a formal retention check-in (30/60/90 day touchpoint)?
 
 ---
 
