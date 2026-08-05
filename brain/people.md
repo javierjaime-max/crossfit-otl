@@ -119,6 +119,8 @@ tags:
 ## Christi Chaka — Coach
 
 - CrossFit OTL coach. **Coaches the 5AM class.** A **full-time teacher** — she is on the floor before her school day starts.
+- **Homegrown, like Maci** (Deanie via GP, 2026-08-05): Christi was a **member first**, then did an **internship**, and has been **coaching for the last four years**.
+- ⚠️ The Pocket transcript rendered her post-internship title as "**Thrive Name coach**" — that phrase is not resolvable and was **left out of the packet**. NEEDS_JAVIER: what was the actual word? (The member → intern → four years of coaching sequence is confirmed and is what the packet says.)
 - One of the two most active non-family adult coaches (with Maci).
 - **Credentials:** CrossFit **L2** ✅. Not pursuing L3 in the near term.
 
@@ -145,6 +147,10 @@ tags:
 ### Ordering rule for any coach roster (GP, 2026-08-04)
 
 Family first, **couples kept together**: Javier & Deanie · Isabel & Clay · Nicholas & Ava · Lamar. Then the rest of the coaching staff in order of floor activity: **Christi** (5AM), **Maci**, then **Kasey** (kids), then **Nichole** (fills in).
+
+### The internal coach pipeline
+
+**Two of our coaches came up through the gym itself** — Christi Chaka and Maci Osborn were both **members first, then interns, then coaches**. Worth naming when talking about culture or the youth program: the gym grows its own staff.
 
 ### Nutrition coaches (Deanie, 2026-08-04)
 
