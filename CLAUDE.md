@@ -9,7 +9,8 @@ CrossFit OTL is one ship in the Fit4 Associates portfolio. This repo contains th
 ## OTL at a Glance
 
 - **Location:** North Richland Hills, TX (DFW Mid-Cities)
-- **Opened:** February 2022 (30 founding members from garage gym)
+- **Founded:** **2017** in the garage, as **"Box 9013"** (couldn't use the CrossFit name without an affiliate license). **February 2022** = commercial space opens, name becomes CrossFit OTL, 30 founding members carry over from the garage.
+- **The gym is 2017. The affiliate is 2022.** Apparel and anniversary copy use **EST. 2017** — the premise of who we are, why we do it, and how we help people has not changed since the garage. Never date the brand from 2022; that dates the paperwork. Detail in `brain/origin-story.md`.
 - **Current size:** ~120+ members (adults + teens + kids + PT)
 - **Price:** **Unlimited $180 / 4 weeks** · **12 sessions $145 / 4 weeks**. Development Time is an Unlimited-only benefit. **Never put membership pricing in the new member packet or /welcome.**
 - **Youth classes:** **Kids = Tue/Thu 4PM** · **Teens = Mon/Tue/Thu 5PM** (no Wednesday teens). Adult CrossFit runs all weekday slots; 5PM and 6PM are Mon–Thu. Full grid in `brain/coaching/class-management.md`.

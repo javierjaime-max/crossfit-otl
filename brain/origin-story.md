@@ -46,7 +46,19 @@ Took about 20 name attempts before OTL was approved by CrossFit HQ as unique eno
 
 ---
 
-## The Garage Gym Years (6 years before OTL opened)
+## The Garage Gym Years — "Box 9013" (2017–2022)
+
+**The gym was founded in 2017, in the garage.** That is the founding date and it is what the apparel carries (`EST. 2017`).
+
+**Why 2017 and not 2022 — this is the part that matters.** In Javier's words: *the premise of who we were, why we did what we did, and how we helped people hasn't changed since 2017.* The name changed. The space changed. The license arrived. The thing itself did not. Dating from 2022 would date the paperwork, not the gym.
+
+**In the garage years it was called "Box 9013."** They could not call themselves CrossFit — that name requires an affiliate license and they did not have one yet. So the garage crew named their photo stream Box 9013 and trained under it for five years.
+
+Two dates, two different things:
+- **The gym is 2017.** The garage, Box 9013, the original class times, the first members, the reason.
+- **The affiliate is 2022.** The retail space, the license, the name CrossFit OTL.
+
+If anyone ever asks why a 2022 affiliate says EST. 2017, the answer is one sentence: *the affiliate is 2022, the gym is 2017, and nothing about why we do this changed in between.*
 
 1. Javier joins CrossFit (~2011–2013). First gym was terrible: coach showed up late, did the workout behind members. Javier gave it a shot anyway, found a better gym.
 
