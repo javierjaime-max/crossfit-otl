@@ -41,6 +41,8 @@ Development Time comes with **Unlimited only**. Authoritative table + open prici
 
 ## Programs
 
+**Give each program space proportional to how much of the business it actually is** (GP, 2026-08-04). The headline programs are **On-Ramp, Group Class, and The Lifestyle Reset**. Development Time, Personal Training, Nutrition Coaching, and the InBody scan are smaller offerings and should read as smaller — Development Time in particular had a full section equal to Group Class and the GP flagged it as "not proportional."
+
 | Program | What it is |
 |---|---|
 | **On-Ramp** | 3 one-on-one sessions for anyone new to CrossFit. Fundamentals, scaling, vocabulary, what intensity should feel like. Never drop a beginner straight into a group class. |
