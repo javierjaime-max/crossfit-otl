@@ -138,7 +138,7 @@ tags:
 | Ava | Coach | L1 ✅ | Working toward L2 |
 | Lamar | Coach / **Nutrition Coach** | L2 ✅ | — |
 | Christi | Coach (5AM) | L2 ✅ | No |
-| Maci | Coach | L1 ✅ | Working toward L2 |
+| Maci | Coach | L1 ✅ · **CF Kids** | Working toward L2 |
 | Kasey | Coach / Kids | L1 ✅ | Working toward L2 |
 | Nichole | Coach | L1 ✅ | Working toward L2 |
 
