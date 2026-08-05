@@ -87,7 +87,7 @@ The five parts: **Briefing → Warm-Up → Skill or Strength → The Workout (WO
 
 **Thorne online dispensary (full catalog):** <https://www.thorne.com/u/Crossfitotl>
 
-**Apparel and gear:** CrossFit OTL's own merch is in the **merch store on crossfit-otl.com**. We also **partner with apparel and CrossFit gear providers** (shoes, grips, belts, etc.).
+**Apparel and gear:** CrossFit OTL's own merch store is **https://crossfit-otl.printify.me** (Printify). We also **partner with apparel and CrossFit gear providers** (shoes, grips, belts, etc.).
 
 **Pause and cancellation:** the **pause and cancellation forms live on crossfit-otl.com** — not a conversation at the desk.
 
@@ -101,6 +101,7 @@ The five parts: **Briefing → Warm-Up → Skill or Strength → The Workout (WO
 
 - **No membership pricing.** See above.
 - **No legal or release language.** Photo/media release, liability waiver, and similar terms **live in the release forms members already sign** — do not restate or summarize them in the welcome packet or on /welcome (GP, 2026-08-04). The packet is orientation, not a contract.
+- **Never direct a member to a person by name** — no "ask Javier," no "see Deanie" (GP, 2026-08-04). Say **"ask a coach"** or **"just ask."** Names are for coach bios and the founding story, not for routing. People leave roles; the packet should not need reprinting when they do.
 - **Do not offer policy carve-outs the forms already govern** — e.g. an opt-out of being photographed. Offering it in the packet creates a second, weaker source of truth next to the signed form.
 
 ## Naming and voice rules (GP, 2026-08-04)
