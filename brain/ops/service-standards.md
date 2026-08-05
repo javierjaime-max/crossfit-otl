@@ -102,7 +102,8 @@ The service standard implication: coaches running adult and teen classes simulta
 
 - **InBody body composition scan** is standard new-member onboarding — every new member gets scanned.
 - **Nutrition walk-through** is included: the coach walks the member through their InBody results — three-component weight breakdown (water, dry lean mass, body fat), body fat targets, how lean mass drives BMR, InBody score out of 100. This is not optional; it is a defined service step.
-- **Trainerize white-label app** is set up at onboarding — members are enrolled in the OTL-branded coaching app (Trainerize white-label with OTL's front end) as part of the new-member sequence.
+- **Trainerize white-label app** — ⚠️ **CORRECTED by GP 2026-08-04: this is NOT part of standard new-member onboarding.** The OTL-branded Trainerize app is **only for Nutrition Coaching and Lifestyle Reset clients**. A regular group-class member is never set up on it. (The earlier note here overstated it as a universal onboarding step.)
+- **The member-facing booking app is PushPress** (`crossfitotl.pushpress.com`) — that is "the member app" in the welcome packet. Trainerize is a separate coaching app for the two programs above. Do not conflate them.
 - InBody scan is also sold as a standalone service ($35, open to non-members).
 - The InBody app is downloaded on the member's phone at onboarding; scans sync globally to their account via the same email/phone used at the gym.
 

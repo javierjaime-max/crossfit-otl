@@ -83,7 +83,16 @@ The gym is a single large floor divided into functional zones:
 
 **Entry path for someone new:** On-Ramp $270 + first 4 weeks Unlimited $180 = **$450** to start.
 
-⚠️ This supersedes the **$170/month** figure in `../coaching/consultation-process.md`. Still **NEEDS_JAVIER** — the **Lifestyle Reset** numbers in that file: it states **$1,420 paid upfront** but then describes "a commitment to the full **$1,500**, paid in three installments of $500." Those two do not reconcile.
+⚠️ This supersedes the **$170/month** figure in `../coaching/consultation-process.md`.
+
+**The Lifestyle Reset — RESOLVED (GP confirmed 2026-08-04).** The two numbers are not a contradiction; they are two ways to pay:
+
+| How you pay | Total |
+|---|---|
+| **Paid upfront** | **$1,420** |
+| **Three installments of $500** | **$1,500** |
+
+Paying upfront saves **$80**. Both figures are correct — quote them as a pair, never one alone.
 
 ## Safety fixtures
 

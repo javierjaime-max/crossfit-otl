@@ -159,4 +159,6 @@ Authoritative membership pricing now lives in `../ops/facility.md`:
 
 **Confirmed by GP 2026-08-04:** the **3-day On-Ramp is $270**. ✅
 
-**Still unconfirmed — do not publish until the GP confirms:** the **Lifestyle Reset** figures. This file says **$1,420 paid upfront**, then describes the installment path as "a commitment to the full **$1,500**, paid in three installments of $500." Those two numbers do not reconcile.
+**Lifestyle Reset pricing — RESOLVED (GP confirmed 2026-08-04).** Both figures are correct and describe two payment paths: **$1,420 paid upfront**, or **$1,500 total in three installments of $500**. Paying upfront saves $80. Quote them as a pair.
+
+**All pricing in this file is now confirmed.** Authoritative table: `../ops/facility.md`.
