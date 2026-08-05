@@ -97,6 +97,12 @@ The five parts: **Briefing → Warm-Up → Skill or Strength → The Workout (WO
 
 ---
 
+## What belongs in the packet — and what does not
+
+- **No membership pricing.** See above.
+- **No legal or release language.** Photo/media release, liability waiver, and similar terms **live in the release forms members already sign** — do not restate or summarize them in the welcome packet or on /welcome (GP, 2026-08-04). The packet is orientation, not a contract.
+- **Do not offer policy carve-outs the forms already govern** — e.g. an opt-out of being photographed. Offering it in the packet creates a second, weaker source of truth next to the signed form.
+
 ## Naming and voice rules (GP, 2026-08-04)
 
 - **Never write bare "OTL"** in member-facing copy. It is **CrossFit OTL**; the full identity is **CrossFit OTL — On The Line Fitness**.
