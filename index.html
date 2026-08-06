@@ -1254,7 +1254,12 @@ button { cursor: pointer; border: none; background: none; font-family: inherit; 
     top: 0;
     left: 0;
     right: 0;
-    bottom: 0;
+    /* .nav has a backdrop-filter, which makes it the containing block for
+       fixed descendants — so `bottom: 0` collapses to the 72px nav height.
+       An explicit height is required to cover the viewport. */
+    height: 100vh;
+    height: 100dvh;
+    overflow-y: auto;
     background: #0a0a0a;
     flex-direction: column;
     justify-content: center;
