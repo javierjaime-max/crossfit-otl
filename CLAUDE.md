@@ -209,7 +209,7 @@ Note: ngrok URL changes on each restart. Permanent remote access is via the OTL 
 
 ### launchd Agents (Mac mini)
 
-**Runtime lives OUTSIDE OneDrive (2026-09-03).** `node_modules` cannot live in the sync tree (the August upload wedge), so the wrappers in `~/Library/Scripts/Atlas/run-*.sh` rsync this `pipeline/` folder to `~/otl-pipeline/` on the Mini and run there; `~/otl-pipeline/output` is a symlink back to `pipeline/output/` in OneDrive. Edit code here; the wrappers sync it before every run. To install or update dependencies: `cd ~/otl-pipeline && PUPPETEER_SKIP_DOWNLOAD=1 npm install`. From 2026-07-23 to 2026-09-03 the publisher crashed on `ERR_MODULE_NOT_FOUND` every morning and `content-calendar.json` had run out; nothing was generated or posted in that window.
+**Runtime lives OUTSIDE OneDrive (2026-09-03).** `node_modules` cannot live in the sync tree (the August upload wedge), so the wrappers in `~/Library/Scripts/Atlas/run-*.sh` rsync this `pipeline/` folder to `~/otl-pipeline/` on the Mini and run there; `~/otl-pipeline/output` is a symlink back to `pipeline/output/` in OneDrive. Edit code here; the wrappers sync it before every run. To install or update dependencies: `cd ~/otl-pipeline && PUPPETEER_SKIP_DOWNLOAD=1 npm install`. **The daily generator is OFF by GP decision (2026-09-03): only blog posts and their companion carousels are published; do not extend the calendar or revive `generate-next.js` without a fresh ruling.** From 2026-07-23 to 2026-09-03 the publisher crashed on `ERR_MODULE_NOT_FOUND` every morning and `content-calendar.json` had run out; nothing was generated or posted in that window.
 
 | Agent | Fires | Runs |
 |---|---|---|
