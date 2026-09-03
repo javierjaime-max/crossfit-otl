@@ -6,3 +6,4 @@ pipeline/output/
 pipeline/_*render*.html
 ffmpeg2pass-*.log
 photos/hero.webm
+.claude/

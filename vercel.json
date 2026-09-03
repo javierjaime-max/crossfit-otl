@@ -13,6 +13,10 @@
     {
       "source": "/welcome",
       "destination": "/welcome.html"
+    },
+    {
+      "source": "/blog/fifteen-days-a-month",
+      "destination": "/blog/fifteen-days-a-month.html"
     }
   ]
 }
