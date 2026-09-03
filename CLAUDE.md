@@ -97,6 +97,7 @@ Public-facing static HTML at crossfit-otl.com. No build step.
 | `welcome.html` | **New member welcome page** at `/welcome` (rewrite in vercel.json). Same file prints the 15-page PDF packet via its `@media print` block — edit once, page and PDF stay in sync. Source of the PDF also mirrored at `Fit4/CrossFit OTL/Marketing/new-member-packet/`. |
 | `welcome-img/` | Images for the welcome page |
 | `blog/` | **The blog.** `blog/index.html` is the listing at `/blog/`; each post is `blog/<slug>.html` with a clean-URL rewrite in `vercel.json` and a `<url>` in `sitemap.xml`. Every post carries canonical, Open Graph article tags, Twitter card, and BlogPosting + BreadcrumbList JSON-LD. Images live in `blog/img/` (hero 1600×900 webp, social 1200×630 jpg, card 800×450 webp). Drafts are authored first in `Fit4/CrossFit OTL/Content/blog/`. First post 2026-09-03: `fifteen-days-a-month` (consistency), hero = the Board at the front of the gym. |
+| `Fit4/CrossFit OTL/Content/blog/staged/<slug>/` | **Scheduled posts.** A post that goes live on a future date is staged OUTSIDE the repo (so it cannot be reached early): `<slug>.html`, `img/*`, `golive.json` (card + sitemap metadata). The Mini's `~/Library/Scripts/Atlas/otl_blog_golive.py <slug>` (one-shot cron on the go-live date) pulls, copies it in, adds the rewrite, sitemap entry and index card, commits, pushes over the Mini's deploy key, verifies the live URL, and writes `GOLIVE-DONE.json` (or `GOLIVE-FAILED.json`) into the staged folder. Rehearse with `--dry-run` (throwaway clone, no push). Each blog post also gets a carousel in `pipeline/output/<date>/<slug>/` with `status: approved` and `scheduledAt` so the 7:00 publisher posts it the same morning. |
 | `photos/` | Site photos |
 | `robots.txt` | SEO |
 | `sitemap.xml` | SEO sitemap |
@@ -207,6 +208,8 @@ nohup ngrok http 3001 > /tmp/ngrok.log 2>&1 &
 Note: ngrok URL changes on each restart. Permanent remote access is via the OTL Queue view in the Atlas app (`atlas-app-nine-mauve.vercel.app` → OTL Queue nav item).
 
 ### launchd Agents (Mac mini)
+
+**Runtime lives OUTSIDE OneDrive (2026-09-03).** `node_modules` cannot live in the sync tree (the August upload wedge), so the wrappers in `~/Library/Scripts/Atlas/run-*.sh` rsync this `pipeline/` folder to `~/otl-pipeline/` on the Mini and run there; `~/otl-pipeline/output` is a symlink back to `pipeline/output/` in OneDrive. Edit code here; the wrappers sync it before every run. To install or update dependencies: `cd ~/otl-pipeline && PUPPETEER_SKIP_DOWNLOAD=1 npm install`. From 2026-07-23 to 2026-09-03 the publisher crashed on `ERR_MODULE_NOT_FOUND` every morning and `content-calendar.json` had run out; nothing was generated or posted in that window.
 
 | Agent | Fires | Runs |
 |---|---|---|
