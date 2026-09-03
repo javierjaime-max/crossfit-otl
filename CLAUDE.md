@@ -96,6 +96,7 @@ Public-facing static HTML at crossfit-otl.com. No build step.
 | `index.html` | Full site — single page, all sections inline |
 | `welcome.html` | **New member welcome page** at `/welcome` (rewrite in vercel.json). Same file prints the 15-page PDF packet via its `@media print` block — edit once, page and PDF stay in sync. Source of the PDF also mirrored at `Fit4/CrossFit OTL/Marketing/new-member-packet/`. |
 | `welcome-img/` | Images for the welcome page |
+| `blog/` | **The blog.** `blog/index.html` is the listing at `/blog/`; each post is `blog/<slug>.html` with a clean-URL rewrite in `vercel.json` and a `<url>` in `sitemap.xml`. Every post carries canonical, Open Graph article tags, Twitter card, and BlogPosting + BreadcrumbList JSON-LD. Images live in `blog/img/` (hero 1600×900 webp, social 1200×630 jpg, card 800×450 webp). Drafts are authored first in `Fit4/CrossFit OTL/Content/blog/`. First post 2026-09-03: `fifteen-days-a-month` (consistency), hero = the Board at the front of the gym. |
 | `photos/` | Site photos |
 | `robots.txt` | SEO |
 | `sitemap.xml` | SEO sitemap |
