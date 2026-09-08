@@ -1160,7 +1160,7 @@ function ValueSlide({ campaign, photo, headline, body, nugget, slideNum, slideLa
           )}
           <div style={{ display: "flex", flexDirection: "column" }}>
             {items.map((item, i) => (
-              <div key={i} style={{ display: "grid", gridTemplateColumns: `${Math.round(fsListNum * 1.15)}px 1fr`, gap: 28,   // two Bebas digits need ~1.1em; 0.65em let the number run into the copy (seen on 2026-09-03 and 09-08 carousels) paddingBottom: 22, marginBottom: 22, borderBottom: i < items.length - 1 ? "1px solid rgba(255,255,255,0.1)" : "none", alignItems: "flex-start" }}>
+              <div key={i} style={{ display: "grid", gridTemplateColumns: `${Math.round(fsListNum * 1.15)}px 1fr`, gap: 28, /* two Bebas digits need ~1.1em; 0.65em ran the number into the copy (2026-09-08) */ paddingBottom: 22, marginBottom: 22, borderBottom: i < items.length - 1 ? "1px solid rgba(255,255,255,0.1)" : "none", alignItems: "flex-start" }}>
                 <div style={{ fontFamily: "var(--font-display)", fontWeight: 400, fontSize: fsListNum, lineHeight: 0.85, color: accentColor }}>{String(i + 1).padStart(2, "0")}</div>
                 <div>
                   <p style={{ fontFamily: "Inter, Helvetica, sans-serif", fontWeight: 700, fontSize: fsListItem, color: "#fff", margin: 0, lineHeight: 1.1, textTransform: "uppercase" }}>{item.text || item}</p>
