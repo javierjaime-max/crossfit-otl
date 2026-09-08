@@ -34,8 +34,22 @@ async function uploadToCloudinary(filePath, publicId) {
     folder:        'otl_ig',
     overwrite:     true,
     resource_type: 'image',
+    format:        'jpg',   /* Meta accepts JPEG only; a PNG URL was rejected 2026-09-08 */
   });
   return result.secure_url;
+}
+
+
+// Preflight: Meta rejected a Cloudinary PNG on 2026-09-08 (code 9004 / 2207052,
+// "The media URI doesn't meet our requirements"). Every slide is now delivered
+// as JPEG and checked reachable before any Graph API call is made.
+async function assertFetchableJpeg(url) {
+  const res = await fetch(url, { method: 'GET', headers: { Range: 'bytes=0-3' } });
+  const type = res.headers.get('content-type') || '';
+  if (!res.ok && res.status !== 206) throw new Error(`Preflight: ${url} returned HTTP ${res.status}`);
+  if (!/image\/jpe?g/i.test(type)) throw new Error(`Preflight: ${url} is ${type || 'unknown type'}, Meta needs image/jpeg`);
+  const len = Number(res.headers.get('content-range')?.split('/')?.[1] || res.headers.get('content-length') || 0);
+  if (len > 8 * 1024 * 1024) throw new Error(`Preflight: ${url} is ${len} bytes, Meta limit is 8 MB`);
 }
 
 // ── Meta Graph API ─────────────────────────────────────────────
@@ -68,8 +82,9 @@ export async function postToInstagram({ slidePaths, caption, onProgress }) {
   for (let i = 0; i < slidePaths.length; i++) {
     const publicId = `otl_${timestamp}_slide_${i + 1}`;
     const url = await uploadToCloudinary(slidePaths[i], publicId);
+    await assertFetchableJpeg(url);           // Meta only accepts JPEG it can fetch; fail here, not at Meta
     imageUrls.push(url);
-    log(`  ✓ Slide ${i + 1}/${slidePaths.length} uploaded`);
+    log(`  ✓ Slide ${i + 1}/${slidePaths.length} uploaded (${url.split('/').pop()})`);
   }
 
   const isSingle = slidePaths.length === 1;
