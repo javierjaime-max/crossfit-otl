@@ -17,6 +17,10 @@
     {
       "source": "/blog/fifteen-days-a-month",
       "destination": "/blog/fifteen-days-a-month.html"
+    },
+    {
+      "source": "/blog/sports-are-a-season",
+      "destination": "/blog/sports-are-a-season.html"
     }
   ]
 }
