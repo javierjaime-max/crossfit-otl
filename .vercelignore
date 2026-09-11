@@ -1,0 +1,34 @@
+# Files that live in the repo but are never served by the website.
+# Every push stores a full copy of the deploy on Vercel (Hobby cap: 10 GB),
+# so anything listed here stops costing storage on every deployment.
+
+# Instagram pipeline — runs on the Mac Mini (~/otl-pipeline), not on Vercel
+pipeline/
+
+# Ship brain and repo docs
+brain/
+scripts/
+CLAUDE.md
+
+# Photo originals no page references (the pages use the .webp / listed .JPG copies).
+# Listed by name so any NEW photo still deploys by default.
+photos/.DS_Store
+photos/A7400511.JPG
+photos/A7401003.JPG
+photos/A7401132.JPG
+photos/A7401169.JPG
+photos/A7401395.JPG
+photos/A7401523.JPG
+photos/A7402946.JPG
+photos/A7402986.JPG
+photos/A7404633.JPG
+photos/A7404648.JPG
+photos/A7404651.JPG
+photos/A7404727.JPG
+photos/A7404804.JPG
+photos/A7405019.JPG
+photos/A7408535.jpg
+photos/A7409330.JPG
+photos/DJI_20241019075505_0049_D.mov
+photos/IMG_1252.jpeg
+photos/IMG_1271.jpeg
