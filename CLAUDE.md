@@ -266,7 +266,7 @@ pipeline/output/
 
 | ASOP | Covers |
 |---|---|
-| `Firm/asops/asop-otl-content-pipeline.md` | **Start here** — full OTL pipeline end to end |
-| `Firm/asops/asop-carousel-creation.md` | Template system + design principles |
-| `Firm/asops/asop-social-publishing.md` | Fleet publishing mechanics + ship configs |
-| `Firm/asops/asop-otl-photo-intake.md` | iPhone → Cloudinary photo intake |
+| `Firm/_archive-v1/asops/asop-otl-content-pipeline.md` | **Start here** — full OTL pipeline end to end |
+| `Firm/_archive-v1/asops/asop-carousel-creation.md` | Template system + design principles |
+| `Firm/_archive-v1/asops/asop-social-publishing.md` | Fleet publishing mechanics + ship configs |
+| `Firm/_archive-v1/asops/asop-otl-photo-intake.md` | iPhone → Cloudinary photo intake |
