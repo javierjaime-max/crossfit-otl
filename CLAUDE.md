@@ -111,7 +111,7 @@ git add -p && git commit -m "feat: <what changed>" && git push origin main
 
 ## Instagram Content Pipeline
 
-**Full ASOP:** `Firm/asops/asop-otl-content-pipeline.md` — read this before touching the pipeline.
+**Full ASOP:** `Firm/_archive-v1/asops/asop-otl-content-pipeline.md` (v1 library, archived 2026-07-12; reference only) — read this before touching the pipeline.
 
 ### How It Works
 
@@ -189,7 +189,7 @@ Output size: **1080×1350px** always. Do not use `element.screenshot()` — use 
 
 Cloudinary at `crossfit-otl/library`. Tagged: `intensity`, `barbell`, `pull-ups`, `kettlebell`, `rowing`, `group`, `community`, `coach`, `quality:1`–`quality:5`. Pipeline selects via tag chain (specific → general → any). HookSlide + CarouselCTA always get quality ≥ 4. ValueSlide variant `"b"` never gets a photo.
 
-Photo intake process: `Firm/asops/asop-otl-photo-intake.md`
+Photo intake process: `Firm/_archive-v1/asops/asop-otl-photo-intake.md` (v1 library, archived 2026-07-12; reference only)
 
 ### Review Queue
 
