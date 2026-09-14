@@ -211,11 +211,29 @@ Note: ngrok URL changes on each restart. Permanent remote access is via the OTL 
 
 **Runtime lives OUTSIDE OneDrive (2026-09-03).** `node_modules` cannot live in the sync tree (the August upload wedge), so the wrappers in `~/Library/Scripts/Atlas/run-*.sh` rsync this `pipeline/` folder to `~/otl-pipeline/` on the Mini and run there; `~/otl-pipeline/output` is a symlink back to `pipeline/output/` in OneDrive. Edit code here; the wrappers sync it before every run. To install or update dependencies: `cd ~/otl-pipeline && PUPPETEER_SKIP_DOWNLOAD=1 npm install`. **The daily generator is OFF by GP decision (2026-09-03): only blog posts and their companion carousels are published; do not extend the calendar or revive `generate-next.js` without a fresh ruling.** From 2026-07-23 to 2026-09-03 the publisher crashed on `ERR_MODULE_NOT_FOUND` every morning and `content-calendar.json` had run out; nothing was generated or posted in that window.
 
-| Agent | Fires | Runs |
-|---|---|---|
-| `com.otl.generate-next` | 7:05am daily | `generate-next.js` |
-| `com.otl.publish-scheduled` | 7:00am daily | `publish-overdue-otl.js` |
-| `com.otl.photo-intake` | Scheduled | `intake.js` |
+**INSTAGRAM IS PAUSED (GP, 2026-09-13).** Verified paused at the data level, not just by intention: the publisher
+ran clean every day and logged "No approved posts due. Nothing to post."; `generate-next` logged "No post scheduled
+— skipping." Nothing has posted. Two agents were unloaded and persistently disabled the same day (plists kept, so
+re-enabling is one command). Do not revive any of this without a fresh ruling.
+
+| Agent | Fires | Runs | State (2026-09-13) |
+|---|---|---|---|
+| `com.otl.publish-scheduled` | 7:00am daily | `publish-overdue-otl.js` | LOADED, exit 0. Kept as the safety net if something ever is approved |
+| `com.otl.generate-next` | 7:05am daily | `generate-next.js` | LOADED, exit 0, skipping daily (generator OFF by the 2026-09-03 ruling) |
+| `com.otl.intake` | Scheduled | `intake.js` | **DISABLED** 2026-09-13 (was exit 1) |
+| `com.otl.photo-intake` | Scheduled | `intake.js` | **DISABLED** 2026-09-13 (was exit 1) |
+
+**Known defect, will bite on unpause:** every run of both live agents logs
+`rsync: open .../GitHub/crossfit-otl/pipeline/: Operation not permitted` — the Mini has no Full Disk Access to
+OneDrive CloudStorage, so the rsync-to-`~/otl-pipeline/` step silently does nothing and the pipeline runs against
+whatever stale copy is already there. Invisible while nothing is approved. Fix this BEFORE unpausing, or the first
+failure will look like a content problem instead of a permissions one.
+
+Re-enable (per agent):
+```bash
+launchctl enable gui/$(id -u)/com.otl.photo-intake
+launchctl bootstrap gui/$(id -u) ~/Library/LaunchAgents/com.otl.photo-intake.plist
+```
 
 ```bash
 # Verify agents are loaded
