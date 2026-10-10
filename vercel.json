@@ -11,6 +11,10 @@
   ],
   "rewrites": [
     {
+      "source": "/contact",
+      "destination": "/contact.html"
+    },
+    {
       "source": "/welcome",
       "destination": "/welcome.html"
     },
